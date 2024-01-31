@@ -25,9 +25,6 @@ yarn-error.log*
 # IDE specific
 .idea/
 
-# OS specific
-.DS_Store
-
 # Logs
 *.log
 
