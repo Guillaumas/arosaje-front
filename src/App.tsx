@@ -1,20 +1,18 @@
+// App.tsx
 import React, { useState } from 'react';
-import Login from './Login';
-import SignIn from './SignIn';
+import Sidebar from './Messaging/Sidebar';
+import Conversation from './Messaging/Conversation';
 import './App.css';
 
 const App: React.FC = () => {
-    const [isLogin, setIsLogin] = useState(true);
+  const [selectedConversation, setSelectedConversation] = useState<any>({}); // Initialisez avec une valeur par défaut
 
-    const handleSwitch = () => {
-        setIsLogin(!isLogin);
-    };
-
-    return (
-        <div className="App">
-            {isLogin ? <Login onSwitch={handleSwitch} /> : <SignIn onSwitch={handleSwitch} />}
-        </div>
-    );
+  return (
+    <div>
+      <Sidebar isConversationSelected={selectedConversation !== null} />
+      <Conversation selectedConversation={selectedConversation} />
+    </div>
+  );
 };
 
 export default App;

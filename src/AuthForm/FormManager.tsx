@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import './AuthForm.css';
-import './App.css';
+import '../App.css';
 import SignIn from "./SignIn";
 
 function FormManager() {
