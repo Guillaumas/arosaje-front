@@ -1,5 +1,4 @@
 import React from 'react';
-/*
 import styled from 'styled-components';
 import '../App.css';
 
@@ -47,7 +46,7 @@ const Conversation: React.FC<ConversationProps> = ({ selectedConversation }) => 
   );
 };
 
-export default Conversation;*/
+export default Conversation;
 
 //todo Fonctionnalités de base du composant conversation
 //todo 1. Afficher les messages de la conversation sélectionnée

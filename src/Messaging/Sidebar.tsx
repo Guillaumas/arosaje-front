@@ -1,5 +1,5 @@
 import React from 'react';
-/*import styled from 'styled-components';
+import styled from 'styled-components';
 import '../App.css';
 
 interface Recipient {
@@ -88,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isConversationSelected }) => {
   );
 };
 
-export default Sidebar;*/
+export default Sidebar;
 
 //todo Fonctionnalités de base du composant Sidebar
 //todo 1. Afficher la liste des conversations

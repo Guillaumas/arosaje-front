@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './AuthForm.css';
 
 interface LoginProps {
@@ -11,22 +12,31 @@ function Login({ onSwitch }: LoginProps) {
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
+    const history = useHistory();
+
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
         setUsernameError('');
         setPasswordError('');
 
+        const hardcodedUsername = 'test';
+        const hardcodedPassword = 'test';
+
         if (username.trim() === '') {
             setUsernameError('Username is required');
+        } else if (username !== hardcodedUsername) {
+            setUsernameError('Invalid username');
         }
 
         if (password.trim() === '') {
             setPasswordError('Password is required');
+        } else if (password !== hardcodedPassword) {
+            setPasswordError('Invalid password');
         }
 
-        if (usernameError === '' && passwordError === '') {
-            // Implémentez la logique de connexion
+        if (username === hardcodedUsername && password === hardcodedPassword) {
+            history.push('/');
         }
     };
 

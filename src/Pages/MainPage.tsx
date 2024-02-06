@@ -1,4 +1,14 @@
-import React from 'react';
+import React from "react";
+
+const MainPage = () => {
+    return (
+        <div>
+            {/* Contenu de la page du profil ici */}
+        </div>
+    );
+}
+
+export default MainPage;
 
 
 

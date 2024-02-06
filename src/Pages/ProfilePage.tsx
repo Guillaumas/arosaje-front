@@ -1,5 +1,15 @@
 import React from 'react';
 
+const Profile = () => {
+    return (
+        <div>
+            {/* Contenu de la page du profil ici */}
+        </div>
+    );
+}
+
+export default Profile;
+
 
 //todo affichage de la page du profil
 //todo 1 afficher les dans une card generique les 10 derniers posts de plantes du profil selectionné de format instagram (image, titre, date, auteur, commentaire)

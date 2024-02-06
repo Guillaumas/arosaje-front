@@ -1,4 +1,3 @@
-// src/FormManager.tsx
 import React, { useState } from 'react';
 import Login from './Login';
 import './AuthForm.css';
