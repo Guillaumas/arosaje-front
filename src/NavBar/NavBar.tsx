@@ -1,8 +1,38 @@
-import react from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const NavBar: React.FC = () => {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Accueil</Link>
+        </li>
+        <li>
+          <Link to="/profil">Profil</Link>
+        </li>
+        <li>
+          <Link to="/messages">Messages</Link>
+        </li>
+        <li>
+          <Link to="/parametres">Paramètres</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        <li>
+          <Link to="/recherche">Recherche</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+export default NavBar;
 
 
 
-//todo affichage de la navbar
+//todo affichage de la navbar responsive
 //todo - bouton d'accueil
 //todo - bouton de profil
 //todo - bouton de messages

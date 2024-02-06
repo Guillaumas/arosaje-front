@@ -1,5 +1,15 @@
 import react from "react";
 
+const Post = () => {
+    return (
+        <div>
+            {/* Contenu de la page du profil ici */}
+        </div>
+    );
+}
+
+export default Post;
+
 
 
 //todo fonctionnalités de base pour la page de details de post

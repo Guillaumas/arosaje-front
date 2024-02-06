@@ -1,4 +1,14 @@
-import react from 'react';
+import React from "react";
+
+const NewPost = () => {
+    return (
+        <div>
+            {/* Contenu de la page du profil ici */}
+        </div>
+    );
+}
+
+export default NewPost;
 
 
 
