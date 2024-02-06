@@ -3,90 +3,93 @@ import styled from 'styled-components';
 import '../App.css';
 
 interface Recipient {
-  name: string;
-  photoUrl: string;
+    name: string;
+    photoUrl: string;
 }
 
 interface Conversation {
-  id: string;
-  recipient: Recipient;
+    id: string;
+    recipient: Recipient;
 }
 
 interface SidebarProps {
-  isConversationSelected: boolean;
+    isconversationselected: boolean;
 }
 
-const SidebarDiv = styled.div<{ isConversationSelected: boolean }>`
-  width: ${props => (props.isConversationSelected ? '200px' : '300px')};
-  height: 100vh;
-  overflow-y: auto;
-  padding: 20px;
-  
-  @media (min-width: 768px) {
-    width: ${props => (props.isConversationSelected ? '200px' : '300px')};
-  }
+const SidebarDiv = styled.div<{ isconversationselected: boolean }>`
+    width: ${props => (props.isconversationselected ? '200px' : '300px')};
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
 
-  @media (max-width: 767px) {
-    width: 100%;
-  }
+    @media (min-width: 768px) {
+        width: ${props => (props.isconversationselected ? '200px' : '300px')};
+    }
+
+    @media (max-width: 767px) {
+        width: 100%;
+    }
 `;
 
+
 const RecipientDiv = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 `;
 
 const RecipientPhoto = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
 `;
 
 const RecipientName = styled.h2`
-  margin: 0;
+    margin: 0;
 `;
 
 const dummyConversations: Conversation[] = [
-  {
-    id: '1',
-    recipient: {
-      name: 'John Doe',
-      photoUrl: 'https://example.com/john.jpg',
+    {
+        id: '1',
+        recipient: {
+            name: 'John Doe',
+            photoUrl: 'https://example.com/john.jpg',
+        },
     },
-  },
-  {
-    id: '2',
-    recipient: {
-      name: 'Jane Doe',
-      photoUrl: 'https://example.com/jane.jpg',
+    {
+        id: '2',
+        recipient: {
+            name: 'Jane Doe',
+            photoUrl: 'https://example.com/jane.jpg',
+        },
     },
-  },
-  {
-    id: '3',
-    recipient: {
-      name: 'Bob Smith',
-      photoUrl: 'https://example.com/bob.jpg',
+    {
+        id: '3',
+        recipient: {
+            name: 'Bob Smith',
+            photoUrl: 'https://example.com/bob.jpg',
+        },
     },
-  },
 ];
-const Sidebar: React.FC<SidebarProps> = ({ isConversationSelected }) => {
-  return (
-    <SidebarDiv isConversationSelected={isConversationSelected}>
-      {dummyConversations.length > 0 ? (
-        dummyConversations.map((conversation: Conversation) => (
-          <RecipientDiv key={conversation.id}>
-            <RecipientPhoto src={conversation.recipient.photoUrl} alt={conversation.recipient.name} />
-            <RecipientName>{conversation.recipient.name}</RecipientName>
-          </RecipientDiv>
-        ))
-      ) : (
-        <p>Il n'y a pas de conversations</p>
-      )}
-    </SidebarDiv>
-  );
-};
+const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
+    const sidebarWidth = isconversationselected ? '200px' : '300px';
+
+    return (
+        <SidebarDiv isconversationselected={isconversationselected}>
+            {dummyConversations.length > 0 ? (
+                dummyConversations.map((conversation: Conversation) => (
+                    <RecipientDiv key={conversation.id}>
+                        <RecipientPhoto src={conversation.recipient.photoUrl} alt={conversation.recipient.name}/>
+                        <RecipientName>{conversation.recipient.name}</RecipientName>
+                    </RecipientDiv>
+                ))
+            ) : (
+                <p>Il n'y a pas de conversations</p>
+            )}
+        </SidebarDiv>
+    );
+}
 
 export default Sidebar;
 
