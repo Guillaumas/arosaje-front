@@ -1,62 +1,60 @@
-const BASE_URL = "http://localhost:8080/api";
-
 export const MEDIAS = {
-  SELF: `${BASE_URL}/medias?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/medias`,
-  SEARCH: `${BASE_URL}/medias/search`
+  SELF: { URL: "http://localhost:8080/api/medias?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/medias", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/medias/search", METHOD: 'POST' }
 };
 
 export const SPECIES = {
-  SELF: `${BASE_URL}/species?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/species`,
-  SEARCH: `${BASE_URL}/species/search`
+  SELF: { URL: "http://localhost:8080/api/species?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/species", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/species/search", METHOD: 'POST' }
 };
 
 export const ROLES = {
-  SELF: `${BASE_URL}/roles?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/roles`
+  SELF: { URL: "http://localhost:8080/api/roles?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/roles", METHOD: 'GET' }
 };
 
 export const ANNOUNCES = {
-  SELF: `${BASE_URL}/announces?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/announces`,
-  SEARCH: `${BASE_URL}/announces/search`
+  SELF: { URL: "http://localhost:8080/api/announces?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/announces", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/announces/search", METHOD: 'POST' }
 };
 
 export const LOGINS = {
-  SELF: `${BASE_URL}/logins?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/logins`,
-  SEARCH: `${BASE_URL}/logins/search`
+  SELF: { URL: "http://localhost:8080/api/logins?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/logins", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/logins/search", METHOD: 'POST' }
 };
 
 export const CONVERSATIONS = {
-  SELF: `${BASE_URL}/conversations?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/conversations`,
-  SEARCH: `${BASE_URL}/conversations/search`
+  SELF: { URL: "http://localhost:8080/api/conversations?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/conversations", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/conversations/search", METHOD: 'POST' }
 };
 
 export const PLANTS = {
-  SELF: `${BASE_URL}/plants?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/plants`,
-  SEARCH: `${BASE_URL}/plants/search`
+  SELF: { URL: "http://localhost:8080/api/plants?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/plants", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/plants/search", METHOD: 'POST' }
 };
 
 export const USERS = {
-  SELF: `${BASE_URL}/users?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/users`,
-  SEARCH: `${BASE_URL}/users/search`
+  SELF: { URL: "http://localhost:8080/api/users?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/users", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/users/search", METHOD: 'POST' }
 };
 
 export const UPKEEPS = {
-  SELF: `${BASE_URL}/upkeeps?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/upkeeps`,
-  SEARCH: `${BASE_URL}/upkeeps/search`
+  SELF: { URL: "http://localhost:8080/api/upkeeps?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/upkeeps", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/upkeeps/search", METHOD: 'POST' }
 };
 
 export const COMMENTS = {
-  SELF: `${BASE_URL}/comments?page=0&size=20`,
-  PROFILE: `${BASE_URL}/profile/comments`,
-  SEARCH: `${BASE_URL}/comments/search`
+  SELF: { URL: "http://localhost:8080/api/comments?page=0&size=20", METHOD: 'GET' },
+  PROFILE: { URL: "http://localhost:8080/api/profile/comments", METHOD: 'GET' },
+  SEARCH: { URL: "http://localhost:8080/api/comments/search", METHOD: 'POST' }
 };
 
-export const PROFILE = `${BASE_URL}/profile`;
+export const PROFILE = { URL: "http://localhost:8080/api/profile", METHOD: 'GET' };
