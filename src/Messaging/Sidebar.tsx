@@ -10,14 +10,13 @@ interface SidebarProps {
 }
 
 const SidebarDiv = styled.div<{ isconversationselected: boolean }>`
-    width: ${props => (props.isconversationselected ? '200px' : '300px')};
     height: calc(100vh - 100px);
     overflow-y: auto;
     padding: 20px;
     margin-top: 60px;
 
     @media (min-width: 768px) {
-        width: ${props => (props.isconversationselected ? '200px' : '300px')};
+        width: ${props => (props.isconversationselected ? '300px' : '15%')};
     }
 
     @media (max-width: 767px) {
@@ -41,7 +40,8 @@ const RecipientDiv = styled.div<{ isSelected: boolean }>`
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    border: ${props => (props.isSelected ? '2px solid red' : 'none')};
+    border: ${props => (props.isSelected ? '2px solid red' : '1px solid #ddd')};
+    gap: 10px;
 `;
 
 let dummyConversations: IConversation[] = [
