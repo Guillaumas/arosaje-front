@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {ANNOUNCES} from "../routes";
 import { Link } from 'react-router-dom';
+import styled from "styled-components";
 
 interface Post {
     id: number;
@@ -14,6 +15,11 @@ interface Post {
     updated_at: string;
     image: string;
 }
+
+const StyledDiv = styled.div`
+    padding-top: 72px; //c'est la taille de la navbar si jamais t'a besoin de le savoir sale trou de balle (jme parle a moi meme)
+    color: #61dafb;
+`;
 
 const MainPage = () => {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -29,7 +35,7 @@ const MainPage = () => {
                 }
                 return response.json()
             })
-            .then((data: Post[]) => setPosts(data.slice(0, 10))) // Only take the first 10 posts
+            .then((data: Post[]) => setPosts(data.slice(0, 10))) //changer la route de get pour avoir les 10 premiers posts sans data slice
             .catch((err: Error) => {
                 console.error("An error occurred while fetching the posts data.", err);
                 setError(err);
@@ -41,7 +47,7 @@ const MainPage = () => {
     }, []);
 
     if (error) {
-        return <div>An error occurred: {error.message}</div>;
+        return <StyledDiv>An error occurred: {error.message}</StyledDiv>;
     }
 
     return (
@@ -65,8 +71,6 @@ export default MainPage;
 
 
 //todo fonctionnalités de base de la page d'accueil
-//todo 1 afficher les dans une card generique les 10 derniers posts de plantes de format instagram (image, titre, date, auteur, commentaire)
-//todo 2 precharger les 10 posts suivants
-//todo 3 afficher la navbar (accueil, profil, messages, parametres)
-//todo 4 si l'utilisateur appuie sur un post, afficher la page du post
+//todo style card responsive
+//todo 2 precharger les 10 posts suivants -- pas obligatoire
 //todo 5 si l'utilisateur appuie sur les commentaires d'un post, afficher la page des commentaires de ce post
