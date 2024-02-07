@@ -32,6 +32,7 @@ const ConversationDiv = styled.div`
   border-left: 1px solid #ddd;
   background-color: transparent;
   margin-top: 60px;
+  width: 100%;
 `;
 
 const MessageP = styled.p<{ isFromCurrentUser: boolean }>`
