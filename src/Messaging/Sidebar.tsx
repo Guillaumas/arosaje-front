@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import '../App.css';
-import { IRecipient, IConversation } from './Conversation';
-
+import { IConversation } from './Conversation';
+import {ConversationContext} from "./ConversationContext";
 
 
 interface SidebarProps {
@@ -105,9 +105,13 @@ let dummyConversations: IConversation[] = [
 ];
 const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
     const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+    const context = useContext(ConversationContext);
 
     const handleSelectConversation = (conversation: IConversation) => {
         setSelectedConversation(conversation);
+        if (context) {
+            context.setSelectedConversation(conversation);
+        }
     };
 
     const handleDeleteConversation = (id: string) => {

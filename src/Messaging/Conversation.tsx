@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import '../App.css';
+import {ConversationContext} from "./ConversationContext";
+
 
 export interface IRecipient {
   name: string;
@@ -40,19 +42,28 @@ const MessageP = styled.p<{ isFromCurrentUser: boolean }>`
   text-align: ${props => (props.isFromCurrentUser ? 'right' : 'left')};
 `;
 
-const Conversation: React.FC<ConversationProps> = ({ selectedConversation }) => {
+const Conversation: React.FC = () => {
+  const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+  const context = useContext(ConversationContext);
+
+  useEffect(() => {
+    if (context) {
+      setSelectedConversation(context.selectedConversation);
+    }
+  }, [context]);
+
   return (
-    <ConversationDiv>
-      {selectedConversation && selectedConversation.messages ? (
-        selectedConversation.messages.map((message: IMessage, index: number) => (
-          <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
-            <strong>{message.sender}:</strong> {message.content}
-          </MessageP>
-        ))
-      ) : (
-        <p>Aucune conversation sélectionnée</p>
-      )}
-    </ConversationDiv>
+      <ConversationDiv>
+        {selectedConversation && selectedConversation.messages ? (
+            selectedConversation.messages.map((message: IMessage, index: number) => (
+                <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
+                  <strong>{message.sender}:</strong> {message.content}
+                </MessageP>
+            ))
+        ) : (
+            <p>Aucune conversation sélectionnée</p>
+        )}
+      </ConversationDiv>
   );
 };
 

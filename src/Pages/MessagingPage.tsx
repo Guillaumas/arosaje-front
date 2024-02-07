@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Sidebar from '../Messaging/Sidebar';
-import Conversation, { IConversation } from '../Messaging/Conversation';
+import Conversation from '../Messaging/Conversation';
 import styled from 'styled-components';
+import {ConversationContext } from "../Messaging/ConversationContext";
+import { IConversation } from '../Messaging/Conversation';
 
 const MessagesContainer = styled.div`
     display: flex;
@@ -11,10 +13,12 @@ const Messages = () => {
     const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
 
     return (
-        <MessagesContainer>
-            <Sidebar isconversationselected={selectedConversation !== null} />
-            <Conversation selectedConversation={selectedConversation} />
-        </MessagesContainer>
+        <ConversationContext.Provider value={{selectedConversation, setSelectedConversation}}>
+            <MessagesContainer>
+                <Sidebar isconversationselected={selectedConversation !== null}/>
+                <Conversation />
+            </MessagesContainer>
+        </ConversationContext.Provider>
     );
 }
 
