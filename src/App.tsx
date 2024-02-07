@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './Messaging/Sidebar';
-import Conversation from './Messaging/Conversation';
 import NavBar from './NavBar/NavBar';
 import Profil from './Pages/ProfilePage';
 import Messages from './Pages/MessagingPage';
@@ -12,7 +10,6 @@ import Recherche from './Pages/SearchPage';
 import './App.css';
 
 const App: React.FC = () => {
-  const [selectedConversation, setSelectedConversation] = useState<any>({});
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const handleSwitch = () => {
@@ -29,9 +26,8 @@ const App: React.FC = () => {
         <Route path="/parametres/*" element={<Parametres />} />
         <Route path="/login/*" element={<Login onSwitch={handleSwitch} />} />
         <Route path="/recherche/*" element={<Recherche />} />
+        <Route path="*" element={<div>Page not found</div>} />
       </Routes>
-      <Sidebar isconversationselected={selectedConversation !== null} />
-      <Conversation selectedConversation={selectedConversation} />
     </Router>
   );
 };

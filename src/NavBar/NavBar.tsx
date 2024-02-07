@@ -1,30 +1,52 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledNav = styled.nav`
+  background-color: #f8f9fa;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const StyledUl = styled.ul`
+    display: flex;
+    list-style: none;
+`;
+
+const StyledLi = styled.li`
+    margin: 0 10px;
+`;
 
 const NavBar: React.FC = () => {
   return (
-    <nav>
-      <ul>
-        <li>
+    <StyledNav>
+      <StyledUl>
+        <StyledLi>
           <Link to="/">Accueil</Link>
-        </li>
-        <li>
+        </StyledLi>
+        <StyledLi>
           <Link to="/profil">Profil</Link>
-        </li>
-        <li>
+        </StyledLi>
+        <StyledLi>
           <Link to="/messages">Messages</Link>
-        </li>
-        <li>
+        </StyledLi>
+        <StyledLi>
           <Link to="/parametres">Paramètres</Link>
-        </li>
-        <li>
+        </StyledLi>
+        <StyledLi>
           <Link to="/login">Login</Link>
-        </li>
-        <li>
+        </StyledLi>
+        <StyledLi>
           <Link to="/recherche">Recherche</Link>
-        </li>
-      </ul>
-    </nav>
+        </StyledLi>
+      </StyledUl>
+    </StyledNav>
   );
 };
 
@@ -33,15 +55,3 @@ export default NavBar;
 
 
 //todo affichage de la navbar responsive
-//todo - bouton d'accueil
-//todo - bouton de profil
-//todo - bouton de messages
-//todo - bouton de parametres
-//todo - bouton de login
-//todo - bouton de recherche
-//todo 2 si l'utilisateur appuie sur le bouton de profil, afficher la page du profil
-//todo 3 si l'utilisateur appuie sur le bouton de messages, afficher la page des messages
-//todo 4 si l'utilisateur appuie sur le bouton de parametres, afficher la page des parametres
-//todo 5 si l'utilisateur appuie sur le bouton de login, afficher la page de login
-//todo 6 si l'utilisateur appuie sur le bouton de d'accueil, afficher la page d'accueil
-//todo 7 si l'utilisateur appuie sur le bouton de recherche, afficher la page de recherche

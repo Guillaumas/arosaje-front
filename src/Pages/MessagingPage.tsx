@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from 'react';
+import Sidebar from '../Messaging/Sidebar';
+import Conversation, { IConversation } from '../Messaging/Conversation';
+import styled from 'styled-components';
 
-const Messaging = () => {
+const MessagesContainer = styled.div`
+    display: flex;
+`;
+
+const Messages = () => {
+    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+
     return (
-        <div>
-            {/* Contenu de la page du profil ici */}
-        </div>
+        <MessagesContainer>
+            <Sidebar isconversationselected={selectedConversation !== null} />
+            <Conversation selectedConversation={selectedConversation} />
+        </MessagesContainer>
     );
 }
 
-export default Messaging;
+export default Messages;
+
 
 //todo page de messagerie
 //todo gestion de la logique d'affichage des conversation en utilisant les fichiers du dossier "Messaging"

@@ -2,29 +2,39 @@ import React from 'react';
 import styled from 'styled-components';
 import '../App.css';
 
-interface Message {
+export interface IRecipient {
+  name: string;
+  photoUrl: string;
+}
+
+export interface IMessage {
   sender: string;
   content: string;
   isFromCurrentUser: boolean;
 }
 
-interface Conversation {
-  messages: Message[];
+export interface IConversation {
+  id: string;
+  recipient: IRecipient;
+  messages: IMessage[];
 }
 
 interface ConversationProps {
-  selectedConversation: Conversation | null;
+  selectedConversation: IConversation | null;
 }
 
 const ConversationDiv = styled.div`
   padding: 20px;
   overflow-y: auto;
-  height: calc(100vh - 40px);
+  height: calc(100vh - 100px);
   border-left: 1px solid #ddd;
   background-color: transparent;
+  margin-top: 60px;
 `;
 
 const MessageP = styled.p<{ isFromCurrentUser: boolean }>`
+  background-color: ${props => props.isFromCurrentUser ? '#48806C' : '#527E19'};
+  color: white;
   margin-bottom: 10px;
   line-height: 1.5;
   text-align: ${props => (props.isFromCurrentUser ? 'right' : 'left')};
@@ -34,7 +44,7 @@ const Conversation: React.FC<ConversationProps> = ({ selectedConversation }) => 
   return (
     <ConversationDiv>
       {selectedConversation && selectedConversation.messages ? (
-        selectedConversation.messages.map((message: Message, index: number) => (
+        selectedConversation.messages.map((message: IMessage, index: number) => (
           <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
             <strong>{message.sender}:</strong> {message.content}
           </MessageP>

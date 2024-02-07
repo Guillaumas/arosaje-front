@@ -1,16 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import '../App.css';
+import { IRecipient, IConversation } from './Conversation';
 
-interface Recipient {
-    name: string;
-    photoUrl: string;
-}
 
-interface Conversation {
-    id: string;
-    recipient: Recipient;
-}
 
 interface SidebarProps {
     isconversationselected: boolean;
@@ -18,9 +11,10 @@ interface SidebarProps {
 
 const SidebarDiv = styled.div<{ isconversationselected: boolean }>`
     width: ${props => (props.isconversationselected ? '200px' : '300px')};
-    height: 100vh;
+    height: calc(100vh - 100px);
     overflow-y: auto;
     padding: 20px;
+    margin-top: 60px;
 
     @media (min-width: 768px) {
         width: ${props => (props.isconversationselected ? '200px' : '300px')};
@@ -31,12 +25,6 @@ const SidebarDiv = styled.div<{ isconversationselected: boolean }>`
     }
 `;
 
-
-const RecipientDiv = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-`;
 
 const RecipientPhoto = styled.img`
     width: 50px;
@@ -49,39 +37,96 @@ const RecipientName = styled.h2`
     margin: 0;
 `;
 
-const dummyConversations: Conversation[] = [
+const RecipientDiv = styled.div<{ isSelected: boolean }>`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: ${props => (props.isSelected ? '2px solid red' : 'none')};
+`;
+
+let dummyConversations: IConversation[] = [
     {
         id: '1',
         recipient: {
             name: 'John Doe',
-            photoUrl: 'https://example.com/john.jpg',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
         },
+        messages: [
+            {
+                sender: 'John Doe',
+                content: 'Bonjour, comment ça va ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Ça va bien, merci. Et vous ?',
+                isFromCurrentUser: true,
+            },
+        ],
     },
     {
         id: '2',
         recipient: {
             name: 'Jane Doe',
-            photoUrl: 'https://example.com/jane.jpg',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
         },
+        messages: [
+            {
+                sender: 'Jane Doe',
+                content: 'Salut, as-tu terminé le projet ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Oui, je viens de le terminer.',
+                isFromCurrentUser: true,
+            },
+        ],
     },
     {
         id: '3',
         recipient: {
             name: 'Bob Smith',
-            photoUrl: 'https://example.com/bob.jpg',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
         },
+        messages: [
+            {
+                sender: 'Bob Smith',
+                content: 'Hey, prêt pour la réunion de demain ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Oui, tout est prêt.',
+                isFromCurrentUser: true,
+            },
+        ],
     },
 ];
 const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
-    const sidebarWidth = isconversationselected ? '200px' : '300px';
+    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+
+    const handleSelectConversation = (conversation: IConversation) => {
+        setSelectedConversation(conversation);
+    };
+
+    const handleDeleteConversation = (id: string) => {
+        const updatedConversations = dummyConversations.filter(conversation => conversation.id !== id);
+        dummyConversations = updatedConversations;
+    };
 
     return (
         <SidebarDiv isconversationselected={isconversationselected}>
             {dummyConversations.length > 0 ? (
-                dummyConversations.map((conversation: Conversation) => (
-                    <RecipientDiv key={conversation.id}>
+                dummyConversations.map((conversation: IConversation) => (
+                    <RecipientDiv
+                        key={conversation.id}
+                        onClick={() => handleSelectConversation(conversation)}
+                        isSelected={selectedConversation?.id === conversation.id}
+                    >
                         <RecipientPhoto src={conversation.recipient.photoUrl} alt={conversation.recipient.name}/>
                         <RecipientName>{conversation.recipient.name}</RecipientName>
+                        <button onClick={(e) => {e.stopPropagation(); handleDeleteConversation(conversation.id);}}>Supprimer</button>
                     </RecipientDiv>
                 ))
             ) : (
@@ -95,7 +140,6 @@ export default Sidebar;
 
 //todo Fonctionnalités de base du composant Sidebar
 //todo 1. Afficher la liste des conversations
-//todo 2. Ajouter une conversation
 //todo 3. Supprimer une conversatio
 //todo 4. Rechercher une conversatin
 //todo 5. Filtrer les conversationspar type de message
