@@ -31,7 +31,7 @@ const NavBar: React.FC = () => {
           <Link to="/">Accueil</Link>
         </StyledLi>
         <StyledLi>
-          <Link to="/profil">Profil</Link>
+          <Link to="/caca">Profil</Link>
         </StyledLi>
         <StyledLi>
           <Link to="/messages">Messages</Link>

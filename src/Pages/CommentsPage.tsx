@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { COMMENTS } from '../routes';
+import React, {useState, useEffect} from 'react';
+import {COMMENTS} from '../routes';
 
 interface Comment {
     id: number;
@@ -17,18 +17,17 @@ const CommentsPage = () => {
     const [newComment, setNewComment] = useState<string>('');
 
     useEffect(() => {
-        fetch(COMMENTS.SELF.URL, {
-            method: COMMENTS.SELF.METHOD,
+        const entityType = 'post';
+        const entityId = 1;
+        fetch(COMMENTS.SEARCH.findByEntityTypeAndEntityId(entityType, entityId), {
+            method: COMMENTS.METHOD.GET,
         })
             .then(response => response.json())
-            .then((data: Comment[]) => setComments(data.slice(0, 20)))
-            .catch((err: Error) => {
-                console.error("An error occurred while fetching the comments data.", err);
-                setError(err);
-            });
+            .then((data: Comment[]) => setComments(data))
+            .catch((err: Error) => setError(err));
     }, []);
 
-    const handleAddComment = () => {
+    /*const handleAddComment = () => {
         const newCommentObj = {
             entity_type: 'post',
             entity_id: 1,
@@ -40,7 +39,7 @@ const CommentsPage = () => {
 
 
         fetch(COMMENTS.SELF.URL, {
-            method: 'POST',
+            method: COMMENTS.METHOD.POST,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -55,7 +54,7 @@ const CommentsPage = () => {
                 console.error("An error occurred while adding the comment.", err);
                 setError(err);
             });
-    };
+    };*/
 
     if (error) {
         return <div>An error occurred: {error.message}</div>;
@@ -72,16 +71,15 @@ const CommentsPage = () => {
             <button onClick={() => setNewComment('')}>Add Comment</button>
             {newComment && (
                 <div>
-                    <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-                    <button onClick={handleAddComment}>Submit</button>
+                    <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
+                    <button onClick={() => setNewComment('')}>Cancel</button>
                 </div>
             )}
         </div>
     );
-}
+}//<button onClick={handleAddComment}>Submit</button>
 
 export default CommentsPage;
-
 
 
 //todo fonctionnalités de base pour la page de commentaires du post

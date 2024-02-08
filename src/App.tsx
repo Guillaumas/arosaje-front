@@ -21,7 +21,7 @@ const App: React.FC = () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<Accueil />} />
-        <Route path="/profil/*" element={<Profil />} />
+        <Route path="/caca/*" element={<Profil />} />
         <Route path="/messages/*" element={<Messages />} />
         <Route path="/parametres/*" element={<Parametres />} />
         <Route path="/login/*" element={<Login onSwitch={handleSwitch} />} />

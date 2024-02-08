@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {ANNOUNCES} from "../routes";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ANNOUNCES } from '../routes';
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
 
@@ -17,35 +17,49 @@ interface Post {
 }
 
 const StyledDiv = styled.div`
-    padding-top: 72px; //c'est la taille de la navbar si jamais t'a besoin de le savoir sale trou de balle (jme parle a moi meme)
+    padding-top: 72px;
     color: #61dafb;
+`;
+
+const Card = styled.div`
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px;
 `;
 
 const MainPage = () => {
     const [posts, setPosts] = useState<Post[]>([]);
+    const [page, setPage] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
+    const observer = useRef<IntersectionObserver | null>(null);
+    const lastPostElementRef = useCallback((node: HTMLElement | null) => {
+        if (loading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                setPage(prevPage => prevPage + 1);
+            }
+        });
+        if (node) observer.current.observe(node);
+    }, [loading]);
 
     useEffect(() => {
-        fetch(ANNOUNCES.SELF.URL, {
-            method: ANNOUNCES.SELF.METHOD,
+        setLoading(true);
+        fetch(`${ANNOUNCES.URL}?page=${page}&size=10`, {
+            method: ANNOUNCES.METHOD.GET,
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw response
-                }
-                return response.json()
+            .then(response => response.json())
+            .then((data: Post[]) => {
+                setPosts(prevPosts => [...prevPosts, ...data]);
+                setLoading(false);
             })
-            .then((data: Post[]) => setPosts(data.slice(0, 10))) //changer la route de get pour avoir les 10 premiers posts sans data slice
             .catch((err: Error) => {
                 console.error("An error occurred while fetching the posts data.", err);
                 setError(err);
-            })
-            .catch((err: Error) => {
-                console.error("A network error occurred.", err);
-                setError(new Error("Network error: " + err.message));
             });
-    }, []);
-
+    }, [page]);
     if (error) {
         return <StyledDiv>An error occurred: {error.message}</StyledDiv>;
     }
@@ -53,15 +67,15 @@ const MainPage = () => {
     return (
         <div>
             {posts.map((post) => (
-                <div key={post.id}>
-                    <img src={post.image} alt={post.title} />
+                <Card key={post.id}>
+                    <img src={post.image} alt={post.title}/>
                     <h2>{post.title}</h2>
                     <p>Date: {post.start_date}</p>
                     <p>Author: {post.announcer_id}</p>
                     <p>Comment: {post.body}</p>
                     <Link to={`/post/${post.id}`}>View Post</Link>
                     <Link to={`/post/${post.id}/comments`}>View Comments</Link>
-                </div>
+                </Card>
             ))}
         </div>
     );
