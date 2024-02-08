@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FormManager from './FormManager';
-import MainPage from '../MainPage';
+import MainPage from '../Pages/MainPage';
 import { isTokenExpired } from './AuthFunction';
 
 const Auth = () => {

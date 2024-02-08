@@ -1,61 +1,112 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import '../App.css';
+import {ConversationContext} from "./ConversationContext";
 
-interface Message {
-  sender: string;
-  content: string;
-  isFromCurrentUser: boolean;
+
+export interface IRecipient {
+    name: string;
+    photoUrl: string;
 }
 
-interface Conversation {
-  messages: Message[];
+export interface IMessage {
+    sender: string;
+    content: string;
+    isFromCurrentUser: boolean;
+}
+
+export interface IConversation {
+    id: string;
+    recipient: IRecipient;
+    messages: IMessage[];
 }
 
 interface ConversationProps {
-  selectedConversation: Conversation | null;
+    selectedConversation: IConversation | null;
 }
 
 const ConversationDiv = styled.div`
-  padding: 20px;
-  overflow-y: auto;
-  height: calc(100vh - 40px);
-  border-left: 1px solid #ddd;
-  background-color: transparent;
+    position: relative;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    border-left: 1px solid #ddd;
+    background-color: transparent;
+    margin-top: 60px;
+    width: 100%;
+`;
+
+const StyledForm = styled.form`
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 `;
 
 const MessageP = styled.p<{ isFromCurrentUser: boolean }>`
-  margin-bottom: 10px;
-  line-height: 1.5;
-  text-align: ${props => (props.isFromCurrentUser ? 'right' : 'left')};
+    background-color: ${props => props.isFromCurrentUser ? '#48806C' : '#527E19'};
+    color: white;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    text-align: ${props => (props.isFromCurrentUser ? 'right' : 'left')};
 `;
 
-const Conversation: React.FC<ConversationProps> = ({ selectedConversation }) => {
-  return (
-    <ConversationDiv>
-      {selectedConversation && selectedConversation.messages ? (
-        selectedConversation.messages.map((message: Message, index: number) => (
-          <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
-            <strong>{message.sender}:</strong> {message.content}
-          </MessageP>
-        ))
-      ) : (
-        <p>Aucune conversation sélectionnée</p>
-      )}
-    </ConversationDiv>
-  );
-};
+const Conversation: React.FC = () => {
+    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
+    const context = useContext(ConversationContext);
 
+    useEffect(() => {
+        if (context) {
+            setSelectedConversation(context.selectedConversation);
+        }
+    }, [context]);
+
+    const handleNewMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewMessage(event.target.value);
+    };
+
+    const handleNewMessageSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        if (selectedConversation) {
+            setSelectedConversation({
+                ...selectedConversation,//todo a changer quand implementation ws
+                messages: [...selectedConversation.messages, {//todo a changer quand implementation ws
+                    sender: 'Guillaumas',//todo a changer quand implementation ws
+                    content: newMessage,//todo a changer quand implementation ws
+                    isFromCurrentUser: true//todo a changer quand implementation ws
+                }]
+            });
+            setNewMessage('');
+        }
+        // todo envoyer le message via WebSocket
+    };
+
+    return (
+        <ConversationDiv>
+            {selectedConversation && selectedConversation.messages ? (
+                selectedConversation.messages.map((message: IMessage, index: number) => (
+                    <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
+                        <strong>{message.sender}:</strong> {message.content}
+                    </MessageP>
+                ))
+            ) : (
+                <p>Aucune conversation sélectionnée</p>
+            )}
+            <StyledForm onSubmit={handleNewMessageSubmit}>
+                <input type="text" value={newMessage} onChange={handleNewMessageChange}/>
+                <button type="submit">Envoyer</button>
+            </StyledForm>
+        </ConversationDiv>
+    );
+}
 export default Conversation;
 
 //todo Fonctionnalités de base du composant conversation
-//todo 1. Afficher les messages de la conversation sélectionnée
-//todo 2. Ajouter un message à la conversation sélectionnée
-//todo 3. Supprimer un message de la conversation sélectionnée (appuie long sur le message)
-//todo 4. Modifier un message de la conversation sélectionnée (appuie long sur le message)
-//todo 5. Supprimer la conversation sélectionnée (menu contextuel en haut a droite de la conversation)
-//todo 6. Changer le type de message (texte, image, vidéo, audio, etc.) (a coté du clavier)
-//todo 7. Ajouter des fonctionnalités de recherche et de filtre pour les messages (menu contextuel en haut a droite de la conversation)
+//todo 3. Supprimer un message de la conversation sélectionnée (appuie long sur le message) -- gadget
+//todo 4. Modifier un message de la conversation sélectionnée (appuie long sur le message) -- gadget
+//todo 5. Supprimer la conversation sélectionnée (menu contextuel en haut a droite de la conversation) -- sidebar
+//todo 6. Changer le type de message (texte, image, vidéo, audio, etc.) (a coté du clavier) -- gadget
+//todo 7. Ajouter des fonctionnalités de recherche et de filtre pour les messages (menu contextuel en haut a droite de la conversation) -- gadget
 
 
 

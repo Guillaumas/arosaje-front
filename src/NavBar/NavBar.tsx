@@ -1,47 +1,86 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
+import styled from 'styled-components';
+import Popup from '../PopupSettings/popup';
 
-const NavBar: React.FC = () => {
-  return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Accueil</Link>
-        </li>
-        <li>
-          <Link to="/profil">Profil</Link>
-        </li>
-        <li>
-          <Link to="/messages">Messages</Link>
-        </li>
-        <li>
-          <Link to="/parametres">Paramètres</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/recherche">Recherche</Link>
-        </li>
-      </ul>
-    </nav>
-  );
+
+const StyledNav = styled.nav`
+    background-color: #f8f9fa;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
+`;
+
+const StyledUl = styled.ul`
+    display: flex;
+    list-style: none;
+`;
+
+const StyledLi = styled.li`
+    margin: 0 10px;
+`;
+
+interface NavBarProps {
+    onSettingsClick: () => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
+    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+
+    const handleReset = () => {
+        document.documentElement.style.setProperty('--color1', '#48806c');
+        document.documentElement.style.setProperty('--color2', 'rgb(5, 5, 5)');
+    };
+
+    const handleChange = () => {
+        const color1 = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        const color2 = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+        document.documentElement.style.setProperty('--color1', color1);
+        document.documentElement.style.setProperty('--color2', color2);
+    };
+
+    const togglePopup = () => {
+        setIsPopupOpen(!isPopupOpen);
+    };
+
+    return (
+        <StyledNav>
+            <StyledUl>
+                <StyledLi>
+                    <Link to="/">Accueil</Link>
+                </StyledLi>
+                <StyledLi>
+                    <Link to="/caca">Profil</Link>
+                </StyledLi>
+                <StyledLi>
+                    <Link to="/messages">Messages</Link>
+                </StyledLi>
+                <StyledLi>
+                    <a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        togglePopup();
+                    }}>Paramètres</a>
+                    {isPopupOpen &&
+                        <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
+                </StyledLi>
+                <StyledLi>
+                    <Link to="/login">Login</Link>
+                </StyledLi>
+                <StyledLi>
+                    <Link to="/recherche">Recherche</Link>
+                </StyledLi>
+            </StyledUl>
+        </StyledNav>
+    );
 };
 
 export default NavBar;
 
 
-
 //todo affichage de la navbar responsive
-//todo - bouton d'accueil
-//todo - bouton de profil
-//todo - bouton de messages
-//todo - bouton de parametres
-//todo - bouton de login
-//todo - bouton de recherche
-//todo 2 si l'utilisateur appuie sur le bouton de profil, afficher la page du profil
-//todo 3 si l'utilisateur appuie sur le bouton de messages, afficher la page des messages
-//todo 4 si l'utilisateur appuie sur le bouton de parametres, afficher la page des parametres
-//todo 5 si l'utilisateur appuie sur le bouton de login, afficher la page de login
-//todo 6 si l'utilisateur appuie sur le bouton de d'accueil, afficher la page d'accueil
-//todo 7 si l'utilisateur appuie sur le bouton de recherche, afficher la page de recherche

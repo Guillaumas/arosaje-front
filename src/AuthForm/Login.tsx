@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './AuthForm.css';
 
 interface LoginProps {
@@ -12,7 +12,7 @@ function Login({ onSwitch }: LoginProps) {
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -36,7 +36,7 @@ function Login({ onSwitch }: LoginProps) {
         }
 
         if (username === hardcodedUsername && password === hardcodedPassword) {
-            history.push('/');
+            navigate('/');
         }
     };
 
