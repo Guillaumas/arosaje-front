@@ -26,12 +26,19 @@ interface ConversationProps {
 }
 
 const ConversationDiv = styled.div`
+    position: relative;
     padding: 20px;
     overflow-y: auto;
     height: calc(100vh - 100px);
     border-left: 1px solid #ddd;
     background-color: transparent;
     margin-top: 60px;
+    width: 100%;
+`;
+
+const StyledForm = styled.form`
+    position: absolute;
+    bottom: 0;
     width: 100%;
 `;
 
@@ -85,10 +92,10 @@ const Conversation: React.FC = () => {
             ) : (
                 <p>Aucune conversation sélectionnée</p>
             )}
-            <form onSubmit={handleNewMessageSubmit}>
+            <StyledForm onSubmit={handleNewMessageSubmit}>
                 <input type="text" value={newMessage} onChange={handleNewMessageChange}/>
                 <button type="submit">Envoyer</button>
-            </form>
+            </StyledForm>
         </ConversationDiv>
     );
 }
