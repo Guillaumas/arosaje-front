@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar/NavBar';
 import Profil from './Pages/ProfilePage';
 import Messages from './Pages/MessagingPage';
