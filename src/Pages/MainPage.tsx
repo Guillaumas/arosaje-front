@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ANNOUNCES } from '../routes';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
+import {ANNOUNCES} from '../routes';
+import {Link} from 'react-router-dom';
 import styled from "styled-components";
+import NewPost from "./NewPostPage";
 
 interface Post {
     id: number;
@@ -32,7 +33,38 @@ const MainPage = () => {
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
+    const [isAddingPost, setIsAddingPost] = useState(false); // State to control NewPost form visibility
     const observer = useRef<IntersectionObserver | null>(null);
+
+    const fetchPosts = () => {
+        console.log('Fetching posts...')
+
+        fetch(`${ANNOUNCES.URL}?page=0&size=10`, {
+            method: ANNOUNCES.METHOD.GET,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data._embedded && Array.isArray(data._embedded.announces)) {
+                    setPosts(data._embedded.announces);
+                } else {
+                    console.log('No announces found or data is not in the expected format', data);
+                }
+            })
+            .catch((err) => {
+                console.error("An error occurred while fetching the posts data.", err);
+                setError(err);
+            }).finally(() => setLoading(false));
+        console.log('Posts fetched!', posts)
+    };
+
+
+    const handleOpenNewPostForm = () => {
+        setIsAddingPost(true); // Open the NewPost form
+    };
+
+    const handleCloseNewPostForm = () => {
+        setIsAddingPost(false); // Close the NewPost form
+    };
 
     const lastPostElementRef = useCallback((node: HTMLElement | null) => {
         if (loading) return;
@@ -46,24 +78,13 @@ const MainPage = () => {
     }, [loading]);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(`${ANNOUNCES.URL}?page=${page}&size=10`, {
-            method: ANNOUNCES.METHOD.GET,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data._embedded && Array.isArray(data._embedded.announces) && data._embedded.announces.length > 0) {
-                    setPosts(prevPosts => [...prevPosts, ...data._embedded.announces]);
-                } else {
-                    console.log('No announces found or data is not in the expected format', data);
-                }
-                setLoading(false);
-            })
-            .catch((err: Error) => {
-                console.error("An error occurred while fetching the posts data.", err);
-                setError(err);
-            });
-    }, [page]);
+        fetchPosts();
+
+        const interval = setInterval(fetchPosts, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
 
     if (error) {
         return <StyledDiv>An error occurred: {error.message}</StyledDiv>;
@@ -79,6 +100,13 @@ const MainPage = () => {
 
     return (
         <div>
+            <button onClick={handleOpenNewPostForm}>Add Post</button>
+            {isAddingPost && (
+                <div>
+                    <button onClick={handleCloseNewPostForm}>Cancel</button>
+                </div>
+            )}
+
             {posts.map((post, index) => (
                 <Card key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}>
                     <img src={post.image} alt={post.title}/>
@@ -90,6 +118,7 @@ const MainPage = () => {
                     <Link to={`/post/${post.id}/comments`}>View Comments</Link>
                 </Card>
             ))}
+            {isAddingPost && <NewPost onClose={handleCloseNewPostForm}/>}
         </div>
     );
 };
