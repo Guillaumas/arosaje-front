@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './NavBar/NavBar';
-import Profil from './Pages/ProfilePage';
-import Messages from './Pages/MessagingPage';
-import Parametres from './Pages/SettingsPage';
-import Login from './AuthForm/Login';
-import Accueil from './Pages/MainPage';
-import Recherche from './Pages/SearchPage';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import NavBar from './Components/NavBar/NavBar';
+import Profil from './Components/Pages/ProfilePage';
+import Messages from './Components/Pages/MessagingPage';
+import Parametres from './Components/Pages/SettingsPage';
+import Login from './Components/AuthForm/Login';
+import Accueil from './Components/Pages/MainPage';
+import Recherche from './Components/Pages/SearchPage';
 import './App.css';
 
 const App: React.FC = () => {

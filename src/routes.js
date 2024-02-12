@@ -1,4 +1,4 @@
-const generateSearchURL = (baseURL, searchMethod, params) => {
+export const generateSearchURL = (baseURL, searchMethod, params) => {
   const queryString = Object.keys(params)
       .map(key => `${searchMethod[key]}=${encodeURIComponent(params[key])}`)
       .join('&');
