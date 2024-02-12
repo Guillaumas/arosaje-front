@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import '../../App.css';
 import {ConversationContext} from "./ConversationContext";
+import {MessageService} from "../../Services/MessageService";
 
 
 export interface IRecipient {
@@ -16,7 +17,7 @@ export interface IMessage {
 }
 
 export interface IConversation {
-    id: string;
+    id: number;
     recipient: IRecipient;
     messages: IMessage[];
 }
@@ -56,6 +57,34 @@ const Conversation: React.FC = () => {
     const context = useContext(ConversationContext);
 
     useEffect(() => {
+        // Set up WebSocket connection and message receiving
+        MessageService.connect(
+            () => console.log('WebSocket connected'),
+            (message) => {
+                // Handle received message
+                // You need to determine if the incoming message belongs to the current conversation
+                // This is a simplified example
+                if (selectedConversation && message.conversationId === selectedConversation.id) {
+                    // @ts-ignore
+                    setSelectedConversation((prevConversation) => {
+                        if (prevConversation) {
+                            return {
+                                ...prevConversation,
+                                messages: [...prevConversation.messages, message],
+                            };
+                        }
+                        return prevConversation;
+                    });
+                }
+            }
+        );
+
+        return () => {
+            MessageService.disconnect();
+        };
+    }, [selectedConversation]);
+
+    useEffect(() => {
         if (context) {
             setSelectedConversation(context.selectedConversation);
         }
@@ -68,17 +97,20 @@ const Conversation: React.FC = () => {
     const handleNewMessageSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (selectedConversation) {
-            setSelectedConversation({
-                ...selectedConversation,//todo a changer quand implementation ws
-                messages: [...selectedConversation.messages, {//todo a changer quand implementation ws
-                    sender: 'Guillaumas',//todo a changer quand implementation ws
-                    content: newMessage,//todo a changer quand implementation ws
-                    isFromCurrentUser: true//todo a changer quand implementation ws
-                }]
-            });
+            // Assume you have a method to determine if the user is sender or recipient
+            const message = {
+                id: 0, // This should be dynamically set
+                senderId: 0, // This should be dynamically set
+                content: newMessage,
+                isFromCurrentUser: true, // This should be dynamically determined
+                conversationId: selectedConversation.id, // Make sure your message format aligns with your backend
+                createdAt: new Date().toISOString(),
+            };
+
+            // Send the message via WebSocket
+            MessageService.sendMessage("/app/private-message", message); // Adjust destination as needed
             setNewMessage('');
         }
-        // todo envoyer le message via WebSocket
     };
 
     return (

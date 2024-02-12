@@ -1,8 +1,8 @@
 import fetchFromAPI from './ApiService';
 
 export const AuthService = {
-    async login(email: string, password: string): Promise<any> {
-        return fetchFromAPI('login', 'POST', { email, password });
+    async login(username: string, password: string): Promise<any> {
+        return fetchFromAPI('login', 'POST', { username, password });
     },
     async register(userData: any): Promise<any> {
         return fetchFromAPI('register', 'POST', userData);
