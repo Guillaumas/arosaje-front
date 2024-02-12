@@ -4,18 +4,18 @@ import { Message } from '../Interfaces/Message';
 
 class WebSocketService {
     private stompClient: Stomp.Client | null = null;
-    private serverUrl: string = 'http://localhost:8080/ws'; // Adjust this URL to your WebSocket endpoint
+    private isConnected: boolean = false; // Connection status flag
+    private serverUrl: string = 'http://localhost:8080/ws';
 
     connect(onConnectedCallback: () => void, onMessageReceivedCallback: (message: Message) => void) {
-        let socket: WebSocket ;
-        socket = new SockJS(this.serverUrl);
+        const socket = new SockJS(this.serverUrl);
         this.stompClient = Stomp.over(socket);
 
         this.stompClient.connect({}, () => {
+            this.isConnected = true; // Set flag to true when connected
             console.log('Connected to WS');
             onConnectedCallback();
 
-            // Subscribe to the private queue; adjust the destination as needed
             this.stompClient?.subscribe('/user/queue/private', (messageOutput) => {
                 onMessageReceivedCallback(JSON.parse(messageOutput.body));
             });
@@ -25,7 +25,7 @@ class WebSocketService {
     }
 
     sendMessage(destination: string, message: Message) {
-        if (this.stompClient && this.stompClient.connected) {
+        if (this.isConnected && this.stompClient && this.stompClient.connected) {
             this.stompClient.send(destination, {}, JSON.stringify(message));
         } else {
             console.error('Cannot send message. Not connected to WebSocket.');
@@ -33,8 +33,9 @@ class WebSocketService {
     }
 
     disconnect() {
-        if (this.stompClient) {
+        if (this.isConnected && this.stompClient) {
             this.stompClient.disconnect(() => {
+                this.isConnected = false; // Reset flag when disconnected
                 console.log('Disconnected from WS');
             });
         }

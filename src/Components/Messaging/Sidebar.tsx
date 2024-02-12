@@ -46,7 +46,7 @@ const RecipientDiv = styled.div<{ isSelected: boolean }>`
 
 let dummyConversations: IConversation[] = [
     {
-        id: '1',
+        id: 3,
         recipient: {
             name: 'John Doe',
             photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
@@ -65,7 +65,7 @@ let dummyConversations: IConversation[] = [
         ],
     },
     {
-        id: '2',
+        id: 3,
         recipient: {
             name: 'Jane Doe',
             photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
@@ -84,7 +84,7 @@ let dummyConversations: IConversation[] = [
         ],
     },
     {
-        id: '3',
+        id: 3,
         recipient: {
             name: 'Bob Smith',
             photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
@@ -114,7 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
         }
     };
 
-    const handleDeleteConversation = (id: string) => {
+    const handleDeleteConversation = (id: number) => {
         const updatedConversations = dummyConversations.filter(conversation => conversation.id !== id);
         dummyConversations = updatedConversations;
     };
