@@ -1,25 +1,20 @@
-// services/MessageService.ts
+// MessageService.ts
 import WebSocketService from './WebSocketService';
 import { Message } from '../Interfaces/Message';
 
-const webSocketUrl = 'wss://your-websocket-url'; // Adjust this to your WebSocket server URL
-
 export const MessageService = {
-    webSocketService: WebSocketService.getInstance(),
-
-    connect() {
-        this.webSocketService.connect(webSocketUrl);
+    connect(onConnected: () => void, onMessageReceived: (message: Message) => void) {
+        // Directly use WebSocketService's connect method with the provided callbacks
+        WebSocketService.connect(onConnected, onMessageReceived);
     },
 
-    sendMessage(message: Message) {
-        this.webSocketService.sendMessage(message);
-    },
-
-    onMessageReceived(handler: (message: Message) => void) {
-        this.webSocketService.onMessage(handler);
+    sendMessage(destination: string, message: Message) {
+        // Use WebSocketService to send a message to the given STOMP destination
+        WebSocketService.sendMessage(destination, message);
     },
 
     disconnect() {
-        this.webSocketService.disconnect();
+        // Use WebSocketService to disconnect from the WebSocket server
+        WebSocketService.disconnect();
     }
 };
