@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {ANNOUNCES} from '../routes';
+import {ANNOUNCES} from '../../routes';
 import {Link} from 'react-router-dom';
 import styled from "styled-components";
 import NewPost from "./NewPostPage";

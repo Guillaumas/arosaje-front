@@ -62,7 +62,7 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     <Link to="/messages">Messages</Link>
                 </StyledLi>
                 <StyledLi>
-                    <a href="#" onClick={(e) => {
+                    <a href="src/Components/NavBar#" onClick={(e) => {
                         e.preventDefault();
                         togglePopup();
                     }}>Paramètres</a>
