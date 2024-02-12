@@ -27,13 +27,13 @@ const Card = styled.div`
     padding: 10px;
     margin: 10px;
 `;
-
 const MainPage = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const observer = useRef<IntersectionObserver | null>(null);
+
     const lastPostElementRef = useCallback((node: HTMLElement | null) => {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
@@ -51,8 +51,12 @@ const MainPage = () => {
             method: ANNOUNCES.METHOD.GET,
         })
             .then(response => response.json())
-            .then((data: Post[]) => {
-                setPosts(prevPosts => [...prevPosts, ...data]);
+            .then(data => {
+                if (data._embedded && Array.isArray(data._embedded.announces) && data._embedded.announces.length > 0) {
+                    setPosts(prevPosts => [...prevPosts, ...data._embedded.announces]);
+                } else {
+                    console.log('No announces found or data is not in the expected format', data);
+                }
                 setLoading(false);
             })
             .catch((err: Error) => {
@@ -60,14 +64,23 @@ const MainPage = () => {
                 setError(err);
             });
     }, [page]);
+
     if (error) {
         return <StyledDiv>An error occurred: {error.message}</StyledDiv>;
     }
 
+    if (loading) {
+        return <StyledDiv>Loading...</StyledDiv>;
+    }
+
+    if (posts.length === 0) {
+        return <StyledDiv>No posts available.</StyledDiv>;
+    }
+
     return (
         <div>
-            {posts.map((post) => (
-                <Card key={post.id}>
+            {posts.map((post, index) => (
+                <Card key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}>
                     <img src={post.image} alt={post.title}/>
                     <h2>{post.title}</h2>
                     <p>Date: {post.start_date}</p>
@@ -79,7 +92,7 @@ const MainPage = () => {
             ))}
         </div>
     );
-}
+};
 
 export default MainPage;
 

@@ -26,7 +26,7 @@ const App: React.FC = () => {
             <NavBar onSettingsClick={togglePopup}/>
             <Routes>
                 <Route path="/" element={<Accueil/>}/>
-                <Route path="/caca/*" element={<Profil/>}/>
+                <Route path="/profile/*" element={<Profil/>}/>
                 <Route path="/messages/*" element={<Messages/>}/>
                 <Route path="/parametres" element={<Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>}/>
                 <Route path="/login/*" element={<Login onSwitch={handleSwitch}/>}/>

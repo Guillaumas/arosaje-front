@@ -10,7 +10,7 @@ function createWindow() {
             nodeIntegration: true
         },
         //fullscreen: true, // Active le mode plein écran
-        title: "CACA",
+        title: "arosaje",
 
     });
 
