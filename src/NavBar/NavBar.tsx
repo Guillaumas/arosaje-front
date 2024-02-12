@@ -56,7 +56,7 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     <Link to="/">Accueil</Link>
                 </StyledLi>
                 <StyledLi>
-                    <Link to="/caca">Profil</Link>
+                    <Link to="/profile">Profil</Link>
                 </StyledLi>
                 <StyledLi>
                     <Link to="/messages">Messages</Link>
