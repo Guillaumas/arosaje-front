@@ -108,15 +108,17 @@ const MainPage = () => {
             )}
 
             {posts.map((post, index) => (
-                <Card key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}>
-                    <img src={post.image} alt={post.title}/>
-                    <h2>{post.title}</h2>
-                    <p>Date: {post.start_date}</p>
-                    <p>Author: {post.announcer_id}</p>
-                    <p>Comment: {post.body}</p>
-                    <Link to={`/post/${post.id}`}>View Post</Link>
-                    <Link to={`/post/${post.id}/comments`}>View Comments</Link>
-                </Card>
+                <Link to={`/announce/${post.id}`} key={post.id}>
+                    <Card key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}>
+                        <img src={post.image} alt={post.title}/>
+                        <h2>{post.title}</h2>
+                        <p>Date: {post.start_date}</p>
+                        <p>Author: {post.announcer_id}</p>
+                        <p>Comment: {post.body}</p>
+                        <Link to={`/post/${post.id}`}>View Post</Link>
+                        <Link to={`/post/${post.id}/comments`}>View Comments</Link>
+                    </Card>
+                </Link>
             ))}
             {isAddingPost && <NewPost onClose={handleCloseNewPostForm}/>}
         </div>

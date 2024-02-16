@@ -9,6 +9,8 @@ import Accueil from './Components/Pages/MainPage';
 import Recherche from './Components/Pages/SearchPage';
 import './App.css';
 import {AuthProvider, useAuth} from "./Contexts/AuthContext";
+import PostPage from "./Components/Pages/PostPage";
+import Post from "./Components/Pages/PostPage";
 
 const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -35,6 +37,8 @@ const App: React.FC = () => {
                     <Route path="/parametres" element={user ? <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/> : <Navigate to="/login" />}/>
                     <Route path="/login/*" element={<Login onSwitch={handleSwitch}/>}/>
                     <Route path="/recherche/*" element={<Recherche/>}/>
+                    <Route path="/logout" element={<Navigate to="/login"/>}/>
+                    <Route path="/announce/:id" element={<Post/>}/>
                     <Route path="*" element={<div>Page not found</div>}/>
                 </Routes>
             </Router>
