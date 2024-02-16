@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ANNOUNCES, generateSearchURL } from '../../routes';
 import { Announce, AnnounceSearchCriteria } from '../../Interfaces/Announce';
+import {Link} from "react-router-dom";
 
 const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -38,18 +39,20 @@ const SearchPage = () => {
                 <input type="text" name="endDate" value={searchCriteria.endDate} onChange={handleCriteriaChange} placeholder="End Date..." />
                 <button type="submit">Search</button>
             </form>
-            {results.map(result => (
-                <div key={result.id}>
-                    <h2>{result.title}</h2>
-                    <p>{result.body}</p>
-                    <p>Start Date: {result.start_date}</p>
-                    <p>End Date: {result.end_date}</p>
-                    <img src={result.image} alt={result.title} />
-                    <p>Announcer ID: {result.announcer_id}</p>
-                    <p>Plant ID: {result.plant_id}</p>
-                    <p>Created at: {result.created_at}</p>
-                    <p>Updated at: {result.updated_at}</p>
-                </div>
+            {results.map(post => (
+                <Link to={`/announce/${post.id}`} key={post.id}>
+                    <div key={post.id}>
+                        <h2>{post.title}</h2>
+                        <p>{post.body}</p>
+                        <p>Start Date: {post.start_date}</p>
+                        <p>End Date: {post.end_date}</p>
+                        <img src={post.image} alt={post.title} />
+                        <p>Announcer ID: {post.announcer_id}</p>
+                        <p>Plant ID: {post.plant_id}</p>
+                        <p>Created at: {post.created_at}</p>
+                        <p>Updated at: {post.updated_at}</p>
+                    </div>
+                </Link>
             ))}
         </div>
     );

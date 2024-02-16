@@ -1,14 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AnnounceService } from '../../Services/AnnounceService';
+import { SpeciesService } from '../../Services/SpeciesService';
+import { AuthContext } from '../../Contexts/AuthContext';
+import { Announce } from '../../Interfaces/Announce';
+import { Species } from '../../Interfaces/Species';
 
-const Profile = () => {
+const ProfilePage = () => {
+    const [announces, setAnnounces] = useState<Announce[]>([]);
+    const [species, setSpecies] = useState<Species[]>([]);
+
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (user) {
+            AnnounceService.fetchAnnounces()
+                .then((data: Announce[]) => setAnnounces(data.filter(announce => announce.announcer_id === user.id)));
+
+            SpeciesService.getAllSpecies()
+                .then((data: Species[]) => setSpecies(data));
+        }
+    }, [user]);
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
-            {/* Contenu de la page du profil ici */}
+            <h1>{user.first_name}</h1>
+            <h2>My Announces</h2>
+            {announces.map(post => (
+                <Link to={`/announce/${post.id}`} key={post.id}>
+                    <div>
+                        <h3>{post.title}</h3>
+                        <p>{post.body}</p>
+                        <p>{species.find(species => species.id === post.plant_id)?.name}</p>
+                    </div>
+                </Link>
+            ))}
         </div>
     );
-}
+};
 
-export default Profile;
+export default ProfilePage;
 
 
 //todo affichage de la page du profil
