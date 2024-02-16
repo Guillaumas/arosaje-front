@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar';
 import Profil from './Components/Pages/ProfilePage';
@@ -7,9 +7,8 @@ import Parametres from './Components/Pages/SettingsPage';
 import Login from './Components/AuthForm/Login';
 import Accueil from './Components/Pages/MainPage';
 import Recherche from './Components/Pages/SearchPage';
-import ProtectedRoute from './Components/ProtectedRoute'; // Ensure this is correctly imported
 import './App.css';
-import {AuthProvider, AuthContext, useAuth} from "./Contexts/AuthContext";
+import {AuthProvider, useAuth} from "./Contexts/AuthContext";
 
 const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -23,7 +22,7 @@ const App: React.FC = () => {
         setIsPopupOpen(!isPopupOpen);
     };
 
-    const { user, jwtToken } = useAuth();
+    const { user } = useAuth();
 
     return (
         <AuthProvider>
