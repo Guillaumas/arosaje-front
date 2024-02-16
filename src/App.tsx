@@ -9,7 +9,7 @@ import Accueil from './Components/Pages/MainPage';
 import Recherche from './Components/Pages/SearchPage';
 import ProtectedRoute from './Components/ProtectedRoute'; // Ensure this is correctly imported
 import './App.css';
-import { AuthProvider, AuthContext } from "./Contexts/AuthContext";
+import {AuthProvider, AuthContext, useAuth} from "./Contexts/AuthContext";
 
 const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -23,9 +23,7 @@ const App: React.FC = () => {
         setIsPopupOpen(!isPopupOpen);
     };
 
-    // Example usage of AuthContext directly in App.tsx
-    // Assuming AuthProvider provides a "user" indicating login status
-    const { user } = useContext(AuthContext);
+    const { user, jwtToken } = useAuth();
 
     return (
         <AuthProvider>

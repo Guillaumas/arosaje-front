@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AuthForm.css';
+import {useAuth} from "../../Contexts/AuthContext";
 
 interface LoginProps {
     onSwitch: () => void;
@@ -13,30 +14,30 @@ function Login({ onSwitch }: LoginProps) {
     const [passwordError, setPasswordError] = useState('');
 
     const navigate = useNavigate();
+    const { setJwtToken } = useAuth();
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         setUsernameError('');
         setPasswordError('');
 
-        const hardcodedUsername = 'test';
-        const hardcodedPassword = 'test';
+        const response = await fetch('/api/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
 
-        if (username.trim() === '') {
-            setUsernameError('Username is required');
-        } else if (username !== hardcodedUsername) {
-            setUsernameError('Invalid username');
-        }
-
-        if (password.trim() === '') {
-            setPasswordError('Password is required');
-        } else if (password !== hardcodedPassword) {
-            setPasswordError('Invalid password');
-        }
-
-        if (username === hardcodedUsername && password === hardcodedPassword) {
+        if (response.ok) {
+            const data = await response.json();
+            setJwtToken(data);
             navigate('/');
+        } else {
+            // Gérez l'erreur de connexion ici
+            const errorData = await response.json();
+            setUsernameError(errorData.message);
         }
     };
 
