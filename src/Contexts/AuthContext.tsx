@@ -1,11 +1,12 @@
-import React, {createContext, useState, ReactNode, useContext} from 'react';
+import React, {createContext, useState, useEffect, ReactNode, useContext} from 'react';
 import {User} from "../Interfaces/User";
+import {isTokenExpired} from "../Components/AuthForm/AuthFunction";
 
 interface AuthContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     jwtToken: string | null;
-    setJwtToken: (data: { jwtToken: string, user: User }) => void;
+    setJwtToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const defaultAuthContextValue: AuthContextType = {
@@ -25,14 +26,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem('jwtToken'));
 
-    const setToken = (data: { jwtToken: string, user: User }) => {
-        localStorage.setItem('jwtToken', data.jwtToken);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setUser(data.user);
-        setJwtToken(data.jwtToken);
+    useEffect(() => {
+        const checkTokenExpiration = async () => {
+            if (jwtToken && await isTokenExpired()) {
+                setJwtToken(null);
+                setUser(null);
+            }
+        };
+
+        checkTokenExpiration();
+    }, [jwtToken]);
+
+    const setToken = (data: { jwtToken: string, user: User } | null) => {
+        if (data) {
+            localStorage.setItem('jwtToken', data.jwtToken);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            setUser(data.user);
+            setJwtToken(data.jwtToken);
+        } else {
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('user');
+            setUser(null);
+            setJwtToken(null);
+        }
     };
 
-    const value = { user, setUser, jwtToken, setJwtToken: setToken };
+    const value = { user, setUser, jwtToken, setJwtToken };
 
     return (
         <AuthContext.Provider value={value}>
