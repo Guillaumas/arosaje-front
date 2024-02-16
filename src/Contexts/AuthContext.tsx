@@ -1,31 +1,38 @@
-import React, { createContext, useState, ReactNode, useContext } from 'react';
+import React, {createContext, useState, ReactNode, useContext} from 'react';
+import {User} from "../Interfaces/User";
 
-// Define the shape of the context state
 interface AuthContextType {
-    user: any; // Consider using a more specific type if possible
-    setUser: React.Dispatch<React.SetStateAction<any>>;
+    user: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    jwtToken: string | null;
+    setJwtToken: (data: { jwtToken: string, user: User }) => void;
 }
 
-// Provide a default context value that matches the AuthContextType
 const defaultAuthContextValue: AuthContextType = {
-    user: null, // Initial user state is null, indicating no user is logged in
-    setUser: () => {}, // No-op function as a placeholder
+    user: null,
+    setUser: () => {},
+    jwtToken: null,
+    setJwtToken: () => {},
 };
 
-// Create the context with the default value
 export const AuthContext = createContext<AuthContextType>(defaultAuthContextValue);
 
-// Define the props for AuthProvider component
 interface AuthProviderProps {
     children: ReactNode;
 }
 
-// AuthProvider component
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [user, setUser] = useState<any>(null); // State to hold the current user
+    const [user, setUser] = useState<User | null>(null);
+    const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem('jwtToken'));
 
-    // Provide the current state and the setter function to the context
-    const value = { user, setUser };
+    const setToken = (data: { jwtToken: string, user: User }) => {
+        localStorage.setItem('jwtToken', data.jwtToken);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
+        setJwtToken(data.jwtToken);
+    };
+
+    const value = { user, setUser, jwtToken, setJwtToken: setToken };
 
     return (
         <AuthContext.Provider value={value}>
@@ -34,5 +41,4 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     );
 };
 
-// Custom hook for consuming the context
 export const useAuth = () => useContext(AuthContext);
