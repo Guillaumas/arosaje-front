@@ -10,14 +10,14 @@ const ProfilePage = () => {
     const [announces, setAnnounces] = useState<Announce[]>([]);
     const [species, setSpecies] = useState<Species[]>([]);
 
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
             AnnounceService.fetchAnnounces()
                 .then((data: Announce[]) => setAnnounces(data.filter(announce => announce.announcer_id === user.id)));
 
-            SpeciesService.getAllSpecies()
+            SpeciesService.fetchSpecies()
                 .then((data: Species[]) => setSpecies(data));
         }
     }, [user]);

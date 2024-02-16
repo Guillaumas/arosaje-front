@@ -25,7 +25,7 @@ export const login = async (username: string, password: string) => {
 };
 
 export const isTokenExpired = async () => {
-    const token = localStorage.getItem('oauthToken');
+    const token = localStorage.getItem('jwtToken');
 
     if (!token) {
         return true;
