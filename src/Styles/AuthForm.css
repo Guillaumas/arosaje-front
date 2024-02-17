@@ -1,15 +1,12 @@
-/* AuthForm.css */
-
 .login-background {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
     color: #D4D4D4;
     font-family: 'Arial', sans-serif;
 }
 
-/* Style for the form */
 .login-form {
     display: flex;
     flex-direction: column;

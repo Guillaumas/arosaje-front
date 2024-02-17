@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import Login from './Login';
-import './AuthForm.css';
+import '../../Styles/AuthForm.css';
 import '../../Styles/App.css';
-import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import { useAuth } from '../../Contexts/AuthContext';
 
 function FormManager() {
@@ -15,7 +15,7 @@ function FormManager() {
         }
     }, [jwtToken]);
 
-    return isLogin ? <Login onSwitch={() => setIsLogin(false)} /> : <SignIn onSwitch={() => setIsLogin(true)} />;
+    return isLogin ? <Login onSwitch={() => setIsLogin(false)} /> : <SignUp onSwitch={() => setIsLogin(true)} />;
 }
 
 export default FormManager;

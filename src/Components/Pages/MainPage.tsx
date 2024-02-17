@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {ANNOUNCES} from '../../routes';
 import {Link} from 'react-router-dom';
-import styled from "styled-components";
 import NewPost from "./NewPostPage";
+import '../../Styles/MainPage.css'
+import {AnnounceService} from "../../Services/AnnounceService";
 
 interface Post {
     id: number;
@@ -17,17 +17,6 @@ interface Post {
     image: string;
 }
 
-const StyledDiv = styled.div`
-    padding-top: 72px;
-    color: #61dafb;
-`;
-
-const Card = styled.div`
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    margin: 10px;
-`;
 const MainPage = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(0);
@@ -36,34 +25,33 @@ const MainPage = () => {
     const [isAddingPost, setIsAddingPost] = useState(false); // State to control NewPost form visibility
     const observer = useRef<IntersectionObserver | null>(null);
 
-    const fetchPosts = () => {
+    const fetchPosts = async () => {
         console.log('Fetching posts...')
 
-        fetch(`${ANNOUNCES.URL}?page=0&size=10`, {
-            method: ANNOUNCES.METHOD.GET,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data._embedded && Array.isArray(data._embedded.announces)) {
-                    setPosts(data._embedded.announces);
-                } else {
-                    console.log('No announces found or data is not in the expected format', data);
-                }
-            })
-            .catch((err) => {
-                console.error("An error occurred while fetching the posts data.", err);
-                setError(err);
-            }).finally(() => setLoading(false));
+        try {
+            const data = await AnnounceService.fetchAnnounces();
+
+            if (Array.isArray(data)) {
+                setPosts(data);
+            } else {
+                console.log('No announces found or data is not in the expected format', data);
+            }
+        } catch (err) {
+            console.error("An error occurred while fetching the posts data.", err);
+            setError(err as Error);
+        } finally {
+            setLoading(false);
+        }
         console.log('Posts fetched!', posts)
     };
 
 
     const handleOpenNewPostForm = () => {
-        setIsAddingPost(true); // Open the NewPost form
+        setIsAddingPost(true);
     };
 
     const handleCloseNewPostForm = () => {
-        setIsAddingPost(false); // Close the NewPost form
+        setIsAddingPost(false);
     };
 
     const lastPostElementRef = useCallback((node: HTMLElement | null) => {
@@ -87,37 +75,37 @@ const MainPage = () => {
 
 
     if (error) {
-        return <StyledDiv>An error occurred: {error.message}</StyledDiv>;
+        return <div className="error">An error occurred: {error.message}</div>;
     }
 
     if (loading) {
-        return <StyledDiv>Loading...</StyledDiv>;
+        return <div className="loading">Loading...</div>;
     }
 
     if (posts.length === 0) {
-        return <StyledDiv>No posts available.</StyledDiv>;
+        return <div className="noPosts">No posts available.</div>;
     }
 
     return (
-        <div>
-            <button onClick={handleOpenNewPostForm}>Add Post</button>
+        <div className="mainPage">
+            <button onClick={handleOpenNewPostForm} className="addPostButton">Add Post</button>
             {isAddingPost && (
-                <div>
-                    <button onClick={handleCloseNewPostForm}>Cancel</button>
+                <div className="newPostFormContainer">
+                    <button onClick={handleCloseNewPostForm} className="cancelButton">Cancel</button>
                 </div>
             )}
 
             {posts.map((post, index) => (
-                <Link to={`/announce/${post.id}`} key={post.id}>
-                    <Card key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}>
-                        <img src={post.image} alt={post.title}/>
-                        <h2>{post.title}</h2>
-                        <p>Date: {post.start_date}</p>
-                        <p>Author: {post.announcer_id}</p>
-                        <p>Comment: {post.body}</p>
-                        <Link to={`/post/${post.id}`}>View Post</Link>
-                        <Link to={`/post/${post.id}/comments`}>View Comments</Link>
-                    </Card>
+                <Link to={`/announce/${post.id}`} key={post.id} className="postLink">
+                    <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null} className="postCard">
+                        <img src={post.image} alt={post.title} className="postImage"/>
+                        <h2 className="postTitle">{post.title}</h2>
+                        <p className="postDate">Date: {post.start_date}</p>
+                        <p className="postAuthor">Author: {post.announcer_id}</p>
+                        <p className="postComment">Comment: {post.body}</p>
+                        <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
+                        <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
+                    </div>
                 </Link>
             ))}
             {isAddingPost && <NewPost onClose={handleCloseNewPostForm}/>}
@@ -128,7 +116,6 @@ const MainPage = () => {
 export default MainPage;
 
 
-//todo fonctionnalités de base de la page d'accueil
 //todo style card responsive
 //todo 2 precharger les 10 posts suivants -- pas obligatoire
 //todo 5 si l'utilisateur appuie sur les commentaires d'un post, afficher la page des commentaires de ce post

@@ -1,0 +1,74 @@
+.mainPage {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.error, .loading, .noPosts {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.addPostButton, .cancelButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.newPostFormContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.postLink {
+  text-decoration: none;
+  color: black;
+}
+
+.postCard {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.postImage {
+  width: 100%;
+  height: auto;
+}
+
+.postTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.postDate, .postAuthor, .postComment {
+  font-size: 16px;
+}
+
+.viewPostLink, .viewCommentsLink {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .mainPage {
+    padding: 10px;
+  }
+}
+
+@media (min-width: 601px) {
+  .mainPage {
+    padding: 20px;
+  }
+}

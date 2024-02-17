@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import '../../Styles/NewPostPage.css';
 
 const NewPost = ({ onClose }: { onClose?: () => void }) => {
     const [formData, setFormData] = useState({
@@ -70,17 +71,17 @@ const NewPost = ({ onClose }: { onClose?: () => void }) => {
     };
 
     return (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
-                <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName} onChange={handleInputChange} />
-                <input type="text" name="species" placeholder="Species" value={formData.species} onChange={handleInputChange} required />
-                <input type="file" name="images" onChange={handleImageChange} multiple required />
-                {imagePreviews.map((preview, index) => <img key={index} src={preview} alt="Preview" />)}
-                <input type="date" name="plantingDate" value={formData.plantingDate} onChange={handleInputChange} />
-                <textarea name="description" placeholder="Description" value={formData.description} onChange={handleInputChange} />
-                <button type="submit">Submit</button>
-                <button type="button" onClick={handleCancel}>Cancel</button>
-                <button type="button" onClick={handleClearForm}>Clear</button>
+        <div className="newPostContainer">
+            <form onSubmit={handleSubmit} className="newPostForm">
+                <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName} onChange={handleInputChange} className="newPostInput" />
+                <input type="text" name="species" placeholder="Species" value={formData.species} onChange={handleInputChange} required className="newPostInput" />
+                <input type="file" name="images" onChange={handleImageChange} multiple required className="newPostInput" />
+                {imagePreviews.map((preview, index) => <img key={index} src={preview} alt="Preview" className="newPostImagePreview" />)}
+                <input type="date" name="plantingDate" value={formData.plantingDate} onChange={handleInputChange} className="newPostInput" />
+                <textarea name="description" placeholder="Description" value={formData.description} onChange={handleInputChange} className="newPostTextarea" />
+                <button type="submit" className="newPostButton">Submit</button>
+                <button type="button" onClick={handleCancel} className="newPostButton">Cancel</button>
+                <button type="button" onClick={handleClearForm} className="newPostButton">Clear</button>
             </form>
         </div>
     );
