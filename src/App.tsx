@@ -7,7 +7,7 @@ import Parametres from './Components/Pages/SettingsPage';
 import Login from './Components/AuthForm/Login';
 import Accueil from './Components/Pages/MainPage';
 import Recherche from './Components/Pages/SearchPage';
-import './App.css';
+import './Styles/App.css';
 import {AuthProvider, useAuth} from "./Contexts/AuthContext";
 import PostPage from "./Components/Pages/PostPage";
 import Post from "./Components/Pages/PostPage";
