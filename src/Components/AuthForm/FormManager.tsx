@@ -10,8 +10,8 @@ function FormManager() {
     const [isLogin, setIsLogin] = useState<boolean>(true);
 
     useEffect(() => {
-        if (jwtToken) {
-            setIsLogin(false);
+        if (!jwtToken) {
+            setIsLogin(true);
         }
     }, [jwtToken]);
 

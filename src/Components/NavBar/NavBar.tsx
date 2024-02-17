@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import Popup from '../PopupSettings/popup';
 
@@ -31,6 +31,12 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+
+    const location = useLocation();
+
+    if (location.pathname === '/login') {
+        return null;
+    }
 
     const handleReset = () => {
         document.documentElement.style.setProperty('--color1', '#48806c');

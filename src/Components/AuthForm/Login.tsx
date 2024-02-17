@@ -8,26 +8,39 @@ interface LoginProps {
 }
 
 function Login({ onSwitch }: LoginProps) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [usernameError, setUsernameError] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
     const navigate = useNavigate();
     const { setJwtToken } = useAuth();
 
+    const checkAllInput =() => {
+        return email !== '' && password !== '';
+    };
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        setUsernameError('');
+        setEmailError('');
         setPasswordError('');
+
+
+        if (password.trim() === '') {
+            setPasswordError('Password is required');
+        }
+
+        if (email.trim() === '') {
+            setEmailError('Email is required');
+        }
 
         const response = await fetch('/api/auth/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ email, password }),
         });
 
         if (response.ok) {
@@ -36,7 +49,7 @@ function Login({ onSwitch }: LoginProps) {
             navigate('/');
         } else {
             const errorData = await response.json();
-            setUsernameError(errorData.message);
+            setEmailError(errorData.message);
         }
     };
 
@@ -45,12 +58,12 @@ function Login({ onSwitch }: LoginProps) {
             <div className="form-container">
                 <form onSubmit={handleSubmit} className="login-form">
                     <label>
-                        Username <sup style={{fontSize: '0.6em'}}>*</sup>
+                        Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
                         <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            style={usernameError ? {border: '1px solid red'} : {}}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={emailError ? {border: '1px solid red'} : {}}
                         />
                     </label>
                     <label>
@@ -62,7 +75,7 @@ function Login({ onSwitch }: LoginProps) {
                             style={passwordError ? {border: '1px solid red'} : {}}
                         />
                     </label>
-                    <input type="submit" value="Log In" className="button-connect"/>
+                    <input type="submit" value="Log In" className="button-connect" disabled={!checkAllInput()}/>
                     <div className="login-text">
                         <span className="text-account-question">Don't have an account ? </span>
                         <span className="text-switch-log" onClick={onSwitch}>Sign up</span>

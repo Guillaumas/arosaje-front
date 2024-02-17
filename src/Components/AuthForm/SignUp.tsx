@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import '../../Styles/AuthForm.css';
 
-interface LoginProps {
+interface SignUpProps {
     onSwitch: () => void;
 }
 
-function SignUp({ onSwitch }: LoginProps) {
+function SignUp({ onSwitch }: SignUpProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ function SignUp({ onSwitch }: LoginProps) {
     const [passwordError, setPasswordError] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSignUp = async (event: React.FormEvent) => {
         event.preventDefault();
 
         setUsernameError('');
@@ -33,14 +33,37 @@ function SignUp({ onSwitch }: LoginProps) {
         }
 
         if (usernameError === '' && passwordError === '' && emailError === '') {
-            // Implémentez la logique d'inscription
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, email })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Signup failed: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error during signup:', error);
+            }
         }
     };
 
     return (
         <div className="login-background">
             <div className="form-container">
-                <form onSubmit={handleSubmit} className="login-form">
+                <form onSubmit={handleSignUp} className="login-form">
+                    <label>
+                        Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={emailError ? {border: '1px solid red'} : {}}
+                        />
+                    </label>
                     <label>
                         Username <sup style={{fontSize: '0.6em'}}>*</sup>
                         <input
@@ -57,15 +80,6 @@ function SignUp({ onSwitch }: LoginProps) {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             style={passwordError ? {border: '1px solid red'} : {}}
-                        />
-                    </label>
-                    <label>
-                        Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            style={emailError ? {border: '1px solid red'} : {}}
                         />
                     </label>
                     <input type="submit" value="Sign In" className="button-connect"/>
