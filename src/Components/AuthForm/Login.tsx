@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useContext, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import '../../Styles/AuthForm.css';
 import {useAuth} from "../../Contexts/AuthContext";
+import {AuthFormContext} from "../../Contexts/AuthFormContext";
 
-interface LoginProps {
-    onSwitch: () => void;
-}
 
-function Login({ onSwitch }: LoginProps) {
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const {setIsAuthFormLogin} = useContext(AuthFormContext);
 
     const navigate = useNavigate();
-    const { setJwtToken } = useAuth();
+    const {setJwtToken} = useAuth();
 
-    const checkAllInput =() => {
+    const checkAllInput = () => {
         return email !== '' && password !== '';
     };
 
@@ -40,7 +39,7 @@ function Login({ onSwitch }: LoginProps) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({email, password}),
         });
 
         if (response.ok) {
@@ -81,7 +80,7 @@ function Login({ onSwitch }: LoginProps) {
                     <input type="submit" value="Log In" className="button-connect" disabled={!checkAllInput()}/>
                     <div className="login-text">
                         <span className="text-account-question">Don't have an account ? </span>
-                        <span className="text-switch-log" onClick={onSwitch}>Sign up</span>
+                        <button onClick={() => setIsAuthFormLogin(false)}>Sign Up</button>
                     </div>
                     <div className="text-asterisk">
                         * Champs obligatoires
