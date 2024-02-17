@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import '../../Styles/AuthForm.css';
+import {AuthFormContext} from "../../Contexts/AuthFormContext";
 
-interface SignUpProps {
-    onSwitch: () => void;
-}
-
-function SignUp({ onSwitch }: SignUpProps) {
+function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [emailError, setEmailError] = useState('');
+
+    const { setIsAuthFormLogin } = useContext(AuthFormContext);
 
     const handleSignUp = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -85,7 +84,7 @@ function SignUp({ onSwitch }: SignUpProps) {
                     <input type="submit" value="Sign In" className="button-connect"/>
                     <div className="login-text">
                         <span className="text-account-question">Already have an account ? </span>
-                        <span className="text-switch-log" onClick={onSwitch}>Log in</span>
+                        <button onClick={() => setIsAuthFormLogin(true)}>Sign In</button>
                     </div>
                     <div className="text-asterisk">
                         * Champs obligatoires
