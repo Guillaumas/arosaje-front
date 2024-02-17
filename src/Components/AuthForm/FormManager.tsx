@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Login from './Login';
 import './AuthForm.css';
-import '../../App.css';
+import '../../Styles/App.css';
 import SignIn from "./SignIn";
 import { useAuth } from '../../Contexts/AuthContext';
 

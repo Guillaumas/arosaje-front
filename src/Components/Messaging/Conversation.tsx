@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import '../../App.css';
+import '../../Styles/App.css';
 import {ConversationContext} from "./ConversationContext";
 import {MessageService} from "../../Services/MessageService";
 
