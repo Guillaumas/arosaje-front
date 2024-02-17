@@ -14,8 +14,9 @@ const MainPage = () => {
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-    const [isAddingPost, setIsAddingPost] = useState(false); // State to control NewPost form visibility
+    const [isAddingPost, setIsAddingPost] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
+    const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).id : null;
 
     const fetchPosts = () => {
         console.log('Fetching posts...')
@@ -38,7 +39,7 @@ const MainPage = () => {
         console.log('Posts fetched!', posts)
     };
     const handleContactPostOwner = async (ownerId: number) => {
-        const user1id = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).id : null;
+        const user1id = currentUser
 
         const newConversation = {
             id: 0,
@@ -109,7 +110,7 @@ const MainPage = () => {
                         <p className="postComment">Comment: {post.body}</p>
                         <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
                         <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
-                        <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>
+                        {currentUser && <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>}
                     </div>
                 </Link>
             ))}
