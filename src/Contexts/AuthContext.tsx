@@ -26,13 +26,13 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
-    const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem('jwtToken'));
+    const [jwtToken, setJwtToken] = useState<string | null>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const jwtToken = localStorage.getItem('jwtToken');
 
-        if (storedUser && jwtToken && !isTokenExpired()) {
+        if (storedUser && jwtToken) { //todo: check if token is expired
             setUser(JSON.parse(storedUser));
             setJwtToken(jwtToken);
         } else {

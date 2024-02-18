@@ -41,13 +41,13 @@ const App: React.FC = () => {
                     <NavBar onSettingsClick={togglePopup}/>
                     <Routes>
                         <Route path="/" element={<Accueil/>}/>
-                        <Route path="/profile/*" element={user ? <Profil/> : <Navigate to="/login" />} />
-                        <Route path="/messages/*" element={user ? <Messages/> : <Navigate to="/login" />} />
-                        <Route path="/parametres" element={user ? <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/> : <Navigate to="/login" />} />
+                        <Route path="/profile/*" element={<Profil/>} />
+                        <Route path="/messages/*" element={ <Messages/>} />
+                        <Route path="/parametres" element={ <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>} />
                         <Route path="/login/*" element={<FormManager/>}/>
-                        <Route path="/recherche/*" element={user ? <Recherche/> : <Navigate to="/login" />} />
+                        <Route path="/recherche/*" element={<Recherche/>} />
                         <Route path="/logout" element={<Navigate to="/login"/>}/>
-                        <Route path="/announce/:id" element={user ? <PostPage/> : <Navigate to="/login" />} />
+                        <Route path="/announce/:id" element={<PostPage/>} />
                         <Route path="*" element={<div>Page not found</div>}/>
                     </Routes>
                 </Router>

@@ -43,7 +43,6 @@ function SignUp() {
 
 
     const handleSignUp = async (event: React.FormEvent) => {
-        // Initialize useNavigate hook
         event.preventDefault();
 
         setUsernameError('');
