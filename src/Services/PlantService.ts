@@ -89,7 +89,7 @@ export const PlantService = {
                 return [];
             });
     },
-
+  
     fetchPlantById(id: number): Promise<Plant> {
         return fetchFromAPI(`plants/${id}`)
             .then(response => {

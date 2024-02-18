@@ -1,9 +1,13 @@
 import React, {useContext, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../../Styles/AuthForm.css';
+import '../../Styles/Login.css';
 import {useAuth} from "../../Contexts/AuthContext";
 import {AuthFormContext} from "../../Contexts/AuthFormContext";
 import {AuthService} from "../../Services/AuthService";
+import login_illustrator from "../../assets/images/login-illustrator.png";
+import logo from "../../assets/images/logo.png";
+
 
 
 function Login() {
@@ -57,39 +61,53 @@ function Login() {
 
 
     return (
-        <div className="login-background">
-            <div className="form-container">
-                <form onSubmit={handleSubmit} className="login-form">
-                    <label>
-                        Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            style={emailError ? {border: '1px solid red'} : {}}
-                        />
-                    </label>
-                    <label>
-                        Password <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            style={passwordError ? {border: '1px solid red'} : {}}
-                        />
-                    </label>
-                    <input type="submit" onSubmit={handleSubmit} value="Log In" className="button-connect"/>
-                    <div className="login-text">
+        <div className="login-menu">
+            <img src={login_illustrator} alt="Login illustrator" className="login-illustrator"/>
+            <div className="login-background">
+                <div className="login-logo">
+                    <img src={logo} alt="Arosaje logo"/>
+                </div>
+                <div className="form-container">
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <label>
+                            Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                style={emailError ? {border: '1px solid red'} : {}}
+                            />
+                        </label>
+                        <label>
+                            Password <sup style={{fontSize: '0.6em'}}>*</sup>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                style={passwordError ? {border: '1px solid red'} : {}}
+                            />
+                        </label>
+                        <input type="submit" onSubmit={handleSubmit} value="Connect" className="button-connect"/>
+                        
+                        <div className="text-asterisk">
+                            * Required fields
+                        </div>
+                    </form>
+                </div>
+                <div className="other-option">
+                    <div className="login-text signup">
                         <span className="text-account-question">Don't have an account ? </span>
                         <button onClick={() => setIsAuthFormLogin(false)}>Sign Up</button>
                     </div>
-                    <div className="text-asterisk">
-                        * Champs obligatoires
+                    <div className="login-text forgot-password">
+                        <a href=''>Forgot your password ?</a>
                     </div>
-                    <div className="text-rights">
+                </div>
+                <div className="text-login footer">
+                    <span>
                         All rights reserved, Arosaje©
-                    </div>
-                </form>
+                    </span>
+                </div>
             </div>
         </div>
     );

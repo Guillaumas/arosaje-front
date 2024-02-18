@@ -3,7 +3,8 @@ import {Link, useParams} from 'react-router-dom';
 import { AnnounceService } from '../../Services/AnnounceService';
 import { UserService } from '../../Services/UserService';
 import { Announce } from '../../Interfaces/Announce';
-import {PlantService} from "../../Services/PlantService";
+import '../../Styles/PostPage.css';
+import { PlantService } from '../../Services/PlantService';
 import {Plant} from "../../Interfaces/Plant";
 
 const PostPage: React.FC = () => {
@@ -23,6 +24,7 @@ const PostPage: React.FC = () => {
                 PlantService.fetchPlantById(announce.plantId)
                     .then((plant) => setPlant(plant))
                     .catch((error) => console.error(error));
+                PlantService.fetchPlantById(announce.plantId)
             })
             .catch((error) => console.error(error));
     }, [id]);
@@ -32,19 +34,35 @@ const PostPage: React.FC = () => {
     }
 
     return (
-        <div>
-            <h1>{post.title}</h1>
-            <h2>{ownerName}</h2>
-            <p>{post.body}</p>
-            <h2>Plant Information</h2>
-            <p>Plant ID: {post.plantId}</p>
-            <h2>Comments</h2>
-            <p>Owner: {ownerName}</p>
-            <p>Date: {post.createdAt}</p>
-            <p>Status: {plant?.currentState}</p>
-            <button>Contact Owner</button>
-            <Link to={`/plants/${plant?.id}`}>View Plant</Link>
+        <div className="body">
+            <div className='postPage'>
+                <h2>Plant Information</h2>
+                <div className="postCard">
+                    <div className="header">
+                        <h2>{ownerName}</h2>
+                        <p className="postDate">{post.startDate} - {post.endDate}</p>
+                        <p>{status}</p>
+                    </div>
+                    <div className="content">
+                        <div className="text">
+                            <h1 className='postTitle'>{post.title}</h1>
+                            <p>{post.body}</p>
+                            <button>Contact Owner</button>
+                        </div>
+                        <img src={post.image} alt={post.title} className="postImage"/>
+                    </div>
+                    <div className="comment">
+                        <h2>Comments</h2>
+                    </div>
+                </div>
+            </div>
+            <div className="text-login footer">
+                <span>
+                    All rights reserved, Arosaje©
+                </span>
+            </div>
         </div>
+        
     );
 };
 
