@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Login from './Login';
-import '../../Styles/AuthForm.css';
-import '../../Styles/App.css';
-import SignUp from "./SignUp";
-import {useAuth} from '../../Contexts/AuthContext';
-import {AuthFormContext} from '../../Contexts/AuthFormContext';
+import './AuthForm.css';
+import '../../App.css';
+import SignIn from "./SignIn";
 
 function FormManager() {
-    const {jwtToken} = useAuth();
-    const {isAuthFormLogin, setIsAuthFormLogin} = React.useContext(AuthFormContext);
+    const [isLogin, setIsLogin] = useState(true);
 
-    return isAuthFormLogin ? <Login /> : <SignUp />;
+    const handleSwitch = () => {
+        setIsLogin(!isLogin);
+    };
+
+    return isLogin ? <Login onSwitch={handleSwitch} /> : <SignIn onSwitch={handleSwitch} />;
 }
 
 export default FormManager;

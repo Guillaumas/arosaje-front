@@ -1,12 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import '../../Styles/App.css';
+import '../../App.css';
 import { IConversation } from './Conversation';
 import {ConversationContext} from "./ConversationContext";
-import { USERS, CONVERSATIONS } from '../../routes';
-import { AuthContext } from '../../Contexts/AuthContext';
-import { User } from '../../Interfaces/User';
-import { Plant } from '../../Interfaces/Plant';
+
 
 interface SidebarProps {
     isconversationselected: boolean;
@@ -27,6 +24,7 @@ const SidebarDiv = styled.div<{ isconversationselected: boolean }>`
     }
 `;
 
+
 const RecipientPhoto = styled.img`
     width: 50px;
     height: 50px;
@@ -46,34 +44,68 @@ const RecipientDiv = styled.div<{ isSelected: boolean }>`
     gap: 10px;
 `;
 
+let dummyConversations: IConversation[] = [
+    {
+        id: 3,
+        recipient: {
+            name: 'John Doe',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
+        },
+        messages: [
+            {
+                sender: 'John Doe',
+                content: 'Bonjour, comment ça va ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Ça va bien, merci. Et vous ?',
+                isFromCurrentUser: true,
+            },
+        ],
+    },
+    {
+        id: 3,
+        recipient: {
+            name: 'Jane Doe',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
+        },
+        messages: [
+            {
+                sender: 'Jane Doe',
+                content: 'Salut, as-tu terminé le projet ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Oui, je viens de le terminer.',
+                isFromCurrentUser: true,
+            },
+        ],
+    },
+    {
+        id: 3,
+        recipient: {
+            name: 'Bob Smith',
+            photoUrl: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png',
+        },
+        messages: [
+            {
+                sender: 'Bob Smith',
+                content: 'Hey, prêt pour la réunion de demain ?',
+                isFromCurrentUser: false,
+            },
+            {
+                sender: 'Guillaumas',
+                content: 'Oui, tout est prêt.',
+                isFromCurrentUser: true,
+            },
+        ],
+    },
+];
 const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
     const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
-    const [conversations, setConversations] = useState<IConversation[]>([]);
-    const [showBotanistButton, setShowBotanistButton] = useState(false);
-    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
     const context = useContext(ConversationContext);
-    const authContext = useContext(AuthContext);
-
-    const BOTANIST_ROLE_ID = 2;
-    const BOTANIST_ID = 3;
-
-    useEffect(() => {
-        if (authContext && authContext.user) {
-            const user: User = authContext.user;
-
-            fetch(USERS.ID(user.id))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.role_id !== BOTANIST_ROLE_ID) {
-                        setShowBotanistButton(true);
-                    }
-                });
-
-            fetch(CONVERSATIONS.SEARCH.findByUser2Id(user.id))
-                .then(response => response.json())
-                .then(data => setConversations(data));
-        }
-    }, [authContext]);
 
     const handleSelectConversation = (conversation: IConversation) => {
         setSelectedConversation(conversation);
@@ -83,42 +115,14 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
     };
 
     const handleDeleteConversation = (id: number) => {
-        const updatedConversations = conversations.filter(conversation => conversation.id !== id);
-        setConversations(updatedConversations);
-    };
-
-    const handleContactBotanist = (plant: Plant) => {
-        if (authContext && authContext.user) {
-            const user: User = authContext.user;
-
-            const newConversation = {
-                id: 0,
-                user1_id: user.id,
-                user2_id: BOTANIST_ID,
-                messages: [{
-                    sender: user.username,
-                    content: `Plant Information: ${JSON.stringify(plant)}`,
-                    isFromCurrentUser: true,
-                }],
-            };
-
-            fetch(CONVERSATIONS.URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newConversation),
-            });
-        }
+        const updatedConversations = dummyConversations.filter(conversation => conversation.id !== id);
+        dummyConversations = updatedConversations;
     };
 
     return (
         <SidebarDiv isconversationselected={isconversationselected}>
-            {showBotanistButton && selectedPlant && (
-                <button onClick={() => handleContactBotanist(selectedPlant)}>Contact a Botanist</button>
-            )}
-            {conversations.length > 0 ? (
-                conversations.map((conversation: IConversation) => (
+            {dummyConversations.length > 0 ? (
+                dummyConversations.map((conversation: IConversation) => (
                     <RecipientDiv
                         key={conversation.id}
                         onClick={() => handleSelectConversation(conversation)}

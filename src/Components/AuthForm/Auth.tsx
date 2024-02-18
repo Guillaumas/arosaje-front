@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import FormManager from './FormManager';
 import MainPage from '../Pages/MainPage';
-import { isTokenExpired } from "./AuthFunction";
-import { useAuth } from '../../Contexts/AuthContext';
-import FormManager from "./FormManager";
+import { isTokenExpired } from './AuthFunction';
 
 const Auth = () => {
-    const { jwtToken, setJwtToken } = useAuth();
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [tokenExpired, setTokenExpired] = useState(false);
 
     useEffect(() => {
-        const checkTokenExpiration = async () => {
-            if (jwtToken) {
-                if (await isTokenExpired()) {
-                    setJwtToken(null);
-                    setIsLoggedIn(false);
-                } else {
-                    setIsLoggedIn(true);
-                }
-            }
+        // Vérifiez l'état du token OAuth ici
+        const checkToken = async () => {
+            const expired = await isTokenExpired();
+            setTokenExpired(expired);
         };
 
-        checkTokenExpiration();
-    }, [jwtToken, setJwtToken]);
+        checkToken();
+    }, []);
 
-    return isLoggedIn ? <MainPage /> : <FormManager />;
+    return tokenExpired ? <FormManager /> : <MainPage />;
 };
 
 export default Auth;
