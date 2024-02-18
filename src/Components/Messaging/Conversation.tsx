@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import '../../Styles/App.css';
 import {ConversationContext} from "./ConversationContext";
 import {MessageService} from "../../Services/MessageService";
-import {Conversation} from "../../Interfaces/Conversation";
 export interface IRecipient {
     name: string;
     photoUrl: string;

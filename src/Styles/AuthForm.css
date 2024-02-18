@@ -4,7 +4,6 @@
     align-items: center;
     height: 90vh;
     color: #D4D4D4;
-    font-family: 'Arial', sans-serif;
 }
 
 .login-form {
@@ -13,26 +12,28 @@
     justify-content: center;
     align-items: center;
     width: auto;
-    background-color: #283c34;
+    background-color: #1E382F;
+    opacity: 0.5;
     padding: 2em;
     border-radius: 8px;
+    margin-bottom: 3rem;
 }
 
 .login-form label {
     display: block;
     margin: 0.5em 0;
-    color: #D4D4D4;
+    color: #E0E5CB;
 }
 
 .login-form input {
     margin: 0.5em 0;
     padding: 0.75em;
     font-size: 1em;
+    border: none;
+    border-radius: 0.7em;
+    background-color: #48806CB3;
     width: calc(100% - 1.5em);
-    border: 1px solid #D4D4D4;
-    background: #324B4D;
-    color: white;
-    border-radius: 4px;
+    color: #E0E5CB;
 }
 
 /* Style for error messages */
@@ -43,13 +44,14 @@
 
 /* Style for the submit button */
 .login-form input[type="submit"] {
-    padding: 0.75em;
     font-size: 1em;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    border-radius: 4px;
+    background-color: #48806C;
+    border-color: none;
+    border-radius: 15em;
+    color: #1E382F;
     cursor: pointer;
+    width: auto;
+    padding: 1em 3em;
     transition: background-color 0.3s ease;
 }
 
@@ -59,7 +61,6 @@
 
 .form-container {
     width: 381px;
-    margin: auto;
     position: relative;
 }
 

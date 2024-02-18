@@ -1,0 +1,101 @@
+.login-menu {
+    display: flex;
+    min-height: 100vh; /* Assure que le conteneur prend au moins toute la hauteur de l'écran */
+}
+
+.login-illustrator {
+    flex-basis: 50%; /* Ajustez selon la largeur désirée */
+    position: relative; /* Couleur de fond pour l'effet hard light */
+    border-right: 15px solid #2B4032;
+    mix-blend-mode: hard-light;
+    opacity: 0.8; /* Bordure à droite */
+    height: 100vh; /* Hauteur maximale */
+    margin: 0;
+    padding: 0;
+}
+
+.login-background {
+    flex-basis: 50%; /* Ajustez selon la largeur désirée */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Hauteur maximale */
+}
+
+.login-logo img {
+    width: 300px; /* Largeur fixe */
+    height: auto; /* Hauteur automatique */
+}
+
+/* Styliser le footer */
+.footer {
+    height: 69px; /* Hauteur fixe de 69px */
+    width: 100%;
+    background: linear-gradient(transparent, #111614); /* Dégradé de transparent à #111614 */
+    font-size: 10px; /* Taille de police de 10px */
+    text-align: center; /* Centre le texte à l'intérieur */
+    color: #48806C; /* Couleur du texte (ajustez selon le besoin) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Styliser la section signup pour ne pas ressembler à un bouton */
+  .signup {
+    color: #48806C; /* Couleur du texte */
+  }
+  
+  .signup button {
+    border: none; /* Aucune bordure */
+    color: #69C0A2;
+    background: none; /* Aucun arrière-plan */
+    margin: 0 auto;
+    font-size: 0.9em;
+    cursor: pointer; /* Curseur en forme de pointeur */
+    display: block; /* Affichage en bloc pour le placer sur une nouvelle ligne */
+
+  }
+  
+  /* Styliser forgot-password et gérer l'espacement */
+  .forgot-password {
+    margin-top: 0.9em; /* Espacement du haut pour séparer de .signup */
+    display: block; /* S'assurer que c'est affiché en bloc pour le centrage */
+    text-align: center; /* Centrer le lien à l'intérieur */
+  }
+
+  .forgot-password a{
+    color: #48806C; /* Couleur du texte */
+    text-decoration: none;
+  }
+  
+  /* Assurez-vous que le conteneur de login-background prend toute la hauteur disponible */
+  .login-background {
+    min-height: 100vh; /* Hauteur minimale pour occuper tout l'écran */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Répartit l'espace pour pousser le footer en bas */
+  }
+  
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-menu {
+        flex-direction: column; /* Passe les éléments en colonne sur les petits écrans */
+    }
+
+    .login-illustrator{
+        display: none;
+    }
+
+    .login-form{
+        width: 19.5em;
+    }
+
+    .login-illustrator, .login-background {
+        flex-basis: auto; /* Permet aux éléments de prendre la largeur complète */
+    }
+}
+  
