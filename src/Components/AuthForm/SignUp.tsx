@@ -5,7 +5,10 @@ import {RoleService} from '../../Services/RoleService';
 import {AuthService} from "../../Services/AuthService";
 import {useNavigate} from "react-router-dom";
 
-function SignUp() {
+interface Props {
+    onSwitch: () => void;
+}
+function SignUp({onSwitch}: Props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -105,6 +108,8 @@ function SignUp() {
             console.error('Failed to register user:', error);
         }
     };
+
+
 
     return (
         <div className="login-background">

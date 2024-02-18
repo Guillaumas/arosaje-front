@@ -6,7 +6,11 @@ import {AuthFormContext} from "../../Contexts/AuthFormContext";
 import {AuthService} from "../../Services/AuthService";
 
 
-function Login() {
+interface Props {
+    onSwitch: () => void;
+}
+
+function Login({onSwitch} : Props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');

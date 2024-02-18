@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import './AuthForm.css';
-import '../../App.css';
-import SignIn from "./SignIn";
+import '../../Styles/App.css';
+import SignUp from "./SignUp";
 
 function FormManager() {
     const [isLogin, setIsLogin] = useState(true);
@@ -11,7 +11,7 @@ function FormManager() {
         setIsLogin(!isLogin);
     };
 
-    return isLogin ? <Login onSwitch={handleSwitch} /> : <SignIn onSwitch={handleSwitch} />;
+    return isLogin ? <Login onSwitch={handleSwitch} /> : <SignUp onSwitch={handleSwitch} />;
 }
 
 export default FormManager;
