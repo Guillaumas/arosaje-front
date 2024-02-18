@@ -44,8 +44,8 @@ const MainPage = () => {
         })
             .then(response => response.json())
             .then(data => {
-                if (data._embedded && Array.isArray(data._embedded.announces)) {
-                    setPosts(data._embedded.announces);
+                if (data && Array.isArray(data)) {
+                    setPosts(data);
                 } else {
                     console.log('No announces found or data is not in the expected format', data);
                 }

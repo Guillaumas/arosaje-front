@@ -35,7 +35,7 @@ const App: React.FC = () => {
                     <Route path="/profile/*" element={user ? <Profil/> : <Navigate to="/login" />}/>
                     <Route path="/messages/*" element={user ? <Messages/> : <Navigate to="/login" />}/>
                     <Route path="/parametres" element={user ? <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/> : <Navigate to="/login" />}/>
-                    <Route path="/login/*" element={<Login onSwitch={handleSwitch}/>}/>
+                    <Route path="/login" element={<Login onSwitch={handleSwitch}/>}/>
                     <Route path="/recherche/*" element={<Recherche/>}/>
                     <Route path="/logout" element={<Navigate to="/login"/>}/>
                     <Route path="/announce/:id" element={<Post/>}/>
