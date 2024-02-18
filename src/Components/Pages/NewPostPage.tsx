@@ -1,18 +1,19 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, {useState, ChangeEvent, FormEvent} from 'react';
 import '../../Styles/NewPostPage.css';
 
-const NewPost = ({ onClose }: { onClose?: () => void }) => {
+const NewPost = ({onClose}: { onClose?: () => void }) => {
     const [formData, setFormData] = useState({
         plantName: '',
         species: '',
         images: [] as File[],
         plantingDate: '',
-        description: ''
+        description: '',
+        image: null as File | null
     });
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
@@ -20,13 +21,17 @@ const NewPost = ({ onClose }: { onClose?: () => void }) => {
     };
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files ? Array.from(e.target.files) : [];
-        if (files.length > 0) {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                images: files
-            }));
-            setImagePreviews(files.map(file => URL.createObjectURL(file)));
+        if (e.target.files && e.target.files[0]) {
+            setFormData({
+                ...formData,
+                image: e.target.files[0],
+            });
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreviews(prevImagePreviews => [...prevImagePreviews, reader.result as string]);
+            };
+            reader.readAsDataURL(e.target.files[0]);
         }
     };
 
@@ -44,7 +49,9 @@ const NewPost = ({ onClose }: { onClose?: () => void }) => {
             species: '',
             images: [],
             plantingDate: '',
-            description: ''
+            description: '',
+            image: null as File | null
+
         });
         setImagePreviews([]);
 
@@ -65,7 +72,8 @@ const NewPost = ({ onClose }: { onClose?: () => void }) => {
             species: '',
             images: [],
             plantingDate: '',
-            description: ''
+            description: '',
+            image: null as File | null
         });
         setImagePreviews([]);
     };
@@ -73,12 +81,18 @@ const NewPost = ({ onClose }: { onClose?: () => void }) => {
     return (
         <div className="newPostContainer">
             <form onSubmit={handleSubmit} className="newPostForm">
-                <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName} onChange={handleInputChange} className="newPostInput" />
-                <input type="text" name="species" placeholder="Species" value={formData.species} onChange={handleInputChange} required className="newPostInput" />
-                <input type="file" name="images" onChange={handleImageChange} multiple required className="newPostInput" />
-                {imagePreviews.map((preview, index) => <img key={index} src={preview} alt="Preview" className="newPostImagePreview" />)}
-                <input type="date" name="plantingDate" value={formData.plantingDate} onChange={handleInputChange} className="newPostInput" />
-                <textarea name="description" placeholder="Description" value={formData.description} onChange={handleInputChange} className="newPostTextarea" />
+                <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName}
+                       onChange={handleInputChange} className="newPostInput"/>
+                <input type="text" name="species" placeholder="Species" value={formData.species}
+                       onChange={handleInputChange} required className="newPostInput"/>
+                <input type="file" name="images" accept="image/*" onChange={handleImageChange} multiple required
+                       className="newPostInput"/>
+                {imagePreviews.map((preview, index) => <img key={index} src={preview} alt="Preview"
+                                                            className="newPostImagePreview"/>)}
+                <input type="date" name="plantingDate" value={formData.plantingDate} onChange={handleInputChange}
+                       className="newPostInput"/>
+                <textarea name="description" placeholder="Description" value={formData.description}
+                          onChange={handleInputChange} className="newPostTextarea"/>
                 <button type="submit" className="newPostButton">Submit</button>
                 <button type="button" onClick={handleCancel} className="newPostButton">Cancel</button>
                 <button type="button" onClick={handleClearForm} className="newPostButton">Clear</button>
