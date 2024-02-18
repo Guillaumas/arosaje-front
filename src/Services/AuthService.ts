@@ -13,5 +13,10 @@ export const AuthService = {
     },
     async logout(): Promise<void> {
         return fetchFromAPI('logout');
+    },
+    decodeToken(token: string): any {
+        const payload = token.split('.')[1];
+        const decoded = atob(payload);
+        return JSON.parse(decoded);
     }
 };
