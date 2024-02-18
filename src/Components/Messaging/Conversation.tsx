@@ -60,6 +60,9 @@ const Conversation: React.FC = () => {
         MessageService.connect(
             () => console.log('WebSocket connected'),
             (message) => {
+                // Handle received message
+                // You need to determine if the incoming message belongs to the current conversation
+                // This is a simplified example
                 if (selectedConversation && message.conversationId === selectedConversation.id) {
                     // @ts-ignore
                     setSelectedConversation((prevConversation) => {
@@ -100,6 +103,7 @@ const Conversation: React.FC = () => {
                 isFromCurrentUser: true,
                 conversationId: selectedConversation.id,
                 createdAt: new Date().toISOString(),
+                destination: selectedConversation.recipient.name,
             };
 
             // Send the message via WebSocket
