@@ -7,6 +7,7 @@ export const MessageService = {
     connect(onConnected: () => void, onMessageReceived: (message: Message) => void) {
         WebSocketService.connect(() => {
             onConnected();
+            // When the connection is established, send all queued messages
             while (messageQueue.length > 0) {
                 const message = messageQueue.shift();
                 if (message) {
