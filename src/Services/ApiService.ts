@@ -1,16 +1,17 @@
 const API_BASE_URL = "http://localhost:8080/api";
 
-async function fetchFromAPI(endpoint: string, method: string = 'GET', body?: any): Promise<any> {
+async function fetchFromAPI(endpoint: string, method: string = 'GET', body?: any, headers?: any): Promise<any> {
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
         method,
         headers: {
-            'Content-Type': 'application/json',
+            ...headers,
+            'Accept': 'application/json',
         },
-        body: body ? JSON.stringify(body) : undefined,
+        body
     });
 
     if (!response.ok) {
-        throw new Error(`API call failed: ${response.statusText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
