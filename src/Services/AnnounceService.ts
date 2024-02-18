@@ -41,6 +41,27 @@ const fetchAnnounceById = (id: number): Promise<Announce> => {
         });
 };
 
+const fetchAnnouncesByUserId = (userId: number): Promise<Announce[]> => {
+    return fetch(`${ANNOUNCES.URL}/findByAnnouncerId/${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`API call failed: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data === null) {
+                throw new Error('No data returned from API');
+            }
+            return data;
+        })
+        .catch(error => {
+            console.error(`Error fetching announces for user with id ${userId}:`, error);
+            return [];
+        });
+
+}
+
 const createAnnounce = (announceData: Announce): Promise<Announce> => {
     return fetch(ANNOUNCES.URL, {
         method: 'POST',
@@ -133,6 +154,7 @@ const searchAnnounces = (criteria: AnnounceSearchCriteria): Promise<Announce[]> 
 export const AnnounceService = {
     fetchAnnounces,
     fetchAnnounceById,
+    fetchAnnouncesByUserId,
     createAnnounce,
     updateAnnounce,
     deleteAnnounce,

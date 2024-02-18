@@ -1,24 +1,68 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AnnounceService } from '../../Services/AnnounceService';
+import { PlantService } from '../../Services/PlantService';
 import { SpeciesService } from '../../Services/SpeciesService';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { Announce } from '../../Interfaces/Announce';
+import { Plant } from '../../Interfaces/Plant';
 import { Species } from '../../Interfaces/Species';
+
+
+interface TabContentProps {
+    selectedTab: string;
+    plants: Plant[];
+    announces: Announce[];
+}
+
+const TabContent: React.FC<TabContentProps> = ({ selectedTab, plants, announces }) => {
+    if (selectedTab === 'plants') {
+        return (
+            <div>
+                {plants.map((plant: Plant) => (
+                    <div key={plant.id}>
+                        <p>Owner ID: {plant.owner_id}</p>
+                        <p>Current State: {plant.current_state}</p>
+                        <p>Species ID: {plant.species_id}</p>
+                    </div>
+                ))}
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                {announces.map((announce: Announce) => (
+                    <Link to={`/announce/${announce.id}`} key={announce.id}>
+                        <div>
+                            <p>Announcer ID: {announce.announcer_id}</p>
+                            <p>Plant ID: {announce.plant_id}</p>
+                            <p>Title: {announce.title}</p>
+                            <p>Body: {announce.body}</p>
+                            <p>Start Date: {announce.start_date}</p>
+                            <p>End Date: {announce.end_date}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        );
+    }
+};
 
 const ProfilePage = () => {
     const [announces, setAnnounces] = useState<Announce[]>([]);
-    const [species, setSpecies] = useState<Species[]>([]);
+    const [plants, setPlants] = useState<Plant[]>([]);
+    const [selectedTab, setSelectedTab] = useState('plants');
 
-    const { user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
-            AnnounceService.fetchAnnounces()
-                .then((data: Announce[]) => setAnnounces(data.filter(announce => announce.announcer_id === user.id)));
+            AnnounceService.fetchAnnouncesByUserId(user.id)
+                .then((data: Announce[]) => setAnnounces(data));
 
-            SpeciesService.fetchSpecies()
-                .then((data: Species[]) => setSpecies(data));
+            PlantService.fetchPlantByUserId(user.id)
+                .then((data: Plant[]) => setPlants(data));
+
         }
     }, [user]);
 
@@ -29,26 +73,11 @@ const ProfilePage = () => {
     return (
         <div>
             <h1>{user.first_name}</h1>
-            <h2>My Announces</h2>
-            {announces.map(post => (
-                <Link to={`/announce/${post.id}`} key={post.id}>
-                    <div>
-                        <h3>{post.title}</h3>
-                        <p>{post.body}</p>
-                        <p>{species.find(species => species.id === post.plant_id)?.name}</p>
-                    </div>
-                </Link>
-            ))}
+            <button onClick={() => setSelectedTab('plants')}>My Plants</button>
+            <button onClick={() => setSelectedTab('announces')}>My Announces</button>
+            <TabContent selectedTab={selectedTab} plants={plants} announces={announces} />
         </div>
     );
 };
 
 export default ProfilePage;
-
-
-//todo affichage de la page du profil
-//todo 1 afficher les dans une card generique les 10 derniers posts de plantes du profil selectionné de format instagram (image, titre, date, auteur, commentaire)
-//todo 2 precharger les 10 posts suivants
-//todo 3 afficher la navbar (accueil, profil, messages, parametres)
-//todo 4 si le profil est le profil de l'utilisateur connecté, afficher un bouton pour ajouter un post
-//todo 5 si le profil est le profil de l'utilisateur connecté, afficher un bouton pour modifier le profil

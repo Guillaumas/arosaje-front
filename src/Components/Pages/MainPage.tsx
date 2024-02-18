@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef, useCallback, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import NewPost from "./NewPostPage";
 import '../../Styles/MainPage.css'
 import { ConversationService } from "../../Services/ConversationService";
 import { Announce } from "../../Interfaces/Announce";
 import {ANNOUNCES} from "../../routes";
+import {AuthContext} from "../../Contexts/AuthContext";
 
 
 const MainPage = () => {
@@ -14,7 +15,7 @@ const MainPage = () => {
     const [error, setError] = useState<Error | null>(null);
     const [isAddingPost, setIsAddingPost] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
-    const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).id : null;
+    const { user } = useContext(AuthContext);
 
     const fetchPosts = () => {
         console.log('Fetching posts...')
@@ -37,7 +38,7 @@ const MainPage = () => {
         console.log('Posts fetched!', posts)
     };
     const handleContactPostOwner = async (ownerId: number) => {
-        const user1id = currentUser
+        const user1id = user?.id ? user?.id : 0;
 
         const newConversation = {
             id: 0,
@@ -101,14 +102,13 @@ const MainPage = () => {
                 <Link to={`/announce/${post.id}`} key={post.id} className="postLink">
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
-                        <img src={post.image} alt={post.title} className="postImage"/>
                         <h2 className="postTitle">{post.title}</h2>
                         <p className="postDate">Date: {post.start_date}</p>
                         <p className="postAuthor">Author: {post.announcer_id}</p>
                         <p className="postComment">Comment: {post.body}</p>
                         <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
                         <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
-                        {currentUser && <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>}
+                        {user && <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>}
                     </div>
                 </Link>
             ))}
