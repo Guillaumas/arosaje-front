@@ -4,18 +4,13 @@ import { Announce, AnnounceSearchCriteria } from '../../Interfaces/Announce';
 import {Link} from "react-router-dom";
 
 const SearchPage = () => {
-    const [searchQuery, setSearchQuery] = useState('');
     const [searchCriteria, setSearchCriteria] = useState<AnnounceSearchCriteria>({});
     const [results, setResults] = useState<Announce[]>([]);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const handleCriteriaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCriteriaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSearchCriteria({
             ...searchCriteria,
-            [event.target.name]: event.target.value,
+            [event.target.value]: event.target.value,
         });
     };
 
@@ -31,12 +26,14 @@ const SearchPage = () => {
     return (
         <div>
             <form onSubmit={handleSearchSubmit}>
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
-                <input type="text" name="startDate" value={searchCriteria.startDate} onChange={handleCriteriaChange} placeholder="Start Date..." />
-                <input type="text" name="title" value={searchCriteria.title} onChange={handleCriteriaChange} placeholder="Title..." />
-                <input type="number" name="announcerId" value={searchCriteria.announcerId} onChange={handleCriteriaChange} placeholder="Announcer ID..." />
-                <input type="number" name="plantId" value={searchCriteria.plantId} onChange={handleCriteriaChange} placeholder="Plant ID..." />
-                <input type="text" name="endDate" value={searchCriteria.endDate} onChange={handleCriteriaChange} placeholder="End Date..." />
+                <select onChange={handleCriteriaChange}>
+                    <option value="">Select a category...</option>
+                    <option value="startDate">Start Date</option>
+                    <option value="title">Title</option>
+                    <option value="announcerId">Announcer ID</option>
+                    <option value="plantId">Plant ID</option>
+                    <option value="endDate">End Date</option>
+                </select>
                 <button type="submit">Search</button>
             </form>
             {results.map(post => (
