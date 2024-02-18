@@ -8,6 +8,7 @@ import {ANNOUNCES} from "../../routes";
 import {AuthContext} from "../../Contexts/AuthContext";
 
 
+
 const MainPage = () => {
     const [posts, setPosts] = useState<Announce[]>([]);
     const [page, setPage] = useState(0);
@@ -51,6 +52,7 @@ const MainPage = () => {
 
     const handleOpenNewPostForm = () => {
         setIsAddingPost(true);
+        console.log(user, typeof user)
     };
 
     const handleCloseNewPostForm = () => {
@@ -91,11 +93,15 @@ const MainPage = () => {
 
     return (
         <div className="mainPage">
-            <button onClick={handleOpenNewPostForm} className="addPostButton">Add Post</button>
-            {isAddingPost && (
-                <div className="newPostFormContainer">
-                    <button onClick={handleCloseNewPostForm} className="cancelButton">Cancel</button>
-                </div>
+            {user && (
+                <>
+                    <button onClick={handleOpenNewPostForm} className="addPostButton">Add Post</button>
+                    {isAddingPost && (
+                        <div className="newPostFormContainer">
+                            <NewPost onClose={handleCloseNewPostForm} />
+                        </div>
+                    )}
+                </>
             )}
 
             {posts.map((post, index) => (

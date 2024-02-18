@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { User } from "../Interfaces/User";
+import {isTokenExpired} from "../Components/AuthForm/AuthFunction";
 
 interface AuthContextType {
     user: User | null;
@@ -29,8 +30,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
-        if (storedUser) {
+        const jwtToken = localStorage.getItem('jwtToken');
+
+        if (storedUser && jwtToken && !isTokenExpired()) {
             setUser(JSON.parse(storedUser));
+            setJwtToken(jwtToken);
+        } else {
+            setUser(null);
+            setJwtToken(null);
         }
     }, []);
 
@@ -38,13 +45,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (data) {
             localStorage.setItem('jwtToken', data.jwtToken);
             localStorage.setItem('user', JSON.stringify(data.user));
-            setUser(data.user);
             setJwtToken(data.jwtToken);
+            setUser(data.user);
         } else {
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('user');
-            setUser(null);
             setJwtToken(null);
+            setUser(null);
         }
     };
 
@@ -56,5 +63,4 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         </AuthContext.Provider>
     );
 };
-
 export const useAuth = () => useContext(AuthContext);
