@@ -24,7 +24,8 @@
 }
 
 .login-logo img {
-    width: 300px; /* Largeur fixe */
+  margin-top: 3em;
+    width: 156px; /* Largeur fixe */
     height: auto; /* Hauteur automatique */
 }
 
