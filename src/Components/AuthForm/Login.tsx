@@ -14,37 +14,38 @@ function Login() {
     const {setIsAuthFormLogin} = useContext(AuthFormContext);
 
     const navigate = useNavigate();
-    const {setJwtToken} = useAuth();
+    const {setToken} = useAuth();
 
     const checkAllInput = () => {
         return email !== '' && password !== '';
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
+        console.log('Login form submitted');
         event.preventDefault();
 
         setEmailError('');
         setPasswordError('');
 
         if (password.trim() === '') {
+            console.log('Password is required');
             setPasswordError('Password is required');
             return;
         }
 
         if (email.trim() === '') {
+            console.log('Email is required');
             setEmailError('Email is required');
             return;
         }
 
         try {
+            console.log('Logging in user...');
             const response = await AuthService.login(email, password);
+            console.log('Response:', response);
 
-            if (!response.ok) {
-                throw new Error('Failed to log in');
-            }
-
-            const data = await response.json();
-            setJwtToken(data.token);
+            console.log('User logged in successfully', response);
+            setToken(response);
             navigate('/');
         } catch (error) {
             setEmailError('Failed to log in');
@@ -77,7 +78,7 @@ function Login() {
                             style={passwordError ? {border: '1px solid red'} : {}}
                         />
                     </label>
-                    <input type="submit" value="Log In" className="button-connect" disabled={!checkAllInput()}/>
+                    <input type="submit" onSubmit={handleSubmit} value="Log In" className="button-connect"/>
                     <div className="login-text">
                         <span className="text-account-question">Don't have an account ? </span>
                         <button onClick={() => setIsAuthFormLogin(false)}>Sign Up</button>

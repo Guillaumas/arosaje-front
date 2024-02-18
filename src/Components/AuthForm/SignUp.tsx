@@ -3,6 +3,7 @@ import '../../Styles/AuthForm.css';
 import {AuthFormContext} from "../../Contexts/AuthFormContext";
 import {RoleService} from '../../Services/RoleService';
 import {AuthService} from "../../Services/AuthService";
+import {useNavigate} from "react-router-dom";
 
 function SignUp() {
     const [username, setUsername] = useState('');
@@ -22,6 +23,9 @@ function SignUp() {
     const [roleId, setRoleId] = useState(0);
     const [error, setError] = useState('');
 
+    const navigate = useNavigate();
+
+
 
     const {setIsAuthFormLogin} = useContext(AuthFormContext);
 
@@ -39,6 +43,7 @@ function SignUp() {
 
 
     const handleSignUp = async (event: React.FormEvent) => {
+        // Initialize useNavigate hook
         event.preventDefault();
 
         setUsernameError('');
@@ -94,6 +99,8 @@ function SignUp() {
                 throw new Error('Failed to register');
             }
             console.log('User registered successfully');
+            navigate('/login');
+
         } catch (error) {
             console.error('Failed to register user:', error);
         }

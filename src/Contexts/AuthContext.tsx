@@ -1,12 +1,12 @@
-import React, {createContext, useState, useEffect, ReactNode, useContext} from 'react';
-import {User} from "../Interfaces/User";
-import {isTokenExpired} from "../Components/AuthForm/AuthFunction";
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { User } from "../Interfaces/User";
 
 interface AuthContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     jwtToken: string | null;
     setJwtToken: React.Dispatch<React.SetStateAction<string | null>>;
+    setToken: (data: { jwtToken: string, user: User } | null) => void;
 }
 
 const defaultAuthContextValue: AuthContextType = {
@@ -14,6 +14,7 @@ const defaultAuthContextValue: AuthContextType = {
     setUser: () => {},
     jwtToken: null,
     setJwtToken: () => {},
+    setToken: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultAuthContextValue);
@@ -27,15 +28,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem('jwtToken'));
 
     useEffect(() => {
-        const checkTokenExpiration = async () => {
-            if (jwtToken && await isTokenExpired()) {
-                setJwtToken(null);
-                setUser(null);
-            }
-        };
-
-        checkTokenExpiration();
-    }, [jwtToken]);
+        // Attempt to initialize the user from localStorage directly
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
 
     const setToken = (data: { jwtToken: string, user: User } | null) => {
         if (data) {
@@ -44,6 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             setUser(data.user);
             setJwtToken(data.jwtToken);
         } else {
+            // Clear user and jwtToken from both context and localStorage
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('user');
             setUser(null);
@@ -51,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     };
 
-    const value = { user, setUser, jwtToken, setJwtToken };
+    const value = { user, setUser, jwtToken, setJwtToken, setToken };
 
     return (
         <AuthContext.Provider value={value}>

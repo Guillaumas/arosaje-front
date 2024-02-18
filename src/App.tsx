@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar';
 import Profil from './Components/Pages/ProfilePage';
@@ -16,6 +16,13 @@ const App: React.FC = () => {
     const [isAuthFormLogin, setIsAuthFormLogin] = useState<boolean>(true);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const [currentUser, setCurrentuser] = useState<any>(null);
+    const {user} = useAuth();
+
+    useEffect(() => {
+        setCurrentuser(user);
+        console.log('user:', user);
+    });
 
     const handleSwitch = () => {
         setIsLoggedIn(!isLoggedIn);
@@ -25,7 +32,7 @@ const App: React.FC = () => {
         setIsPopupOpen(!isPopupOpen);
     };
 
-    const {user} = useAuth();
+
 
     return (
         <AuthProvider>
@@ -34,11 +41,10 @@ const App: React.FC = () => {
                     <NavBar onSettingsClick={togglePopup}/>
                     <Routes>
                         <Route path="/" element={<Accueil/>}/>
-                        <Route path="/profile/*" element={user ? <Profil/> : <Navigate to="/login"/>}/>
-                        <Route path="/messages/*" element={user ? <Messages/> : <Navigate to="/login"/>}/>
+                        <Route path="/profile/*" element={<Profil/>}/>
+                        <Route path="/messages/*" element={<Messages/>}/>
                         <Route path="/parametres"
-                               element={user ? <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/> :
-                                   <Navigate to="/login"/>}/>
+                               element={<Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>}/>
                         <Route path="/login/*" element={<FormManager/>}/>
                         <Route path="/recherche/*" element={<Recherche/>}/>
                         <Route path="/logout" element={<Navigate to="/login"/>}/>
