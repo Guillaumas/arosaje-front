@@ -76,9 +76,6 @@
     flex-direction: column;
     justify-content: space-between; /* Répartit l'espace pour pousser le footer en bas */
   }
-  
-
-
 
 /* Responsive */
 @media (max-width: 768px) {

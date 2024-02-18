@@ -1,29 +1,9 @@
 import React, {useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
 import Popup from '../PopupSettings/popup';
+import '../../Styles/NavBar.css';
+import logo from "../../assets/images/logo.png";
 
-
-const StyledNav = styled.nav`
-    background-color: #f8f9fa;
-    padding: 10px;
-    display: flex;
-    justify-content: space-around;
-    position: relative;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-    box-sizing: border-box;
-`;
-
-const StyledUl = styled.ul`
-    display: flex;
-    list-style: none;
-`;
-
-const StyledLi = styled.li`
-    margin: 0 10px;
-`;
 
 interface NavBarProps {
     onSettingsClick: () => void;
@@ -56,33 +36,35 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
     };
 
     return (
-        <StyledNav>
-            <StyledUl>
-                <StyledLi>
-                    <Link to="/">Accueil</Link>
-                </StyledLi>
-                <StyledLi>
-                    <Link to="/profile">Profil</Link>
-                </StyledLi>
-                <StyledLi>
-                    <Link to="/messages">Messages</Link>
-                </StyledLi>
-                <StyledLi>
-                    <a href="src/Components/NavBar#" onClick={(e) => {
-                        e.preventDefault();
-                        togglePopup();
-                    }}>Paramètres</a>
-                    {isPopupOpen &&
-                        <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
-                </StyledLi>
-                <StyledLi>
-                    <Link to="/login">Login</Link>
-                </StyledLi>
-                <StyledLi>
-                    <Link to="/recherche">Recherche</Link>
-                </StyledLi>
-            </StyledUl>
-        </StyledNav>
+        <nav>
+            <ul>
+                <li>
+                    <Link to="/"><img src={logo} alt="Arosaje logo" className='logo'/></Link>
+                </li>
+                <div className="right">
+                    <li>
+                        <Link to="/profile"><span className="fa-solid fa-user"></span></Link>
+                    </li>
+                    <li>
+                        <Link to="/recherche"><span className="fa-solid fa-magnifying-glass"></span></Link>
+                    </li>
+                    <li>
+                        <Link to="/messages"><span className="fa-solid fa-paper-plane"></span></Link>
+                    </li>
+                    <li>
+                        <a href="src/Components/NavBar#" onClick={(e) => {
+                            e.preventDefault();
+                            togglePopup();
+                        }}><span className="fa-solid fa-gear"></span></a>
+                        {isPopupOpen &&
+                            <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
+                    </li>
+                    <li>
+                        <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
+                    </li>
+                </div>
+            </ul>
+        </nav>
     );
 };
 
