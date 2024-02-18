@@ -30,3 +30,4 @@ yarn-error.log*
 
 # Temporary assets
 *.tmp
+/pnpm-lock.yaml
