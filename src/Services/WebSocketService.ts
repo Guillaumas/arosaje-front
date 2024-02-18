@@ -8,24 +8,36 @@ class WebSocketService {
     private reconnectAttempts: number = 0;
     private maxReconnectAttempts: number = 5;
 
-    connect(onConnectedCallback: () => void, onMessageReceivedCallback: (message: Message) => void) {
+    connect(onConnectedCallback: () => void, onMessageReceivedCallback: (message: Message) => void, queuedMessages?: Message[]) {
         const socket = new SockJS(this.serverUrl);
-        this.stompClient = Stomp.over(socket);
+        this.stompClient = Stomp.over(<WebSocket>socket);
 
         this.stompClient.connect({}, () => {
             this.isConnected = true;
             console.log('Connected to WS');
-            onConnectedCallback();
-            this.reconnectAttempts = 0; // Reset reconnect attempts on successful connection
+            // onConnectedCallback();
 
-            this.stompClient?.subscribe('/user/queue/private', (messageOutput) => {
-                onMessageReceivedCallback(JSON.parse(messageOutput.body));
-            });
+            // Subscribe to message queue
+            if (this.stompClient && this.stompClient.connected) {
+                this.stompClient.subscribe('/user/queue/private', (messageOutput) => {
+                    // Handle received message
+                    onMessageReceivedCallback(JSON.parse(messageOutput.body));
+                });
+                console.log('Subscription successful');
+            }
+
+            // Send any queued messages now that connection is established
+            if (queuedMessages) {
+                queuedMessages.forEach((message) => {
+                    this.sendMessage('/destination/path', message); // Adjust destination as necessary
+                });
+            }
         }, (error) => {
             console.error('Error connecting to WS:', error);
             this.scheduleReconnect(onConnectedCallback, onMessageReceivedCallback);
         });
     }
+
 
     sendMessage(destination: string, message: Message) {
         if (this.isConnected && this.stompClient && this.stompClient.connected) {
