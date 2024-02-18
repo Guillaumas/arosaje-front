@@ -1,4 +1,3 @@
-// Announce.ts
 export interface Announce {
     id: number;
     announcer_id: number;

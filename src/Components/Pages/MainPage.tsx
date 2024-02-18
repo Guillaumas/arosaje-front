@@ -3,45 +3,49 @@ import {Link} from 'react-router-dom';
 import NewPost from "./NewPostPage";
 import '../../Styles/MainPage.css'
 import {AnnounceService} from "../../Services/AnnounceService";
+import { ConversationService } from "../../Services/ConversationService";
+import { Announce } from "../../Interfaces/Announce";
+import {AuthContext} from "../../Contexts/AuthContext";
+import {ANNOUNCES} from "../../routes";
 
-interface Post {
-    id: number;
-    announcer_id: number;
-    plant_id: number;
-    title: string;
-    body: string;
-    start_date: string;
-    end_date: string;
-    created_at: string;
-    updated_at: string;
-    image: string;
-}
 
 const MainPage = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<Announce[]>([]);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const [isAddingPost, setIsAddingPost] = useState(false); // State to control NewPost form visibility
     const observer = useRef<IntersectionObserver | null>(null);
 
-    const fetchPosts = async () => {
+    const fetchPosts = () => {
         console.log('Fetching posts...')
-        try {
-            const data = await AnnounceService.fetchAnnounces();
 
-            if (Array.isArray(data)) {
-                setPosts(data);
-            } else {
-                console.log('No announces found or data is not in the expected format', data);
-            }
-        } catch (err) {
-            console.error("An error occurred while fetching the posts data.", err);
-            setError(err as Error);
-        } finally {
-            setLoading(false);
-        }
+        fetch(`${ANNOUNCES.URL}?page=0&size=10`, {
+            method: ANNOUNCES.METHOD.GET,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && Array.isArray(data)) {
+                    setPosts(data);
+                } else {
+                    console.log('No announces found or data is not in the expected format', data);
+                }
+            })
+            .catch((err) => {
+                console.error("An error occurred while fetching the posts data.", err);
+                setError(err);
+            }).finally(() => setLoading(false));
         console.log('Posts fetched!', posts)
+    };
+    const handleContactPostOwner = async (ownerId: number) => {
+        const user1id = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).id : null;
+
+        const newConversation = {
+            id: 0,
+            user1_id: user1id,
+            user2_id: ownerId
+        };
+        await ConversationService.createConversation(newConversation);
     };
 
 
@@ -96,7 +100,8 @@ const MainPage = () => {
 
             {posts.map((post, index) => (
                 <Link to={`/announce/${post.id}`} key={post.id} className="postLink">
-                    <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null} className="postCard">
+                    <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
+                         className="postCard">
                         <img src={post.image} alt={post.title} className="postImage"/>
                         <h2 className="postTitle">{post.title}</h2>
                         <p className="postDate">Date: {post.start_date}</p>
@@ -104,6 +109,7 @@ const MainPage = () => {
                         <p className="postComment">Comment: {post.body}</p>
                         <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
                         <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
+                        <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>
                     </div>
                 </Link>
             ))}
