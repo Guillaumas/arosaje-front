@@ -14,7 +14,7 @@ const PostPage: React.FC = () => {
         AnnounceService.fetchAnnounceById(Number(id))
             .then((announce) => {
                 setPost(announce);
-                UserService.fetchUserById(announce.announcer_id)
+                UserService.fetchUserById(announce.announcerId)
                     .then((user) => setOwnerName(user.name))
                     .catch((error) => console.error(error));
             })
@@ -32,10 +32,10 @@ const PostPage: React.FC = () => {
             <p>{post.body}</p>
             <img src={post.image} alt={post.title} />
             <h2>Plant Information</h2>
-            <p>Plant ID: {post.plant_id}</p>
+            <p>Plant ID: {post.plantId}</p>
             <h2>Comments</h2>
             <p>Owner: {ownerName}</p>
-            <p>Date: {post.created_at}</p>
+            <p>Date: {post.createdAt}</p>
             <p>Status: {status}</p>
             <button>Contact Owner</button>
         </div>

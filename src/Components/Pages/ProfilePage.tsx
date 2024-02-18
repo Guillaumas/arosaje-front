@@ -15,7 +15,7 @@ const ProfilePage = () => {
     useEffect(() => {
         if (user) {
             AnnounceService.fetchAnnounces()
-                .then((data: Announce[]) => setAnnounces(data.filter(announce => announce.announcer_id === user.id)));
+                .then((data: Announce[]) => setAnnounces(data.filter(announce => announce.announcerId === user.id)));
 
             SpeciesService.fetchSpecies()
                 .then((data: Species[]) => setSpecies(data));
@@ -35,7 +35,7 @@ const ProfilePage = () => {
                     <div>
                         <h3>{post.title}</h3>
                         <p>{post.body}</p>
-                        <p>{species.find(species => species.id === post.plant_id)?.name}</p>
+                        <p>{species.find(species => species.id === post.plantId)?.name}</p>
                     </div>
                 </Link>
             ))}

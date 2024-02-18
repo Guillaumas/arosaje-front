@@ -7,7 +7,7 @@ import { Species } from '../../Interfaces/Species';
 const NewPlant = ({onClose}: { onClose?: () => void }) => {
     const [formData, setFormData] = useState({
         plantName: '',
-        species_id: 0,
+        speciesId: 0,
         images: [] as File[],
         plantingDate: '',
         description: '',
@@ -25,7 +25,7 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
     const handleSpeciesChange = (e: ChangeEvent<HTMLSelectElement>) => {
         setFormData({
             ...formData,
-            species_id: Number(e.target.value),
+            speciesId: Number(e.target.value),
         });
     };
 
@@ -61,9 +61,9 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
 
         const newPlant = {
             id: 0,
-            owner_id: JSON.parse(localStorage.getItem('user') as string).id,
-            current_state: "none",
-            species_id: formData.species_id,
+            ownerId: JSON.parse(localStorage.getItem('user') as string).id,
+            currentState: "none",
+            speciesId: formData.speciesId,
         };
 
         try {
@@ -75,7 +75,7 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
 
         setFormData({
             plantName: '',
-            species_id: 0,
+            speciesId: 0,
             images: [],
             plantingDate: '',
             description: '',
@@ -87,7 +87,7 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
     };
 
     const validateForm = (): boolean => {
-        return formData.species_id !== 0 && formData.images.length > 0;
+        return formData.speciesId !== 0 && formData.images.length > 0;
     };
 
     const handleCancel = () => {
@@ -97,7 +97,7 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
     const handleClearForm = () => {
         setFormData({
             plantName: '',
-            species_id: 0,
+            speciesId: 0,
             images: [],
             plantingDate: '',
             description: '',

@@ -105,15 +105,15 @@ const MainPage = () => {
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
                         <div className="header">
-                            <p className="postAuthor">{post.announcer_id}</p>
-                            <p className="postDate">{post.start_date} - {post.end_date}</p>
+                            <p className="postAuthor">{post.announcerId}</p>
+                            <p className="postDate">{post.startDate} - {post.endDate}</p>
                         </div>
                         <div className="content">
                             <div className="text">
                                 <h2 className="postTitle">{post.title}</h2>
                                 <p className="postBody">Description :</p>
                                 <p className="postBody">{post.body}</p>
-                                {currentUser && <button onClick={() => handleContactPostOwner(post.announcer_id)} className='postContact'>Contact</button>}
+                                {currentUser && <button onClick={() => handleContactPostOwner(post.announcerId)} className='postContact'>Contact</button>}
                             </div>
                             <img src={post.image} alt={post.title} className="postImage"/>
                         </div>
