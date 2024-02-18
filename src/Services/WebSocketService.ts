@@ -1,6 +1,7 @@
 import * as Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
-import { Message } from '../Interfaces/Message';
+import {Message} from '../Interfaces/Message';
+
 class WebSocketService {
     private stompClient: Stomp.Client | null = null;
     isConnected: boolean = false;
@@ -17,10 +18,12 @@ class WebSocketService {
             console.log('Connected to WS');
             onConnectedCallback();
             this.reconnectAttempts = 0; // Reset reconnect attempts on successful connection
+            if (this.stompClient && this.stompClient.connected) {
+                this.stompClient?.subscribe('/user/queue/private', (messageOutput) => {
+                    onMessageReceivedCallback(JSON.parse(messageOutput.body));
+                });
+            }
 
-            this.stompClient?.subscribe('/user/queue/private', (messageOutput) => {
-                onMessageReceivedCallback(JSON.parse(messageOutput.body));
-            });
         }, (error) => {
             console.error('Error connecting to WS:', error);
             this.scheduleReconnect(onConnectedCallback, onMessageReceivedCallback);
