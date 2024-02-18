@@ -38,14 +38,14 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
 
         const newAnnounce: Announce = {
             id: 0,
-            announcer_id: JSON.parse(localStorage.getItem('user') as string).id,
-            plant_id: Number(formData.plantId),
+            announcerId: JSON.parse(localStorage.getItem('user') as string).id,
+            plantId: Number(formData.plantId),
             title: formData.title,
             body: formData.description,
-            start_date: formData.startDate,
-            end_date: formData.endDate,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
 
         try {
@@ -90,7 +90,7 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
                 <input type="text" name="title" placeholder="Title" value={formData.title} onChange={handleInputChange} className="newPostInput" required/>
                 <select name="plantId" onChange={handleInputChange} required className="newPostInput">
                     {plants.map(plant => (
-                        <option key={plant.id} value={plant.id}>{plant.current_state}</option>
+                        <option key={plant.id} value={plant.id}>{plant.currentState}</option>
                     ))}
                 </select>
                 <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="newPostInput" required/>

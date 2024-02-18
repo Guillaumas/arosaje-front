@@ -43,11 +43,13 @@ export const TabContent: React.FC<TabContentProps> = ({isTabPost, plants, announ
                 </div>
             )}
             {plants.map((plant: Plant) => (
+                <Link to={`/plant/${plant.id}`}>
                 <div key={plant.id}>
-                    <p>Owner ID: {plant.owner_id}</p>
-                    <p>Current State: {plant.current_state}</p>
-                    <p>Species ID: {plant.species_id}</p>
+                    <p>Owner ID: {plant.ownerId}</p>
+                    <p>Current State: {plant.currentState}</p>
+                    <p>Species ID: {plant.speciesId}</p>
                 </div>
+                </Link>
             ))}
         </div> :
         <div>
@@ -60,12 +62,12 @@ export const TabContent: React.FC<TabContentProps> = ({isTabPost, plants, announ
             {announces.map((announce: Announce) => (
                 <Link to={`/announce/${announce.id}`} key={announce.id}>
                     <div>
-                        <p>Announcer ID: {announce.announcer_id}</p>
-                        <p>Plant ID: {announce.plant_id}</p>
+                        <p>Announcer ID: {announce.announcerId}</p>
+                        <p>Plant ID: {announce.plantId}</p>
                         <p>Title: {announce.title}</p>
                         <p>Body: {announce.body}</p>
-                        <p>Start Date: {announce.start_date}</p>
-                        <p>End Date: {announce.end_date}</p>
+                        <p>Start Date: {announce.startDate}</p>
+                        <p>End Date: {announce.endDate}</p>
                     </div>
                 </Link>
             ))}

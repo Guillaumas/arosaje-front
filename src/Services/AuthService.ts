@@ -11,9 +11,6 @@ export const AuthService = {
             'Content-Type': 'application/json'
         });
     },
-    async logout(): Promise<void> {
-        return fetchFromAPI('logout');
-    },
     decodeToken(token: string): any {
         const payload = token.split('.')[1];
         const decoded = atob(payload);

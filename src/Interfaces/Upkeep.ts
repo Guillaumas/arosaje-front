@@ -1,6 +1,6 @@
 export interface Upkeep {
     id: number;
-    caretaker_id: number;
-    plant_id: number;
+    caretakerId: number;
+    plantId: number;
     status: string;
 }

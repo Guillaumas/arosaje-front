@@ -1,13 +1,13 @@
 export interface Announce {
     id: number;
-    announcer_id: number;
-    plant_id: number;
+    announcerId: number;
+    plantId: number;
     title: string;
     body: string;
-    start_date: string;
-    end_date: string;
-    created_at: string;
-    updated_at: string;
+    startDate: string;
+    endDate: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface AnnounceSearchCriteria {

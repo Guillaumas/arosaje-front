@@ -44,12 +44,12 @@ const SearchPage = () => {
                     <div key={post.id}>
                         <h2>{post.title}</h2>
                         <p>{post.body}</p>
-                        <p>Start Date: {post.start_date}</p>
-                        <p>End Date: {post.end_date}</p>
-                        <p>Announcer ID: {post.announcer_id}</p>
-                        <p>Plant ID: {post.plant_id}</p>
-                        <p>Created at: {post.created_at}</p>
-                        <p>Updated at: {post.updated_at}</p>
+                        <p>Start Date: {post.startDate}</p>
+                        <p>End Date: {post.endDate}</p>
+                        <p>Announcer ID: {post.announcerId}</p>
+                        <p>Plant ID: {post.plantId}</p>
+                        <p>Created at: {post.createdAt}</p>
+                        <p>Updated at: {post.updatedAt}</p>
                     </div>
                 </Link>
             ))}
