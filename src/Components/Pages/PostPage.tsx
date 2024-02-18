@@ -30,7 +30,6 @@ const PostPage: React.FC = () => {
             <h1>{post.title}</h1>
             <h2>{ownerName}</h2>
             <p>{post.body}</p>
-            <img src={post.image} alt={post.title} />
             <h2>Plant Information</h2>
             <p>Plant ID: {post.plant_id}</p>
             <h2>Comments</h2>
