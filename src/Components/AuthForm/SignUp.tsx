@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import './AuthForm.css';
+import '../../Styles/AuthForm.css';
 
 interface LoginProps {
     onSwitch: () => void;
 }
 
-function SignIn({ onSwitch }: LoginProps) {
+function SignUp({ onSwitch }: LoginProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -85,4 +85,4 @@ function SignIn({ onSwitch }: LoginProps) {
     );
 }
 
-export default SignIn;
+export default SignUp;

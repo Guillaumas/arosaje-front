@@ -9,7 +9,7 @@ const StyledNav = styled.nav`
     padding: 10px;
     display: flex;
     justify-content: space-around;
-    position: absolute;
+    position: relative;
     top: 0;
     z-index: 100;
     width: 100%;

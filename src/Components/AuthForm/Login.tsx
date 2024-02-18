@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AuthForm.css';
+import '../../Styles/AuthForm.css';
 import {useAuth} from "../../Contexts/AuthContext";
 
 interface LoginProps {
@@ -35,7 +35,6 @@ function Login({ onSwitch }: LoginProps) {
             setJwtToken(data);
             navigate('/');
         } else {
-            // Gérez l'erreur de connexion ici
             const errorData = await response.json();
             setUsernameError(errorData.message);
         }
