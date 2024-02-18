@@ -1,43 +1,54 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './AuthForm.css';
+import React, {useContext, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import '../../Styles/AuthForm.css';
 import {useAuth} from "../../Contexts/AuthContext";
+import {AuthFormContext} from "../../Contexts/AuthFormContext";
+import {AuthService} from "../../Services/AuthService";
 
-interface LoginProps {
-    onSwitch: () => void;
-}
 
-function Login({ onSwitch }: LoginProps) {
-    const [username, setUsername] = useState('');
+function Login() {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [usernameError, setUsernameError] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const {setIsAuthFormLogin} = useContext(AuthFormContext);
 
     const navigate = useNavigate();
-    const { setJwtToken } = useAuth();
+    const {setJwtToken} = useAuth();
+
+    const checkAllInput = () => {
+        return email !== '' && password !== '';
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        setUsernameError('');
+        setEmailError('');
         setPasswordError('');
 
-        const response = await fetch('/api/auth/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
+        if (password.trim() === '') {
+            setPasswordError('Password is required');
+            return;
+        }
 
-        if (response.ok) {
+        if (email.trim() === '') {
+            setEmailError('Email is required');
+            return;
+        }
+
+        try {
+            const response = await AuthService.login(email, password);
+
+            if (!response.ok) {
+                throw new Error('Failed to log in');
+            }
+
             const data = await response.json();
-            setJwtToken(data);
+            setJwtToken(data.token);
             navigate('/');
-        } else {
-            // Gérez l'erreur de connexion ici
-            const errorData = await response.json();
-            setUsernameError(errorData.message);
+        } catch (error) {
+            setEmailError('Failed to log in');
+            setPasswordError('Failed to log in');
         }
     };
 
@@ -49,12 +60,12 @@ function Login({ onSwitch }: LoginProps) {
             <div className="form-container">
                 <form onSubmit={handleSubmit} className="login-form">
                     <label>
-                        Username <sup style={{fontSize: '0.6em'}}>*</sup>
+                        Email Adress <sup style={{fontSize: '0.6em'}}>*</sup>
                         <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            style={usernameError ? {border: '1px solid red'} : {}}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={emailError ? {border: '1px solid red'} : {}}
                         />
                     </label>
                     <label>
@@ -66,10 +77,10 @@ function Login({ onSwitch }: LoginProps) {
                             style={passwordError ? {border: '1px solid red'} : {}}
                         />
                     </label>
-                    <input type="submit" value="Log In" className="button-connect"/>
+                    <input type="submit" value="Log In" className="button-connect" disabled={!checkAllInput()}/>
                     <div className="login-text">
                         <span className="text-account-question">Don't have an account ? </span>
-                        <span className="text-switch-log" onClick={onSwitch}>Sign up</span>
+                        <button onClick={() => setIsAuthFormLogin(false)}>Sign Up</button>
                     </div>
                     <div className="text-asterisk">
                         * Champs obligatoires

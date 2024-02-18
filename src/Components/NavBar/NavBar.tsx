@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import Popup from '../PopupSettings/popup';
 
@@ -9,7 +9,7 @@ const StyledNav = styled.nav`
     padding: 10px;
     display: flex;
     justify-content: space-around;
-    position: absolute;
+    position: relative;
     top: 0;
     z-index: 100;
     width: 100%;
@@ -31,6 +31,12 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+
+    const location = useLocation();
+
+    if (location.pathname === '/login') {
+        return null;
+    }
 
     const handleReset = () => {
         document.documentElement.style.setProperty('--color1', '#48806c');

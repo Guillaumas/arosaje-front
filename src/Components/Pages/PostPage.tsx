@@ -1,14 +1,48 @@
-import react from "react";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { AnnounceService } from '../../Services/AnnounceService';
+import { UserService } from '../../Services/UserService';
+import { Announce } from '../../Interfaces/Announce';
 
-const Post = () => {
+const PostPage: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
+    const [post, setPost] = useState<Announce | null>(null);
+    const [ownerName, setOwnerName] = useState<string | null>(null);
+    const [status, setStatus] = useState<string | null>(null);
+
+    useEffect(() => {
+        AnnounceService.fetchAnnounceById(Number(id))
+            .then((announce) => {
+                setPost(announce);
+                UserService.fetchUserById(announce.announcer_id)
+                    .then((user) => setOwnerName(user.name))
+                    .catch((error) => console.error(error));
+            })
+            .catch((error) => console.error(error));
+    }, [id]);
+
+    if (!post) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
-            {/* Contenu de la page du profil ici */}
+            <h1>{post.title}</h1>
+            <h2>{ownerName}</h2>
+            <p>{post.body}</p>
+            <img src={post.image} alt={post.title} />
+            <h2>Plant Information</h2>
+            <p>Plant ID: {post.plant_id}</p>
+            <h2>Comments</h2>
+            <p>Owner: {ownerName}</p>
+            <p>Date: {post.created_at}</p>
+            <p>Status: {status}</p>
+            <button>Contact Owner</button>
         </div>
     );
-}
+};
 
-export default Post;
+export default PostPage;
 
 
 
@@ -24,3 +58,4 @@ export default Post;
 //todo 4 affichage du nom du proprietaire du post
 //todo 5 affichage de la date de publication
 //todo 6 affichage du statut
+//todo 7 affichage d'un bouton de contact du proprietaire (posteur de l'annonce)
