@@ -88,5 +88,25 @@ export const PlantService = {
                 console.error('Error fetching plants:', error);
                 return [];
             });
+    },
+
+    fetchPlantById(id: number): Promise<Plant> {
+        return fetchFromAPI(`plants/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data === null) {
+                    throw new Error('No data returned from API');
+                }
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching plant:', error);
+                return null;
+            });
     }
 };

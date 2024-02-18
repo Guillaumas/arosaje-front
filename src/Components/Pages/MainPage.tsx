@@ -43,8 +43,8 @@ const MainPage = () => {
 
         const newConversation = {
             id: 0,
-            user1_id: user1id,
-            user2_id: ownerId
+            user1Id: user1id,
+            user2Id: ownerId
         };
         await ConversationService.createConversation(newConversation);
     };
@@ -109,12 +109,12 @@ const MainPage = () => {
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
                         <h2 className="postTitle">{post.title}</h2>
-                        <p className="postDate">Date: {post.start_date}</p>
-                        <p className="postAuthor">Author: {post.announcer_id}</p>
+                        <p className="postDate">Date: {post.startDate}</p>
+                        <p className="postAuthor">Author: {post.announcerId}</p> {/*todo fetch user name*/}
                         <p className="postComment">Comment: {post.body}</p>
                         <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
                         <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
-                        {user && <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>}
+                        {user && <button onClick={() => handleContactPostOwner(post.announcerId)}>Contact</button>}
                     </div>
                 </Link>
             ))}

@@ -1,13 +1,13 @@
 export interface User {
     id: number;
     country: string;
-    role_id: number;
-    last_name: string;
-    first_name: string;
+    roleId: number;
+    lastName: string;
+    firstName: string;
     username: string;
-    zip_code: string;
-    street_name: string;
-    street_number: number;
+    zipCode: string;
+    streetName: string;
+    streetNumber: number;
     city: string;
-    birt_date: string;
+    birthDate: string;
 }

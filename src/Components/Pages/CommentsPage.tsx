@@ -7,8 +7,8 @@ interface Comment {
     entity_id: number;
     user_id: number;
     body: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 const CommentsPage = () => {
@@ -33,8 +33,8 @@ const CommentsPage = () => {
             entity_id: 1,
             user_id: 1,
             body: newComment,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
         };
 
 
@@ -65,7 +65,7 @@ const CommentsPage = () => {
             {comments.map((comment) => (
                 <div key={comment.id}>
                     <p>Comment: {comment.body}</p>
-                    <p>Date: {comment.created_at}</p>
+                    <p>Date: {comment.createdAt}</p>
                 </div>
             ))}
             <button onClick={() => setNewComment('')}>Add Comment</button>

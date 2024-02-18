@@ -106,71 +106,70 @@ function SignUp() {
     };
 
     return (
-        <div className="login-background">
-            <div className="form-container">
-                <form onSubmit={handleSignUp} className="login-form">
-                    <label>
-                        Prénom
-                        <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}/>
-                    </label>
-                    <label>
-                        Nom
-                        <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}/>
-                    </label>
-                    <label>
-                        Pays
-                        <input type="text" value={country} onChange={e => setCountry(e.target.value)}/>
-                    </label>
-                    <label>
-                        Code postal
-                        <input type="text" value={zipCode} onChange={e => setZipCode(e.target.value)}/>
-                    </label>
-                    <label>
-                        Nom de la rue
-                        <input type="text" value={streetName} onChange={e => setStreetName(e.target.value)}/>
-                    </label>
-                    <label>
-                        Numéro de rue
-                        <input type="number" value={streetNumber}
-                               onChange={e => setStreetNumber(Number(e.target.value))}/>
-                    </label>
-                    <label>
-                        Ville
-                        <input type="text" value={city} onChange={e => setCity(e.target.value)}/>
-                    </label>
-                    <label>
-                        Date de naissance
-                        <input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)}/>
-                    </label>
-                    <label>
-                        Nom d'utilisateur <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input type="text" value={username} onChange={e => setUsername(e.target.value)}/>
-                    </label>
-                    <label>
-                        Mot de passe <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                    </label>
-                    <label>
-                        Email <sup style={{fontSize: '0.6em'}}>*</sup>
-                        <input type="email" value={email} onChange={e => setEmail(e.target.value)}/>
-                    </label>
-                    <input type="submit" value="Sign Up" className="button-connect"/>
-                    <div className="login-text">
-                        Vous avez déjà un compte ? <span onClick={() => setIsAuthFormLogin(true)}>Connectez-vous</span>
-                    </div>
-                    <div className="text-asterisk">
-                        * Champs obligatoires
-                    </div>
-                    <div className="text-rights">
-                        En vous inscrivant, vous acceptez nos Conditions générales. Découvrez comment nous recueillons,
-                        utilisons et partageons vos données en lisant notre Politique de confidentialité et comment nous
-                        utilisons les cookies et autres technologies similaires dans notre Politique en matière de
-                        cookies.
-                    </div>
-                </form>
-            </div>
+    <div className="login-background">
+        <div className="form-container">
+            <form onSubmit={handleSignUp} className="login-form">
+                <label>
+                    First Name
+                    <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}/>
+                </label>
+                <label>
+                    Last Name
+                    <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}/>
+                </label>
+                <label>
+                    Country
+                    <input type="text" value={country} onChange={e => setCountry(e.target.value)}/>
+                </label>
+                <label>
+                    Zip Code
+                    <input type="text" value={zipCode} onChange={e => setZipCode(e.target.value)}/>
+                </label>
+                <label>
+                    Street Name
+                    <input type="text" value={streetName} onChange={e => setStreetName(e.target.value)}/>
+                </label>
+                <label>
+                    Street Number
+                    <input type="number" value={streetNumber}
+                           onChange={e => setStreetNumber(Number(e.target.value))}/>
+                </label>
+                <label>
+                    City
+                    <input type="text" value={city} onChange={e => setCity(e.target.value)}/>
+                </label>
+                <label>
+                    Birth Date
+                    <input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)}/>
+                </label>
+                <label>
+                    Username <sup style={{fontSize: '0.6em'}}>*</sup>
+                    <input type="text" value={username} onChange={e => setUsername(e.target.value)}/>
+                </label>
+                <label>
+                    Password <sup style={{fontSize: '0.6em'}}>*</sup>
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
+                </label>
+                <label>
+                    Email <sup style={{fontSize: '0.6em'}}>*</sup>
+                    <input type="email" value={email} onChange={e => setEmail(e.target.value)}/>
+                </label>
+                <input type="submit" value="Sign Up" className="button-connect"/>
+                <div className="login-text">
+                    Already have an account? <button onClick={() => setIsAuthFormLogin(true)}>Log in</button>
+                </div>
+                <div className="text-asterisk">
+                    * Required fields
+                </div>
+                <div className="text-rights">
+                    By signing up, you agree to our Terms and Conditions. Learn how we collect,
+                    use and share your data by reading our Privacy Policy and how we
+                    use cookies and similar technologies in our Cookie Policy.
+                </div>
+            </form>
         </div>
-    );
+    </div>
+);
 }
 
 export default SignUp;

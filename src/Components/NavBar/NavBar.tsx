@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import Popup from '../PopupSettings/popup';
+import {AuthContext} from "../../Contexts/AuthContext";
 
 
 const StyledNav = styled.nav`
@@ -31,6 +32,7 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const user = useContext(AuthContext);
 
     const location = useLocation();
 
@@ -75,9 +77,15 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     {isPopupOpen &&
                         <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
                 </StyledLi>
-                <StyledLi>
-                    <Link to="/login">Login</Link>
-                </StyledLi>
+                {user ? (
+                    <li>
+                        <Link to="/logout">Logout</Link>
+                    </li>
+                ) : (
+                    <li>
+                        <Link to="/login">Login</Link>
+                    </li>
+                )}
                 <StyledLi>
                     <Link to="/recherche">Recherche</Link>
                 </StyledLi>

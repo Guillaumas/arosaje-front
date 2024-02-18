@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import { AnnounceService } from '../../Services/AnnounceService';
 import { UserService } from '../../Services/UserService';
 import { Announce } from '../../Interfaces/Announce';
+import {PlantService} from "../../Services/PlantService";
+import {Plant} from "../../Interfaces/Plant";
 
 const PostPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [post, setPost] = useState<Announce | null>(null);
     const [ownerName, setOwnerName] = useState<string | null>(null);
-    const [status, setStatus] = useState<string | null>(null);
+    const [plant, setPlant] = useState<Plant | null>(null);
+
 
     useEffect(() => {
         AnnounceService.fetchAnnounceById(Number(id))
             .then((announce) => {
                 setPost(announce);
-                UserService.fetchUserById(announce.announcer_id)
-                    .then((user) => setOwnerName(user.name))
+                UserService.fetchUserById(announce.announcerId)
+                    .then((user) => setOwnerName(user.username))
+                    .catch((error) => console.error(error));
+                PlantService.fetchPlantById(announce.plantId)
+                    .then((plant) => setPlant(plant))
                     .catch((error) => console.error(error));
             })
             .catch((error) => console.error(error));
@@ -31,12 +37,13 @@ const PostPage: React.FC = () => {
             <h2>{ownerName}</h2>
             <p>{post.body}</p>
             <h2>Plant Information</h2>
-            <p>Plant ID: {post.plant_id}</p>
+            <p>Plant ID: {post.plantId}</p>
             <h2>Comments</h2>
             <p>Owner: {ownerName}</p>
-            <p>Date: {post.created_at}</p>
-            <p>Status: {status}</p>
+            <p>Date: {post.createdAt}</p>
+            <p>Status: {plant?.currentState}</p>
             <button>Contact Owner</button>
+            <Link to={`/plants/${plant?.id}`}>View Plant</Link>
         </div>
     );
 };
