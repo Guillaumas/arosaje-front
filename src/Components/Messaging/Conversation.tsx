@@ -105,11 +105,10 @@ const Conversation: React.FC = () => {
                 isFromCurrentUser: true, // This should be dynamically determined
                 conversationId: selectedConversation.id, // Make sure your message format aligns with your backend
                 createdAt: new Date().toISOString(),
+                destination: selectedConversation.recipient.name,
             };
 
             // Send the message via WebSocket
-            MessageService.sendMessage("/app/private-message", message); // Adjust destination as needed
-            setNewMessage('');
         }
     };
 
