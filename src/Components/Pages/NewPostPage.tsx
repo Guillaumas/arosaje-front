@@ -3,14 +3,11 @@ import '../../Styles/NewPostPage.css';
 
 const NewPost = ({onClose}: { onClose?: () => void }) => {
     const [formData, setFormData] = useState({
-        plantName: '',
-        species: '',
-        images: [] as File[],
-        plantingDate: '',
+        plantId: '',
+        startDate: '',
+        endDate: '',
         description: '',
-        image: null as File | null
     });
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
@@ -18,21 +15,6 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
             ...prevFormData,
             [name]: value
         }));
-    };
-
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData({
-                ...formData,
-                image: e.target.files[0],
-            });
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreviews(prevImagePreviews => [...prevImagePreviews, reader.result as string]);
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -45,21 +27,17 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
         console.log('Form data ready to be submitted:', formData);
 
         setFormData({
-            plantName: '',
-            species: '',
-            images: [],
-            plantingDate: '',
+            plantId: '',
+            startDate: '',
+            endDate: '',
             description: '',
-            image: null as File | null
-
         });
-        setImagePreviews([]);
 
         if (onClose) onClose();
     };
 
     const validateForm = (): boolean => {
-        return formData.species.trim() !== '' && formData.images.length > 0;
+        return formData.plantId !== '' && formData.startDate !== '' && formData.endDate !== '';
     };
 
     const handleCancel = () => {
@@ -68,31 +46,20 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
 
     const handleClearForm = () => {
         setFormData({
-            plantName: '',
-            species: '',
-            images: [],
-            plantingDate: '',
+            plantId: '',
+            startDate: '',
+            endDate: '',
             description: '',
-            image: null as File | null
         });
-        setImagePreviews([]);
     };
 
     return (
         <div className="newPostContainer">
             <form onSubmit={handleSubmit} className="newPostForm">
-                <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName}
-                       onChange={handleInputChange} className="newPostInput"/>
-                <input type="text" name="species" placeholder="Species" value={formData.species}
-                       onChange={handleInputChange} required className="newPostInput"/>
-                <input type="file" name="images" accept="image/*" onChange={handleImageChange} multiple required
-                       className="newPostInput"/>
-                {imagePreviews.map((preview, index) => <img key={index} src={preview} alt="Preview"
-                                                            className="newPostImagePreview"/>)}
-                <input type="date" name="plantingDate" value={formData.plantingDate} onChange={handleInputChange}
-                       className="newPostInput"/>
-                <textarea name="description" placeholder="Description" value={formData.description}
-                          onChange={handleInputChange} className="newPostTextarea"/>
+                <input type="text" name="plantId" placeholder="Plant ID" value={formData.plantId} onChange={handleInputChange} className="newPostInput" required/>
+                <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="newPostInput" required/>
+                <input type="date" name="endDate" value={formData.endDate} onChange={handleInputChange} className="newPostInput" required/>
+                <textarea name="description" placeholder="Description" value={formData.description} onChange={handleInputChange} className="newPostTextarea"/>
                 <button type="submit" className="newPostButton">Submit</button>
                 <button type="button" onClick={handleCancel} className="newPostButton">Cancel</button>
                 <button type="button" onClick={handleClearForm} className="newPostButton">Clear</button>

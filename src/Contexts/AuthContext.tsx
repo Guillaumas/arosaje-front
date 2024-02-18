@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem('jwtToken'));
 
     useEffect(() => {
-        // Attempt to initialize the user from localStorage directly
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
@@ -42,7 +41,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             setUser(data.user);
             setJwtToken(data.jwtToken);
         } else {
-            // Clear user and jwtToken from both context and localStorage
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('user');
             setUser(null);

@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import '../../Styles/App.css';
 import {ConversationContext} from "./ConversationContext";
 import {MessageService} from "../../Services/MessageService";
-
-
+import {Conversation} from "../../Interfaces/Conversation";
 export interface IRecipient {
     name: string;
     photoUrl: string;
@@ -61,9 +60,6 @@ const Conversation: React.FC = () => {
         MessageService.connect(
             () => console.log('WebSocket connected'),
             (message) => {
-                // Handle received message
-                // You need to determine if the incoming message belongs to the current conversation
-                // This is a simplified example
                 if (selectedConversation && message.conversationId === selectedConversation.id) {
                     // @ts-ignore
                     setSelectedConversation((prevConversation) => {
@@ -97,18 +93,17 @@ const Conversation: React.FC = () => {
     const handleNewMessageSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (selectedConversation) {
-            // Assume you have a method to determine if the user is sender or recipient
             const message = {
-                id: 0, // This should be dynamically set
-                senderId: 0, // This should be dynamically set
+                id: 0,
+                senderId: 0,
                 content: newMessage,
-                isFromCurrentUser: true, // This should be dynamically determined
-                conversationId: selectedConversation.id, // Make sure your message format aligns with your backend
+                isFromCurrentUser: true,
+                conversationId: selectedConversation.id,
                 createdAt: new Date().toISOString(),
             };
 
             // Send the message via WebSocket
-            MessageService.sendMessage("/app/private-message", message); // Adjust destination as needed
+            MessageService.sendMessage("/app/private-message", message);
             setNewMessage('');
         }
     };

@@ -2,10 +2,8 @@ import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {Link} from 'react-router-dom';
 import NewPost from "./NewPostPage";
 import '../../Styles/MainPage.css'
-import {AnnounceService} from "../../Services/AnnounceService";
 import { ConversationService } from "../../Services/ConversationService";
 import { Announce } from "../../Interfaces/Announce";
-import {AuthContext} from "../../Contexts/AuthContext";
 import {ANNOUNCES} from "../../routes";
 
 
