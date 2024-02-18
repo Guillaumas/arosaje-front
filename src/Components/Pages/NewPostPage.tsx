@@ -59,7 +59,8 @@ const NewPost = ({onClose}: { onClose?: () => void }) => {
     };
 
     const validateForm = (): boolean => {
-        return formData.species.trim() !== '' && formData.images.length > 0;
+        // return formData.species.trim() !== '' && formData.images.length > 0;
+        return true;
     };
 
     const handleCancel = () => {
