@@ -6,6 +6,8 @@ nav{
     z-index: 100;
     width: 100%;
     box-sizing: border-box;
+    padding: 10px 0;
+    border-bottom: 1px solid #818181;
 }
 
 ul{
@@ -14,6 +16,7 @@ ul{
     align-items: center; /* Centre verticalement les éléments de la liste */
     justify-content: space-between;
     width: 100%;
+    margin: 0;
 }
 
 li{
@@ -32,10 +35,10 @@ li a{
 
 .fa-solid{
     color: #48806C;
-    font-size: 3em;
+    font-size: 2em;
 }
 
 .logo{
-    width: 150px;
+    width: 5em;
     height: auto;
 }
