@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import '../../Styles/AuthForm.css';
 import {useAuth} from "../../Contexts/AuthContext";
 import {AuthFormContext} from "../../Contexts/AuthFormContext";
+import {AuthService} from "../../Services/AuthService";
 
 
 function Login() {
@@ -25,30 +26,29 @@ function Login() {
         setEmailError('');
         setPasswordError('');
 
-
         if (password.trim() === '') {
             setPasswordError('Password is required');
+            return;
         }
 
         if (email.trim() === '') {
             setEmailError('Email is required');
+            return;
         }
 
-        const response = await fetch('/api/auth/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({email, password}),
-        });
+        try {
+            const response = await AuthService.login(email, password);
 
-        if (response.ok) {
+            if (!response.ok) {
+                throw new Error('Failed to log in');
+            }
+
             const data = await response.json();
-            setJwtToken(data);
+            setJwtToken(data.token);
             navigate('/');
-        } else {
-            const errorData = await response.json();
-            setEmailError(errorData.message);
+        } catch (error) {
+            setEmailError('Failed to log in');
+            setPasswordError('Failed to log in');
         }
     };
 
