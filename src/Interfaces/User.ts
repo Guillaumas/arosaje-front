@@ -7,5 +7,7 @@ export interface User {
     username: string;
     zip_code: string;
     street_name: string;
+    street_number: number;
     city: string;
+    birt_date: string;
 }
