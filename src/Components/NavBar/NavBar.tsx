@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import Popup from '../PopupSettings/popup';
+import {AuthContext} from "../../Contexts/AuthContext";
 import '../../Styles/NavBar.css';
 import logo from "../../assets/images/logo.png";
 
@@ -11,6 +12,7 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const user = useContext(AuthContext);
 
     const location = useLocation();
 
@@ -59,9 +61,15 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                         {isPopupOpen &&
                             <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
                     </li>
-                    <li>
-                        <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
-                    </li>
+                    {user ? (
+                        <li>
+                            <Link to="/logout"><span className="fa-solid fa-power-off"></Link>
+                        </li>
+                    ) : (
+                        <li>
+                            <Link to="/login"><span className="fa-solid fa-power-off"></Link>
+                        </li>
+                    )}
                 </div>
             </ul>
         </nav>

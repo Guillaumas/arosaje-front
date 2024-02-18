@@ -8,7 +8,6 @@ export interface Announce {
     endDate: string;
     createdAt: string;
     updatedAt: string;
-    image: string;
 }
 
 export interface AnnounceSearchCriteria {

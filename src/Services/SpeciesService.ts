@@ -69,5 +69,24 @@ export const SpeciesService = {
             .catch(error => {
                 console.error('Error deleting species:', error);
             });
+    },
+    fetchSpeciesById(id: number): Promise<Species> {
+        return fetchFromAPI(`species/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data === null) {
+                    throw new Error('No data returned from API');
+                }
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching species by ID:', error);
+                return null;
+            });
     }
 }

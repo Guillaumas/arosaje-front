@@ -111,7 +111,7 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
             <form onSubmit={handleSubmit} className="newPostForm">
                 <input type="text" name="plantName" placeholder="Plant Name" value={formData.plantName}
                        onChange={handleInputChange} className="newPostInput"/>
-                <select name="species_id" onChange={handleSpeciesChange} required className="newPostInput">
+                <select name="speciesId" onChange={handleSpeciesChange} required className="newPostInput">
                     {species.map(specie => (
                         <option key={specie.id} value={specie.id}>
                             {specie.name}

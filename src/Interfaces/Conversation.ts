@@ -1,5 +1,5 @@
 export interface Conversation {
     id: number;
-    user1_id: number;
-    user2_id: number;
+    user1Id: number;
+    user2Id: number;
 }

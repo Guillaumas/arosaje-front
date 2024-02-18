@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef, useCallback, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import NewPost from "./NewPostPage";
 import '../../Styles/MainPage.css'
 import { ConversationService } from "../../Services/ConversationService";
 import { Announce } from "../../Interfaces/Announce";
 import {ANNOUNCES} from "../../routes";
+import {AuthContext} from "../../Contexts/AuthContext";
+
 
 
 const MainPage = () => {
@@ -14,7 +16,7 @@ const MainPage = () => {
     const [error, setError] = useState<Error | null>(null);
     const [isAddingPost, setIsAddingPost] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
-    const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).id : null;
+    const { user } = useContext(AuthContext);
 
     const fetchPosts = () => {
         console.log('Fetching posts...')
@@ -37,12 +39,12 @@ const MainPage = () => {
         console.log('Posts fetched!', posts)
     };
     const handleContactPostOwner = async (ownerId: number) => {
-        const user1id = currentUser
+        const user1id = user?.id ? user?.id : 0;
 
         const newConversation = {
             id: 0,
-            user1_id: user1id,
-            user2_id: ownerId
+            user1Id: user1id,
+            user2Id: ownerId
         };
         await ConversationService.createConversation(newConversation);
     };
@@ -50,6 +52,7 @@ const MainPage = () => {
 
     const handleOpenNewPostForm = () => {
         setIsAddingPost(true);
+        console.log(user, typeof user)
     };
 
     const handleCloseNewPostForm = () => {
@@ -90,14 +93,18 @@ const MainPage = () => {
 
     return (
         <div className="mainPage">
-            <button onClick={handleOpenNewPostForm} className="addPostButton">
-                <p>Create post :</p>
-                <span className='fa-solid fa-plus'></span>
-            </button>
-            {isAddingPost && (
-                <div className="newPostFormContainer">
-                    <button onClick={handleCloseNewPostForm} className="cancelButton">Cancel</button>
-                </div>
+            {user && (
+                <>
+                    <button onClick={handleOpenNewPostForm} className="addPostButton">
+                      <p>Create post :</p>
+                      <span className='fa-solid fa-plus'></span>
+                    </button>
+                    {isAddingPost && (
+                        <div className="newPostFormContainer">
+                            <NewPost onClose={handleCloseNewPostForm}/>
+                        </div>
+                    )}
+                </>
             )}
 
             {posts.map((post, index) => (
@@ -113,7 +120,7 @@ const MainPage = () => {
                                 <h2 className="postTitle">{post.title}</h2>
                                 <p className="postBody">Description :</p>
                                 <p className="postBody">{post.body}</p>
-                                {currentUser && <button onClick={() => handleContactPostOwner(post.announcerId)} className='postContact'>Contact</button>}
+                                {user && <button onClick={() => handleContactPostOwner(post.announcerId)} className='postContact'>Contact</button>}
                             </div>
                             <img src={post.image} alt={post.title} className="postImage"/>
                         </div>

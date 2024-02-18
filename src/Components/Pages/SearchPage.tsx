@@ -46,7 +46,6 @@ const SearchPage = () => {
                         <p>{post.body}</p>
                         <p>Start Date: {post.startDate}</p>
                         <p>End Date: {post.endDate}</p>
-                        <img src={post.image} alt={post.title} />
                         <p>Announcer ID: {post.announcerId}</p>
                         <p>Plant ID: {post.plantId}</p>
                         <p>Created at: {post.createdAt}</p>
