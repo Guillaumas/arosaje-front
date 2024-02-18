@@ -90,7 +90,10 @@ const MainPage = () => {
 
     return (
         <div className="mainPage">
-            <button onClick={handleOpenNewPostForm} className="addPostButton">Add Post</button>
+            <button onClick={handleOpenNewPostForm} className="addPostButton">
+                <p>Create post :</p>
+                <span className='fa-solid fa-plus'></span>
+            </button>
             {isAddingPost && (
                 <div className="newPostFormContainer">
                     <button onClick={handleCloseNewPostForm} className="cancelButton">Cancel</button>
@@ -101,14 +104,20 @@ const MainPage = () => {
                 <Link to={`/announce/${post.id}`} key={post.id} className="postLink">
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
-                        <img src={post.image} alt={post.title} className="postImage"/>
-                        <h2 className="postTitle">{post.title}</h2>
-                        <p className="postDate">Date: {post.start_date}</p>
-                        <p className="postAuthor">Author: {post.announcer_id}</p>
-                        <p className="postComment">Comment: {post.body}</p>
-                        <Link to={`/post/${post.id}`} className="viewPostLink">View Post</Link>
-                        <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link>
-                        {currentUser && <button onClick={() => handleContactPostOwner(post.announcer_id)}>Contact</button>}
+                        <div className="header">
+                            <p className="postAuthor">{post.announcer_id}</p>
+                            <p className="postDate">{post.start_date} - {post.end_date}</p>
+                        </div>
+                        <div className="content">
+                            <div className="text">
+                                <h2 className="postTitle">{post.title}</h2>
+                                <p className="postBody">Description :</p>
+                                <p className="postBody">{post.body}</p>
+                                {currentUser && <button onClick={() => handleContactPostOwner(post.announcer_id)} className='postContact'>Contact</button>}
+                            </div>
+                            <img src={post.image} alt={post.title} className="postImage"/>
+                        </div>
+                        {/* <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link> */}
                     </div>
                 </Link>
             ))}
