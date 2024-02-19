@@ -46,7 +46,7 @@ const MainPage = () => {
             user1Id: user1id,
             user2Id: ownerId
         };
-        await ConversationService.createConversation(newConversation);
+        //await ConversationService.createConversation(newConversation);
     };
 
 
@@ -122,7 +122,7 @@ const MainPage = () => {
                                 <p className="postBody">{post.body}</p>
                                 {user && <button onClick={() => handleContactPostOwner(post.announcerId)} className='postContact'>Contact</button>}
                             </div>
-                            <img src={post.image} alt={post.title} className="postImage"/>
+
                         </div>
                         {/* <Link to={`/post/${post.id}/comments`} className="viewCommentsLink">View Comments</Link> */}
                     </div>

@@ -12,7 +12,7 @@ const PostPage: React.FC = () => {
     const [post, setPost] = useState<Announce | null>(null);
     const [ownerName, setOwnerName] = useState<string | null>(null);
     const [plant, setPlant] = useState<Plant | null>(null);
-
+    const [user, setUser] = useState<any | null>(null);
 
     useEffect(() => {
         AnnounceService.fetchAnnounceById(Number(id))
@@ -24,10 +24,23 @@ const PostPage: React.FC = () => {
                 PlantService.fetchPlantById(announce.plantId)
                     .then((plant) => setPlant(plant))
                     .catch((error) => console.error(error));
-                PlantService.fetchPlantById(announce.plantId)
             })
             .catch((error) => console.error(error));
     }, [id]);
+
+    const handleContactPostOwner = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        if (!post) return;
+        const ownerId = post.announcerId;
+        const user1id = user?.id ? user?.id : 0;
+
+        const newConversation = {
+            id: 0,
+            user1Id: user1id,
+            user2Id: ownerId
+        };
+        //await ConversationService.createConversation(newConversation);
+    };
 
     if (!post) {
         return <div>Loading...</div>;
@@ -41,15 +54,15 @@ const PostPage: React.FC = () => {
                     <div className="header">
                         <h2>{ownerName}</h2>
                         <p className="postDate">{post.startDate} - {post.endDate}</p>
-                        <p>{status}</p>
+                        <p>Status : {plant?.currentState}</p>
                     </div>
                     <div className="content">
                         <div className="text">
                             <h1 className='postTitle'>{post.title}</h1>
                             <p>{post.body}</p>
-                            <button>Contact Owner</button>
+                            <button onClick={handleContactPostOwner}>Contact Owner</button>
+                            <Link to={`/plants/${plant?.id}`}>View Plant</Link>
                         </div>
-                        <img src={post.image} alt={post.title} className="postImage"/>
                     </div>
                     <div className="comment">
                         <h2>Comments</h2>

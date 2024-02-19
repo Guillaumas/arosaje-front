@@ -1,8 +1,8 @@
 import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import '../../Styles/NewPostPage.css';
-import { PlantService } from '../../Services/PlantService';
-import { SpeciesService } from '../../Services/SpeciesService';
-import { Species } from '../../Interfaces/Species';
+import {PlantService} from '../../Services/PlantService';
+import {SpeciesService} from '../../Services/SpeciesService';
+import {Species} from '../../Interfaces/Species';
 
 const NewPlant = ({onClose}: { onClose?: () => void }) => {
     const [formData, setFormData] = useState({
@@ -53,38 +53,58 @@ const NewPlant = ({onClose}: { onClose?: () => void }) => {
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!validateForm()) {
-            alert('Please fill in all required fields.');
-            return;
-        }
+    e.preventDefault();
 
-        const newPlant = {
-            id: 0,
-            ownerId: JSON.parse(localStorage.getItem('user') as string).id,
-            currentState: "none",
-            speciesId: formData.speciesId,
-        };
+    if (!validateForm()) {
+        alert('Please fill in all required fields.');
+        return;
+    }
 
-        try {
-            const createdPlant = await PlantService.createPlant(newPlant);
-            console.log('Created plant:', createdPlant);
-        } catch (error) {
-            console.error('Error creating plant:', error);
-        }
-
-        setFormData({
-            plantName: '',
-            speciesId: 0,
-            images: [],
-            plantingDate: '',
-            description: '',
-            image: null as File | null
-        });
-        setImagePreviews([]);
-
-        if (onClose) onClose();
+    const newPlant = {
+        id: 0,
+        ownerId: JSON.parse(localStorage.getItem('user') as string).id,
+        currentState: "none",
+        speciesId: formData.speciesId,
     };
+
+    try {
+        const response = await PlantService.createPlant(newPlant);
+        if (response) {
+            const uploadData = new FormData();
+            if (formData.image) {
+                uploadData.append("file", formData.image);
+                uploadData.append("entityId", response.id.toString());
+                uploadData.append("userId", newPlant.ownerId.toString());
+
+                const uploadResponse = await fetch('http://localhost:8080/api/medias/upload/plant', {
+                    method: 'POST',
+                    body: uploadData,
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await uploadResponse.text();
+                console.log(result);
+            }
+        }
+    } catch (error) {
+        console.error('Error during the file upload:', error);
+    }
+
+    setFormData({
+        plantName: '',
+        speciesId: 0,
+        images: [],
+        plantingDate: '',
+        description: '',
+        image: null
+    });
+    setImagePreviews([]);
+
+    if (onClose) onClose();
+};
 
     const validateForm = (): boolean => {
         return formData.speciesId !== 0 && formData.images.length > 0;

@@ -5,7 +5,6 @@ import {AuthContext} from "../../Contexts/AuthContext";
 import '../../Styles/NavBar.css';
 import logo from "../../assets/images/logo.png";
 
-
 interface NavBarProps {
     onSettingsClick: () => void;
 }
@@ -63,11 +62,11 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     </li>
                     {user ? (
                         <li>
-                            <Link to="/logout"><span className="fa-solid fa-power-off"></Link>
+                            <Link to="/logout"><span className="fa-solid fa-power-off"></span></Link>
                         </li>
                     ) : (
                         <li>
-                            <Link to="/login"><span className="fa-solid fa-power-off"></Link>
+                            <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
                         </li>
                     )}
                 </div>
@@ -77,6 +76,3 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
 };
 
 export default NavBar;
-
-
-//todo affichage de la navbar responsive
