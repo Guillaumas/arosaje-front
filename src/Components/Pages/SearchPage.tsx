@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ANNOUNCES, generateSearchURL } from '../../routes';
 import { Announce, AnnounceSearchCriteria } from '../../Interfaces/Announce';
 import {Link} from "react-router-dom";
+import "../../Styles/SearchPage.css";
 
 const SearchPage = () => {
     const [searchCriteria, setSearchCriteria] = useState<AnnounceSearchCriteria>({});
@@ -29,10 +30,10 @@ const SearchPage = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSearchSubmit}>
-                <input type="text" value={searchText} onChange={handleSearchTextChange} placeholder="Search..." />
-                <select onChange={handleCriteriaChange}>
+        <div className='searchPage'>
+            <form onSubmit={handleSearchSubmit} className='formSearch'>
+                <input type="text" value={searchText} onChange={handleSearchTextChange} placeholder="Search..." className='formSearchInput'/>
+                <select onChange={handleCriteriaChange} className='formSearchSelect'>
                     <option value="">Select a category...</option>
                     <option value="startDate">Start Date</option>
                     <option value="title">Title</option>
@@ -40,22 +41,24 @@ const SearchPage = () => {
                     <option value="plantId">Plant ID</option>
                     <option value="endDate">End Date</option>
                 </select>
-                <button type="submit">Search</button>
+                <button type="submit" className='formSearchButton'>Search</button>
             </form>
-            {results.map(post => (
-                <Link to={`/announce/${post.id}`} key={post.id}>
-                    <div key={post.id}>
-                        <h2>{post.title}</h2>
-                        <p>{post.body}</p>
-                        <p>Start Date: {post.startDate}</p>
-                        <p>End Date: {post.endDate}</p>
-                        <p>Announcer ID: {post.announcerId}</p>
-                        <p>Plant ID: {post.plantId}</p>
-                        <p>Created at: {post.createdAt}</p>
-                        <p>Updated at: {post.updatedAt}</p>
-                    </div>
-                </Link>
-            ))}
+            <div className="container">
+                {results.map(post => (
+                    <Link to={`/announce/${post.id}`} key={post.id}>
+                        <div key={post.id}>
+                            <h2>{post.title}</h2>
+                            <p>{post.body}</p>
+                            <p>Start Date: {post.startDate}</p>
+                            <p>End Date: {post.endDate}</p>
+                            <p>Announcer ID: {post.announcerId}</p>
+                            <p>Plant ID: {post.plantId}</p>
+                            <p>Created at: {post.createdAt}</p>
+                            <p>Updated at: {post.updatedAt}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </div>
     );
 };
