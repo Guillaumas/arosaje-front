@@ -62,7 +62,7 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     </li>
                     {user != null ? (
                         <li>
-                            <Link to="/logout"><span className="fa-solid fa-power-off"></span></Link>
+                            <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
                         </li>
                     ) : (
                         <li>
