@@ -16,19 +16,20 @@ import {User} from "./Interfaces/User";
 import PlantPage from "./Components/Pages/PlantPage";
 import Logout from "./Components/AuthForm/LogOut";
 
+
 const App: React.FC = () => {
     const [isAuthFormLogin, setIsAuthFormLogin] = useState<boolean>(true);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
     const [currentUser, setCurrentuser] = useState<any>(null);
-    const {user} = useAuth();
     const { id } = useParams<{ id: string }>();
     const [userProfile, setUserProfile] = useState<User | null>(null);
 
 
     useEffect(() => {
+        const user = localStorage.getItem('user');
         setCurrentuser(user);
-        console.log('user:', user);
+
     });
 
     const handleSwitch = () => {
@@ -48,7 +49,7 @@ const App: React.FC = () => {
                     <NavBar onSettingsClick={togglePopup}/>
                     <Routes>
                         <Route path="/" element={<Accueil/>}/>
-                        <Route path="/profile/" element={<Profil userProfile={user}/>} />
+                        <Route path="/profile/" element={<Profil userProfile={currentUser}/>} />
                         <Route path="/messages/*" element={ <Messages/>} />
                         <Route path="/parametres" element={ <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>} />
                         <Route path="/login" element={<FormManager/>}/>
