@@ -26,29 +26,16 @@ const MainPage = () => {
             method: ANNOUNCES.METHOD.GET,
         })
             .then(response => response.json())
-            .then(data => {
+            .then(async (data) => {
                 if (data && Array.isArray(data)) {
-                    const promises = data.map((post: Announce) => {
-                        return UserService.fetchUserById(post.announcerId)
-                            .then((userData) => {
-                                console.log(userData)
-                                return {...post, ownerName: userData ? userData.username : "OUI"};
-                            })
-                            .catch((error) => {
-                                console.error('Error fetching user:', error);
-                                return post;
-                            });
-                    });
-
-                    Promise.all(promises)
-                        .then((postsWithOwnerName) => {
-                            setPosts(postsWithOwnerName);
-                        })
-                        .catch((error) => {
-                            console.error('Error fetching posts with owner name:', error);
-                        });
+                    const postsWithOwnerName = await Promise.all(data.map(async (post: Announce) => {
+                        const owner = await UserService.fetchUserById(post.announcerId);
+                        console.log('Owner:', owner);
+                        return {...post, ownerName: owner?.username};
+                    }));
+                    setPosts(postsWithOwnerName);
                 } else {
-                    console.log('No announces found or data is not in the expected format', data);
+                    console.log('No posts found');
                 }
             })
             .catch((err) => {
@@ -92,7 +79,7 @@ const MainPage = () => {
     }, [loading]);
 
     useEffect(() => {
-        fetchPosts();
+         fetchPosts();
 
         const interval = setInterval(fetchPosts, 5000);
 
@@ -111,6 +98,7 @@ const MainPage = () => {
     if (posts.length === 0) {
         return <div className="noPosts">No posts available.</div>;
     }
+
 
     return (
         <div className="mainPage">
@@ -133,7 +121,7 @@ const MainPage = () => {
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
                         <div className="header">
-                            <p className="postAuthor">{ownerName}</p>
+                            <p className="postAuthor">{post.ownerName}</p>
                             <p className="postDate">{post.startDate} - {post.endDate}</p>
                         </div>
                         <div className="content">

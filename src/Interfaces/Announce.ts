@@ -8,6 +8,7 @@ export interface Announce {
     endDate: string;
     createdAt: string;
     updatedAt: string;
+    ownerName?: string,
 }
 
 export interface AnnounceSearchCriteria {

@@ -2,13 +2,7 @@ import fetchFromAPI from "./ApiService";
 
 export const UserService = {
     async fetchUserById(id: number): Promise<any> {
-        return fetchFromAPI(`users/${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`API call failed: ${response.statusText}`);
-                }
-                return response.json();
-            })
+        return fetchFromAPI(`user/${id}`)
             .then(data => {
                 if (data === null) {
                     throw new Error('No data returned from API');
