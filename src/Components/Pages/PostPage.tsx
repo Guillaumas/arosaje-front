@@ -54,15 +54,16 @@ const PostPage: React.FC = () => {
                     <div className="header">
                         <h2>{ownerName}</h2>
                         <p className="postDate">{post.startDate} - {post.endDate}</p>
-                        <p>Status : {plant?.currentState}</p>
+                        <p>{plant?.currentState}</p>
                     </div>
                     <div className="content">
                         <div className="text">
                             <h1 className='postTitle'>{post.title}</h1>
                             <p>{post.body}</p>
-                            <button onClick={handleContactPostOwner}>Contact Owner</button>
-                            <Link to={`/plants/${plant?.id}`}>View Plant</Link>
+                            <button onClick={handleContactPostOwner} className='postContact'>Contact Owner</button>
+                            {/* <Link to={`/plants/${plant?.id}`}>View Plant</Link> */}
                         </div>
+                        {/* <img src={post.image} alt={post.title} className="postImage"/> */}
                     </div>
                     <div className="comment">
                         <h2>Comments</h2>
