@@ -1,9 +1,10 @@
 import React from 'react';
-import { IConversation } from './Conversation';
+import { IConversation } from './ConversationPage';
+import {Conversation, ConversationWithMessages} from "../../Interfaces/Conversation";
 
 export interface IConversationContext {
-  selectedConversation: IConversation | null;
-  setSelectedConversation: (conversation: IConversation | null) => void;
+  selectedConversation: Conversation | null;
+  setSelectedConversation: (conversation: ConversationWithMessages | null) => void;
 }
 
 export const ConversationContext = React.createContext<IConversationContext | undefined>(undefined);

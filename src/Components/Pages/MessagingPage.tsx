@@ -1,22 +1,23 @@
 import React, {useState} from 'react';
 import Sidebar from '../Messaging/Sidebar';
-import Conversation from '../Messaging/Conversation';
+import ConversationPage from '../Messaging/ConversationPage';
 import styled from 'styled-components';
 import {ConversationContext } from "../Messaging/ConversationContext";
-import { IConversation } from '../Messaging/Conversation';
+import { IConversation } from '../Messaging/ConversationPage';
+import {Conversation} from "../../Interfaces/Conversation";
 
 const MessagesContainer = styled.div`
     display: flex;
 `;
 
 const Messages = () => {
-    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+    const [selectedConversation, setSelectedConversation] = useState<Conversation| null>(null);
 
     return (
         <ConversationContext.Provider value={{selectedConversation, setSelectedConversation}}>
             <MessagesContainer>
                 <Sidebar isconversationselected={selectedConversation !== null}/>
-                <Conversation />
+                <ConversationPage />
             </MessagesContainer>
         </ConversationContext.Provider>
     );
@@ -24,6 +25,3 @@ const Messages = () => {
 
 export default Messages;
 
-
-//todo page de messagerie
-//todo gestion de la logique d'affichage des conversation en utilisant les fichiers du dossier "Messaging"

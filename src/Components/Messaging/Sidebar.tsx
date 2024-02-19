@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import '../../Styles/App.css';
-import { IConversation } from './Conversation';
+import { IConversation } from './ConversationPage';
 import {ConversationContext} from "./ConversationContext";
 import { USERS, CONVERSATIONS } from '../../routes';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { User } from '../../Interfaces/User';
 import { Plant } from '../../Interfaces/Plant';
+import {ConversationService} from "../../Services/ConversationService";
+import {Conversation} from "../../Interfaces/Conversation";
 
 interface SidebarProps {
     isconversationselected: boolean;
@@ -47,8 +49,8 @@ const RecipientDiv = styled.div<{ isSelected: boolean }>`
 `;
 
 const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
-    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
-    const [conversations, setConversations] = useState<IConversation[]>([]);
+    const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+    const [conversations, setConversations] = useState<Conversation[]>([]);
     const [showBotanistButton, setShowBotanistButton] = useState(false);
     const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
     const context = useContext(ConversationContext);
@@ -61,24 +63,18 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
         if (authContext && authContext.user) {
             const user: User = authContext.user;
 
-            fetch(USERS.ID(user.id))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.role_id !== BOTANIST_ROLE_ID) {
-                        setShowBotanistButton(true);
-                    }
-                });
-
-            fetch(CONVERSATIONS.SEARCH.findByUser2Id(user.id))
-                .then(response => response.json())
-                .then(data => setConversations(data));
+            ConversationService.fetchConversationsByUserId(user.id)
+                .then((conversations) => {
+                    setConversations(conversations);
+                })
+                .catch((error) => console.error(error));
         }
     }, [authContext]);
 
-    const handleSelectConversation = (conversation: IConversation) => {
+    const handleSelectConversation = (conversation: Conversation) => {
         setSelectedConversation(conversation);
         if (context) {
-            context.setSelectedConversation(conversation);
+            // context.setSelectedConversation(conversation);
         }
     };
 
@@ -118,14 +114,14 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
                 <button onClick={() => handleContactBotanist(selectedPlant)}>Contact a Botanist</button>
             )}
             {conversations.length > 0 ? (
-                conversations.map((conversation: IConversation) => (
+                conversations.map((conversation: Conversation) => (
                     <RecipientDiv
                         key={conversation.id}
                         onClick={() => handleSelectConversation(conversation)}
                         isSelected={selectedConversation?.id === conversation.id}
                     >
-                        <RecipientPhoto src={conversation.recipient.photoUrl} alt={conversation.recipient.name}/>
-                        <RecipientName>{conversation.recipient.name}</RecipientName>
+                        {/*<RecipientPhoto src={conversation.recipient.photoUrl} alt={conversation.recipient.name}/>*/}
+                        {/*<RecipientName>{conversation.recipient.name}</RecipientName>*/}
                         <button onClick={(e) => {e.stopPropagation(); handleDeleteConversation(conversation.id);}}>Supprimer</button>
                     </RecipientDiv>
                 ))
@@ -137,10 +133,3 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
 }
 
 export default Sidebar;
-
-//todo Fonctionnalités de base du composant Sidebar
-//todo 1. Afficher la liste des conversations
-//todo 3. Supprimer une conversatio
-//todo 4. Rechercher une conversatin
-//todo 5. Filtrer les conversationspar type de message
-//todo 6. Filtrer les conversations par date

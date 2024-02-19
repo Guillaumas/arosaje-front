@@ -49,11 +49,11 @@ const PostPage: React.FC = () => {
 
 
         const newConversation = {
-            id: 0,
             user1Id: currentUserId,
             user2Id: ownerId
         };
-        await ConversationService.createConversation(newConversation);
+
+        await ConversationService.createConversation(currentUserId, ownerId);
     };
 
     if (!post) {

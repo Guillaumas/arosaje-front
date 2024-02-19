@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import '../../Styles/App.css';
 import {ConversationContext} from "./ConversationContext";
 import {MessageService} from "../../Services/MessageService";
+import {Conversation, ConversationWithMessages} from "../../Interfaces/Conversation";
 export interface IRecipient {
     name: string;
     photoUrl: string;
@@ -21,7 +22,7 @@ export interface IConversation {
 }
 
 interface ConversationProps {
-    selectedConversation: IConversation | null;
+    selectedConversation: Conversation | null;
 }
 
 const ConversationDiv = styled.div`
@@ -49,8 +50,8 @@ const MessageP = styled.p<{ isFromCurrentUser: boolean }>`
     text-align: ${props => (props.isFromCurrentUser ? 'right' : 'left')};
 `;
 
-const Conversation: React.FC = () => {
-    const [selectedConversation, setSelectedConversation] = useState<IConversation | null>(null);
+const ConversationPage: React.FC = () => {
+    const [selectedConversation, setSelectedConversation] = useState<ConversationWithMessages | null>(null);
     const [newMessage, setNewMessage] = useState<string>('');
     const context = useContext(ConversationContext);
 
@@ -84,7 +85,7 @@ const Conversation: React.FC = () => {
 
     useEffect(() => {
         if (context) {
-            setSelectedConversation(context.selectedConversation);
+            // setSelectedConversation(context.selectedConversation);
         }
     }, [context]);
 
@@ -102,7 +103,7 @@ const Conversation: React.FC = () => {
                 isFromCurrentUser: true,
                 conversationId: selectedConversation.id,
                 createdAt: new Date().toISOString(),
-                destination: selectedConversation.recipient.name,
+                destination: ""
             };
 
             // Send the message via WebSocket
@@ -114,10 +115,11 @@ const Conversation: React.FC = () => {
     return (
         <ConversationDiv>
             {selectedConversation && selectedConversation.messages ? (
-                selectedConversation.messages.map((message: IMessage, index: number) => (
-                    <MessageP key={index} isFromCurrentUser={message.isFromCurrentUser}>
-                        <strong>{message.sender}:</strong> {message.content}
-                    </MessageP>
+                selectedConversation.messages.map((message, index) => (
+                    // // <MessageP key={index}>
+                    //     {message.content}
+                    // </MessageP>
+                    <div> message</div>
                 ))
             ) : (
                 <p>Aucune conversation sélectionnée</p>
@@ -129,14 +131,5 @@ const Conversation: React.FC = () => {
         </ConversationDiv>
     );
 }
-export default Conversation;
-
-//todo Fonctionnalités de base du composant conversation
-//todo 3. Supprimer un message de la conversation sélectionnée (appuie long sur le message) -- gadget
-//todo 4. Modifier un message de la conversation sélectionnée (appuie long sur le message) -- gadget
-//todo 5. Supprimer la conversation sélectionnée (menu contextuel en haut a droite de la conversation) -- sidebar
-//todo 6. Changer le type de message (texte, image, vidéo, audio, etc.) (a coté du clavier) -- gadget
-//todo 7. Ajouter des fonctionnalités de recherche et de filtre pour les messages (menu contextuel en haut a droite de la conversation) -- gadget
-
-
+export default ConversationPage;
 

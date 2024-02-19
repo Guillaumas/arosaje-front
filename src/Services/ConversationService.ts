@@ -21,8 +21,8 @@ export const ConversationService = {
                 return [];
             });
     },
-    createConversation(conversationData: Conversation): Promise<Conversation> {
-        return fetchFromAPI('conversations', 'POST', conversationData)
+    fetchConversationById(id: number): Promise<Conversation> {
+        return fetchFromAPI(`conversations/${id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`API call failed: ${response.statusText}`);
@@ -36,8 +36,52 @@ export const ConversationService = {
                 return data;
             })
             .catch(error => {
+                console.error('Error fetching conversation:', error);
+                return {} as Conversation;
+            });
+    },
+    fetchConversationsByUserId(userId: number): Promise<Conversation[]> {
+        return fetchFromAPI(`conversations/user/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data === null) {
+                    throw new Error('No data returned from API');
+                }
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching conversations:', error);
+                return [];
+            });
+    },
+    createConversation(user1Id: number, user2Id: number): Promise<Conversation> {
+        console.log("CreateConversation",user1Id,user2Id)
+        const conversationData = {
+            user1Id,
+            user2Id,
+        };
+        return fetchFromAPI('conversations', 'POST', conversationData)
+            .then(response => {
+                console.log("CreateConversation Response:",response);
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("CreateCOnversation Data",data);
+                if (data === null) {
+                    throw new Error('No data returned from API');
+                }
+                return data;
+            })
+            .catch(error => {
                 console.error('Error creating conversation:', error);
-                return null;
             });
     },
     updateConversation(conversationData: Conversation): Promise<Conversation> {
@@ -56,7 +100,6 @@ export const ConversationService = {
             })
             .catch(error => {
                 console.error('Error updating conversation:', error);
-                return null;
             });
     },
     deleteConversation(id: number): Promise<void> {
@@ -70,4 +113,6 @@ export const ConversationService = {
                 console.error('Error deleting conversation:', error);
             });
     },
+
+
 };
