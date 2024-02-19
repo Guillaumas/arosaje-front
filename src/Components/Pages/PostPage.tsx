@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
-import { AnnounceService } from '../../Services/AnnounceService';
-import { UserService } from '../../Services/UserService';
-import { Announce } from '../../Interfaces/Announce';
+import {AnnounceService} from '../../Services/AnnounceService';
+import {UserService} from '../../Services/UserService';
+import {Announce} from '../../Interfaces/Announce';
 import '../../Styles/PostPage.css';
-import { PlantService } from '../../Services/PlantService';
+import {PlantService} from '../../Services/PlantService';
 import {Plant} from "../../Interfaces/Plant";
+import {ConversationService} from "../../Services/ConversationService";
 
 const PostPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
     const [post, setPost] = useState<Announce | null>(null);
     const [ownerName, setOwnerName] = useState<string | null>(null);
     const [plant, setPlant] = useState<Plant | null>(null);
@@ -30,16 +31,29 @@ const PostPage: React.FC = () => {
 
     const handleContactPostOwner = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+
         if (!post) return;
+
         const ownerId = post.announcerId;
-        const user1id = user?.id ? user?.id : 0;
+        const user = localStorage.getItem('user');
+        console.log('user:', user);
+        const currentUser = JSON.parse(user || '{}');
+        const currentUserId = currentUser.id;
+        console.log('user1id:', currentUserId);
+        console.log('ownerId:', ownerId);
+
+        if ((ownerId == currentUserId)) {
+            alert('You cannot contact yourself');
+            return;
+        }
+
 
         const newConversation = {
             id: 0,
-            user1Id: user1id,
+            user1Id: currentUserId,
             user2Id: ownerId
         };
-        //await ConversationService.createConversation(newConversation);
+        await ConversationService.createConversation(newConversation);
     };
 
     if (!post) {
@@ -76,12 +90,11 @@ const PostPage: React.FC = () => {
                 </span>
             </div>
         </div>
-        
+
     );
 };
 
 export default PostPage;
-
 
 
 //todo fonctionnalités de base pour la page de details de post
