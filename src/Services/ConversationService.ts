@@ -40,14 +40,9 @@ export const ConversationService = {
                 return {} as Conversation;
             });
     },
-    fetchConversationsByUserId(userId: number): Promise<Conversation[]> {
-        return fetchFromAPI(`conversations/user/${userId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`API call failed: ${response.statusText}`);
-                }
-                return response.json();
-            })
+    fetchConversationsByUserId(userId: String): Promise<Conversation[]> {
+        console.log("FetchConversationsByUserId",typeof userId)
+        return fetchFromAPI(`conversations/findByUserId/` + userId)
             .then(data => {
                 if (data === null) {
                     throw new Error('No data returned from API');

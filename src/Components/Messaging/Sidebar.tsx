@@ -63,9 +63,10 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
         if (authContext && authContext.user) {
             const user: User = authContext.user;
 
-            ConversationService.fetchConversationsByUserId(user.id)
+            ConversationService.fetchConversationsByUserId(user.id.toString())
                 .then((conversations) => {
                     setConversations(conversations);
+                    console.log('conversations:', conversations);
                 })
                 .catch((error) => console.error(error));
         }

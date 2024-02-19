@@ -17,7 +17,6 @@ export const UserService = {
             })
             .catch(error => {
                 console.error(`Error fetching user with id ${id}:`, error);
-                return null;
             });
     }
 }

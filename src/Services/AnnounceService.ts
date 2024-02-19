@@ -37,7 +37,6 @@ const fetchAnnounceById = (id: number): Promise<Announce> => {
         })
         .catch(error => {
             console.error(`Error fetching announce with id ${id}:`, error);
-            return null;
         });
 };
 
@@ -84,7 +83,6 @@ const createAnnounce = (announceData: Announce): Promise<Announce> => {
         })
         .catch(error => {
             console.error('Error creating announce:', error);
-            return null;
         });
 };
 
@@ -110,7 +108,6 @@ const updateAnnounce = (id: number, announceData: Partial<Announce>): Promise<An
         })
         .catch(error => {
             console.error(`Error updating announce with id ${id}:`, error);
-            return null;
         });
 };
 
