@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 const SearchPage = () => {
     const [searchCriteria, setSearchCriteria] = useState<AnnounceSearchCriteria>({});
     const [results, setResults] = useState<Announce[]>([]);
+    const [searchText, setSearchText] = useState<string>('');
 
     const handleCriteriaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSearchCriteria({
@@ -14,9 +15,13 @@ const SearchPage = () => {
         });
     };
 
+    const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchText(event.target.value);
+    };
+
     const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const searchURL = generateSearchURL(ANNOUNCES.URL, ANNOUNCES.SEARCH, searchCriteria);
+        const searchURL = generateSearchURL(ANNOUNCES.URL, ANNOUNCES.SEARCH, {...searchCriteria, searchText});
         fetch(searchURL)
             .then(response => response.json())
             .then(data => setResults(data))
@@ -26,6 +31,7 @@ const SearchPage = () => {
     return (
         <div>
             <form onSubmit={handleSearchSubmit}>
+                <input type="text" value={searchText} onChange={handleSearchTextChange} placeholder="Search..." />
                 <select onChange={handleCriteriaChange}>
                     <option value="">Select a category...</option>
                     <option value="startDate">Start Date</option>

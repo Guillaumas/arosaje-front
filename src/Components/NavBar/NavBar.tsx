@@ -60,7 +60,7 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                         {isPopupOpen &&
                             <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
                     </li>
-                    {user ? (
+                    {user != null ? (
                         <li>
                             <Link to="/logout"><span className="fa-solid fa-power-off"></span></Link>
                         </li>

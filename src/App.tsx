@@ -51,7 +51,7 @@ const App: React.FC = () => {
                         <Route path="/profile/" element={<Profil userProfile={user}/>} />
                         <Route path="/messages/*" element={ <Messages/>} />
                         <Route path="/parametres" element={ <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>} />
-                        <Route path="/login/*" element={<FormManager/>}/>
+                        <Route path="/login" element={<FormManager/>}/>
                         <Route path="/recherche/*" element={<Recherche/>} />
                         <Route path="/logout" element={<Logout/>}/>
                         <Route path="/announce/:id" element={<PostPage/>} />
