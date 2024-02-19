@@ -19,6 +19,21 @@ ul{
     margin: 0;
 }
 
+.popup_inner{
+    margin-top: 1em;
+}
+
+.button{
+    font-size: 1em;
+    color: #E0E5CB;
+    background-color: #48806CFF;
+    text-align: center;
+    border-radius: 50em;
+    padding: 0.5em 1em;
+    margin-right: 1em;
+    border: #E0E5CB solid 0.1em;
+}
+
 li{
     margin: 0 20px;
 }
