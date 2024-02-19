@@ -7,12 +7,10 @@ import Parametres from './Components/Pages/SettingsPage';
 import Accueil from './Components/Pages/MainPage';
 import Recherche from './Components/Pages/SearchPage';
 import './Styles/App.css';
-import {AuthProvider, useAuth} from "./Contexts/AuthContext";
+import {AuthProvider} from "./Contexts/AuthContext";
 import PostPage from "./Components/Pages/PostPage";
 import {AuthFormContext} from "./Contexts/AuthFormContext";
 import FormManager from "./Components/AuthForm/FormManager";
-import {useParams} from "react-router-dom";
-import {User} from "./Interfaces/User";
 import PlantPage from "./Components/Pages/PlantPage";
 import Logout from "./Components/AuthForm/LogOut";
 
@@ -22,14 +20,13 @@ const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
     const [currentUser, setCurrentuser] = useState<any>(null);
-    const { id } = useParams<{ id: string }>();
-    const [userProfile, setUserProfile] = useState<User | null>(null);
 
 
     useEffect(() => {
         const user = localStorage.getItem('user');
+        console.log("useé")
+        console.log(user)
         setCurrentuser(user);
-
     });
 
     const handleSwitch = () => {
@@ -49,8 +46,8 @@ const App: React.FC = () => {
                     <NavBar onSettingsClick={togglePopup}/>
                     <Routes>
                         <Route path="/" element={<Accueil/>}/>
-                        <Route path="/profile/" element={<Profil userProfile={currentUser}/>} />
-                        <Route path="/messages/*" element={ <Messages/>} />
+                        <Route path="/profile/" element={<Profil/>} />
+                        <Route path="/messages/*" element={<Messages/>}/>
                         <Route path="/parametres" element={ <Parametres isOpen={isPopupOpen} togglePopup={togglePopup}/>} />
                         <Route path="/login" element={<FormManager/>}/>
                         <Route path="/recherche/*" element={<Recherche/>} />

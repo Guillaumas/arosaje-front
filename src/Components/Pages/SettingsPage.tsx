@@ -6,7 +6,7 @@ interface SettingsProps {
     togglePopup: () => void;
 }
 
-const Settings: React.FC<SettingsProps> = ({ isOpen, togglePopup }) => {
+const   Settings: React.FC<SettingsProps> = ({ isOpen, togglePopup }) => {
     const handleReset = () => {
         document.documentElement.style.setProperty('--color1', '#48806c');
         document.documentElement.style.setProperty('--color2', 'rgb(5, 5, 5)');
