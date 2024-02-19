@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { AnnounceService } from '../../Services/AnnounceService';
 import { PlantService } from '../../Services/PlantService';
 import { Announce } from '../../Interfaces/Announce';
@@ -7,25 +6,23 @@ import { Plant } from '../../Interfaces/Plant';
 import { TabContent } from "../ProfilePageTab/ProfileTab";
 import { User } from "../../Interfaces/User";
 
-interface ProfilePageProps {
-    userProfile: User | null
-}
-
-const ProfilePage: React.FC<ProfilePageProps> = ({ userProfile }) => {
-    const { id } = useParams<{ id: string }>();
+const ProfilePage: React.FC = () => {
+    const [userProfile, setUserProfile] = useState<User | null>(null);
     const [announces, setAnnounces] = useState<Announce[]>([]);
     const [plants, setPlants] = useState<Plant[]>([]);
     const [isTabPost, setIsTabPost] = useState(false);
 
     useEffect(() => {
-        if (userProfile) {
-            AnnounceService.fetchAnnouncesByUserId(userProfile.id)
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        setUserProfile(user);
+        if (user) {
+            AnnounceService.fetchAnnouncesByUserId(user.id)
                 .then((data: Announce[]) => setAnnounces(data));
 
-            PlantService.fetchPlantByUserId(userProfile.id)
+            PlantService.fetchPlantByUserId(user.id)
                 .then((data: Plant[]) => setPlants(data));
         }
-    }, [id, userProfile]);
+    }, []);
 
     if (!userProfile) {
         return <div>Loading...</div>;

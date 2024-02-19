@@ -43,34 +43,34 @@ const NavBar: React.FC<NavBarProps> = ({onSettingsClick}) => {
                     <Link to="/"><img src={logo} alt="Arosaje logo" className='logo'/></Link>
                 </li>
                 <div className="right">
+                    {user.user ? (
+                        <>
+                            <li>
+                                <Link to="/profile"><span className="fa-solid fa-user"></span></Link>
+                            </li>
+                            <li>
+                                <Link to="/recherche"><span className="fa-solid fa-magnifying-glass"></span></Link>
+                            </li>
+                            <li>
+                                <Link to="/messages"><span className="fa-solid fa-paper-plane"></span></Link>
+                            </li>
+                            <li>
+                                <Link to="/logout"><span className="fa-solid fa-power-off"></span></Link>
+                            </li>
+                        </>
+                    ) : (
+                        <li>
+                            <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
+                        </li>
+                    )}
                     <li>
-                        <Link to="/profile"><span className="fa-solid fa-user"></span></Link>
-                    </li>
-                    <li>
-                        <Link to="/recherche"><span className="fa-solid fa-magnifying-glass"></span></Link>
-                    </li>
-                    <li>
-                        <Link to="/messages"><span className="fa-solid fa-paper-plane"></span></Link>
-                    </li>
-                    <li>
-                        <a href="src/Components/NavBar#" onClick={(e) => {
+                        <a href="#" onClick={(e) => {
                             e.preventDefault();
                             togglePopup();
                         }}><span className="fa-solid fa-gear"></span></a>
                         {isPopupOpen &&
                             <Popup handleClose={togglePopup} handleReset={handleReset} handleChange={handleChange}/>}
                     </li>
-
-
-                    {user.user != null ? (
-                        <li>
-                            <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
-                        </li>
-                    ) : (
-                        <li>
-                            <Link to="/login"><span className="fa-solid fa-power-off"></span></Link>
-                        </li>
-                    )}
                 </div>
             </ul>
         </nav>
