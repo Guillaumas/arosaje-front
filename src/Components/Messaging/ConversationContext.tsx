@@ -4,7 +4,9 @@ import {Conversation, ConversationWithMessages} from "../../Interfaces/Conversat
 
 export interface IConversationContext {
   selectedConversation: Conversation | null;
-  setSelectedConversation: (conversation: ConversationWithMessages | null) => void;
+  setSelectedConversation: (conversation: Conversation | null) => void;
+  selectedConversationWithMessages: ConversationWithMessages | null;
+
 }
 
 export const ConversationContext = React.createContext<IConversationContext | undefined>(undefined);

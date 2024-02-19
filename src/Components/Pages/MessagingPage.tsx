@@ -13,8 +13,11 @@ const MessagesContainer = styled.div`
 const Messages = () => {
     const [selectedConversation, setSelectedConversation] = useState<Conversation| null>(null);
 
+    let selectedConversationWithMessages: IConversation | null = null;
+
+
     return (
-        <ConversationContext.Provider value={{selectedConversation, setSelectedConversation}}>
+        <ConversationContext.Provider value={{selectedConversation, setSelectedConversation, selectedConversationWithMessages}}>
             <MessagesContainer>
                 <Sidebar isconversationselected={selectedConversation !== null}/>
                 <ConversationPage />

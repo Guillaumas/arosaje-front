@@ -1,5 +1,5 @@
 import fetchFromAPI from './ApiService';
-import { Conversation } from '../Interfaces/Conversation';
+import {Conversation} from '../Interfaces/Conversation';
 
 export const ConversationService = {
     fetchConversations(): Promise<Conversation[]> {
@@ -41,7 +41,7 @@ export const ConversationService = {
             });
     },
     fetchConversationsByUserId(userId: String): Promise<Conversation[]> {
-        console.log("FetchConversationsByUserId",typeof userId)
+        console.log("FetchConversationsByUserId", typeof userId)
         return fetchFromAPI(`conversations/findByUserId/` + userId)
             .then(data => {
                 if (data === null) {
@@ -55,21 +55,21 @@ export const ConversationService = {
             });
     },
     createConversation(user1Id: number, user2Id: number): Promise<Conversation> {
-        console.log("CreateConversation",user1Id,user2Id)
+        console.log("CreateConversation", user1Id, user2Id)
         const conversationData = {
             user1Id,
             user2Id,
         };
         return fetchFromAPI('conversations', 'POST', conversationData)
             .then(response => {
-                console.log("CreateConversation Response:",response);
+                console.log("CreateConversation Response:", response);
                 if (!response.ok) {
                     throw new Error(`API call failed: ${response.statusText}`);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log("CreateCOnversation Data",data);
+                console.log("CreateCOnversation Data", data);
                 if (data === null) {
                     throw new Error('No data returned from API');
                 }
@@ -110,4 +110,23 @@ export const ConversationService = {
     },
 
 
+    getConversationWithMessages(id: number | undefined) {
+        return fetchFromAPI(`conversations/${id}/messages`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data === null) {
+                    throw new Error('No data returned from API');
+                }
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching conversation:', error);
+                return [];
+            });
+    }
 };

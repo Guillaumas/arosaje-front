@@ -74,8 +74,9 @@ const Sidebar: React.FC<SidebarProps> = ({isconversationselected}) => {
 
     const handleSelectConversation = (conversation: Conversation) => {
         setSelectedConversation(conversation);
+        console.log('selectedConversation:', conversation);
         if (context) {
-            // context.setSelectedConversation(conversation);
+            context.setSelectedConversation(conversation);
         }
     };
 
