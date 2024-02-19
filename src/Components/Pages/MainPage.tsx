@@ -2,11 +2,11 @@ import React, {useState, useEffect, useRef, useCallback, useContext} from 'react
 import {Link} from 'react-router-dom';
 import NewPost from "./NewPostPage";
 import '../../Styles/MainPage.css'
-import { ConversationService } from "../../Services/ConversationService";
-import { Announce } from "../../Interfaces/Announce";
+import {ConversationService} from "../../Services/ConversationService";
+import {Announce} from "../../Interfaces/Announce";
 import {ANNOUNCES} from "../../routes";
 import {AuthContext} from "../../Contexts/AuthContext";
-
+import {UserService} from "../../Services/UserService";
 
 
 const MainPage = () => {
@@ -16,7 +16,8 @@ const MainPage = () => {
     const [error, setError] = useState<Error | null>(null);
     const [isAddingPost, setIsAddingPost] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
+    const [ownerName, setOwnerName] = useState<string>("");
 
     const fetchPosts = () => {
         console.log('Fetching posts...')
@@ -27,7 +28,25 @@ const MainPage = () => {
             .then(response => response.json())
             .then(data => {
                 if (data && Array.isArray(data)) {
-                    setPosts(data);
+                    const promises = data.map((post: Announce) => {
+                        return UserService.fetchUserById(post.announcerId)
+                            .then((userData) => {
+                                console.log(userData)
+                                return {...post, ownerName: userData ? userData.username : "OUI"};
+                            })
+                            .catch((error) => {
+                                console.error('Error fetching user:', error);
+                                return post;
+                            });
+                    });
+
+                    Promise.all(promises)
+                        .then((postsWithOwnerName) => {
+                            setPosts(postsWithOwnerName);
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching posts with owner name:', error);
+                        });
                 } else {
                     console.log('No announces found or data is not in the expected format', data);
                 }
@@ -38,6 +57,8 @@ const MainPage = () => {
             }).finally(() => setLoading(false));
         console.log('Posts fetched!', posts)
     };
+
+
     const handleContactPostOwner = async (ownerId: number) => {
         const user1id = user?.id ? user?.id : 0;
 
@@ -96,8 +117,8 @@ const MainPage = () => {
             {user && (
                 <>
                     <button onClick={handleOpenNewPostForm} className="addPostButton">
-                      <p>Create post :</p>
-                      <span className='fa-solid fa-plus'></span>
+                        <p>Create post :</p>
+                        <span className='fa-solid fa-plus'></span>
                     </button>
                     {isAddingPost && (
                         <div className="newPostFormContainer">
@@ -112,7 +133,7 @@ const MainPage = () => {
                     <div key={post.id} ref={posts.length === index + 1 ? lastPostElementRef : null}
                          className="postCard">
                         <div className="header">
-                            <p className="postAuthor">{post.announcerId}</p>
+                            <p className="postAuthor">{ownerName}</p>
                             <p className="postDate">{post.startDate} - {post.endDate}</p>
                         </div>
                         <div className="content">
@@ -120,7 +141,8 @@ const MainPage = () => {
                                 <h2 className="postTitle">{post.title}</h2>
                                 <p className="postBody">Description :</p>
                                 <p className="postBody">{post.body}</p>
-                                {user && <button onClick={() => handleContactPostOwner(post.announcerId)} className='postContact'>Contact</button>}
+                                {user && <button onClick={() => handleContactPostOwner(post.announcerId)}
+                                                 className='postContact'>Contact</button>}
                             </div>
 
                         </div>
